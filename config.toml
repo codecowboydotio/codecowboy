@@ -58,10 +58,8 @@ paginate     = 10
     readOtherPosts = "Read other posts"
 
     [languages.en.params.logo]
-      #logoText = "codecowboy.io"
-      #logoHomeLink = "/"
-      path = "static/images/svk-pic.jpg"
-      alt = "codecowboy.io"
+      logoText = "codecowboy.io"
+      logoHomeLink = "/static/images/svk-pic.jpg"
     # or
     #
     # path = "/img/your-example-logo.svg"
