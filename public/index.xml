@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Codecowboy.io</title>
+    <link>http://codecowboy.io/</link>
+    <description>Recent content on Codecowboy.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 11 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://codecowboy.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>http://codecowboy.io/about/</link>
+      <pubDate>Thu, 11 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://codecowboy.io/about/</guid>
+      <description>I am a developer who likes to write about things that I find interesting. Some of these interesting things I do as part of my day job, and some I don&amp;rsquo;t.
+I run a couple of meetups, which is fantastic fun and a great way to meet other people who do interesting things. Meeting other people, and finding out what they&amp;rsquo;re up to and doing is what I find exciting.</description>
+    </item>
+    
+    <item>
+      <title>One</title>
+      <link>http://codecowboy.io/posts/one/</link>
+      <pubDate>Thu, 11 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://codecowboy.io/posts/one/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
