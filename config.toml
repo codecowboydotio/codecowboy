@@ -59,7 +59,8 @@ paginate     = 10
 
     [languages.en.params.logo]
       logoText = "codecowboy.io"
-      logoHomeLink = "/static/images/svk-pic.jpg"
+      logoHomeLink = "/"
+      path = "/static/images/svk-pic.jpg"
     # or
     #
     # path = "/img/your-example-logo.svg"
