@@ -51,7 +51,7 @@ paginate     = 10
 
 [[params.social]]
   name = "twitter"
-  url  = "https://twitter.com/"
+  url  = "https://twitter.com/codecowboydotio"
 
 [[params.social]]
   name = "email"
@@ -59,15 +59,11 @@ paginate     = 10
 
 [[params.social]]
   name = "github"
-  url  = "https://github.com/"
+  url  = "https://github.com/codecowboydotio"
 
 [[params.social]]
   name = "linkedin"
-  url  = "https://www.linkedin.com/"
-
-[[params.social]]
-  name = "stackoverflow"
-  url  = "https://www.stackoverflow.com/"
+  url  = "https://www.linkedin.com/in/scottv1/"
 
 [languages]
   [languages.en]
