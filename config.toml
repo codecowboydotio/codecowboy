@@ -1,4 +1,4 @@
-baseurl      = "http://codecowboy.io"
+aaseurl      = "http://codecowboy.io"
 title        = "Codecowboydotio"
 languageCode = "en-us"
 theme        = "hello-friend-ng"
@@ -11,7 +11,7 @@ paginate     = 10
   dateformNumTime = "2006-01-02 15:04"
 
   # Subtitle for home
-  homeSubtitle = "Ramblings of developer"
+  homeSubtitle = "Ramblings of a developer"
 
   # Set disableReadOtherPosts to true in order to hide the links to other posts.
   disableReadOtherPosts = false
