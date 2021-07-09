@@ -67,10 +67,10 @@ When using dynamic linking, shared libraries within the operatig system are used
 The code snippet below creates a dynamically linked binary from my C code above. I've named the application "pausle" because all it does is "pause".
 
 ```
-[root@fedora listener-scratch]# gcc pausle.c -o pausle-dynamic
+[root@fedora]# gcc pausle.c -o pausle-dynamic
 ```
 
-If I use the ldd command to see the dynamically linked libraries as part of my binary, you can see that there are three shared libraries used by the *pausle-dynamic* application.:1
+If I use the *ldd* command to see the dynamically linked libraries as part of my binary, you can see that there are three shared libraries used by the *pausle-dynamic* application.:1
 
 ```
 [root@fedora]# ldd pausle-dynamic
@@ -78,9 +78,21 @@ If I use the ldd command to see the dynamically linked libraries as part of my b
         libc.so.6 => /lib64/libc.so.6 (0x00007f32a782c000)
         /lib64/ld-linux-x86-64.so.2 (0x00007f32a7a06000)
 
+```
+
+Finally, we can see that the size of the dynamically linked binary is 25K.
+
+```
 [root@fedora]# ls -lh pausle-dynamic
 -rwxr-xr-x. 1 root root 25K Jul  9 21:48 pausle-dynamic
 ```
+
+One would imagine that this is a very small application.
+
+- It's dynamically linked - *should* be smaller
+- It's not doing anything, and is minimal anyway
+
+*What if I were to tell you that we could reduce the size of this application by 60%?*
 
 #### Static Linking
 
