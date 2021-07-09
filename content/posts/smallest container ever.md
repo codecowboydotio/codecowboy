@@ -55,4 +55,35 @@ This tiny little code block does a single thing - it pauses the thread until a s
 
 In container terms, this means the container will run, and will wait for a valid signal, and then honour that signal. This is the perfect behaviour for container testing. The "application" in the container doesn't do anything, so doesn't add any latency to the transaction, and is perfect for testing.
 
+## The compilation 
+In order to meet my goal of making a really small container image, I need to compile the code. I need to compile the code in such a way that the code does not require external libraries. That is, the code is **statically linked**. The second thing to make the application smaller is to compile the code using compiler options that strip out everything that is extraneous.
+
+### Linking
+There are generally two types on linking when compiling code, and it's relevant for containers. 
+
+#### Dynamic Linking
+When using dynamic linking, shared libraries within the operatig system are used. This has a good side benefit of making the executable smaller (typically). The rationale behind dynamic linking is that when you are running multiple applications on a single operating system, it is possible for multiple applications to use common shared libraries. This makes each individual application smaller.o
+
+The code snippet below creates a dynamically linked binary from my C code above. I've named the application "pausle" because all it does is "pause".
+
+```
+[root@fedora listener-scratch]# gcc pausle.c -o pausle-dynamic
+```
+
+If I use the ldd command to see the dynamically linked libraries as part of my binary, you can see that there are three shared libraries used by the *pausle-dynamic* application.:1
+
+```
+[root@fedora]# ldd pausle-dynamic
+        linux-vdso.so.1 (0x00007ffc93da0000)
+        libc.so.6 => /lib64/libc.so.6 (0x00007f32a782c000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f32a7a06000)
+
+[root@fedora]# ls -lh pausle-dynamic
+-rwxr-xr-x. 1 root root 25K Jul  9 21:48 pausle-dynamic
+```
+
+#### Static Linking
+
+### Compiler Options
+
 
