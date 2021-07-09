@@ -8,12 +8,12 @@ categories = ["containers", "testing"]
   name = "codecowboy.io"
 +++
 
-# Smallest Container Ever
-
-## Intro
+# Intro
 I have a side hobby where I try to create minimal container images.
 There are a number of reasons for this, but the primary one is because I'm a complete geek.
+
 Other reasons include:
+
 - It's a neatness thing
 - There's an engineering imperative in me to be minimalist
 - I don't like waste
