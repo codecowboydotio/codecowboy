@@ -70,7 +70,7 @@ The code snippet below creates a dynamically linked binary from my C code above.
 [root@fedora]# gcc pausle.c -o pausle-dynamic
 ```
 
-If I use the *ldd* command to see the dynamically linked libraries as part of my binary, you can see that there are three shared libraries used by the *pausle-dynamic* application.:1
+If I use the **ldd** command to see the dynamically linked libraries as part of my binary, you can see that there are three shared libraries used by the **pausle-dynamic** application.:1
 
 ```
 [root@fedora]# ldd pausle-dynamic
@@ -89,10 +89,10 @@ Finally, we can see that the size of the dynamically linked binary is 25K.
 
 One would imagine that this is a very small application.
 
-- It's dynamically linked - *should* be smaller
+- It's dynamically linked - **should** be smaller
 - It's not doing anything, and is minimal anyway
 
-*What if I were to tell you that we could reduce the size of this application by 60%?*
+**What if I were to tell you that we could reduce the size of this application by 60%?**
 
 #### Static Linking
 
