@@ -1,5 +1,5 @@
 +++
-title = "Smallest Container Ever 17.7kB"
+title = "Smallt Containers for fun "
 date = "2021-07-09"
 aliases = ["smallest_container"]
 tags = ["containers", "minimal"]
@@ -171,7 +171,7 @@ STEP 3: CMD ["/pausle-dynamic"]
 STEP 4: COMMIT pausle-dynamic
 --> 96800d278c6
 96800d278c61d69101791d416fd139a3e70afff2033063354c08307fa2eb118c
-````
+```
 
 This builds me a container that we can see below.
 
