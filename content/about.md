@@ -1,6 +1,6 @@
 +++
 title = "About"
-date = "2020-06-11"
+date = "2021-06-11"
 aliases = ["about-us","about-codecowboy","contact"]
 [ author ]
   name = "codecowboy.io"
