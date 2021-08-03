@@ -1,5 +1,5 @@
 +++
-title = "Smallt Containers for fun "
+title = "Small Containers for fun "
 date = "2021-07-09"
 aliases = ["smallest_container"]
 tags = ["containers", "minimal"]
@@ -196,6 +196,19 @@ CMD ["/pausle-static"]
 ```
 
 I need to add my statically compiled binary here because there are no shared libraries available for a dynamically linked library to use.
+
+Let's build this out.
+
+```
+[root@fedora]# podman build --tag=pausle-static .
+STEP 1: FROM scratch
+STEP 2: ADD pausle-static /
+--> 87ee8170167
+STEP 3: CMD ["/pausle-static"]
+STEP 4: COMMIT pausle-static
+--> d6e9daeb1ce
+d6e9daeb1ce4211e3f04dd535494a3e78228c3642d22d350d6e9d4f2241e5861
+```
 
 If I check my container image sizes we see the following.
 
