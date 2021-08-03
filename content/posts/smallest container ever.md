@@ -1,6 +1,6 @@
 +++
 title = "Smallest Container Ever 17.7kB"
-date = "2020-07-09"
+date = "2021-07-09"
 aliases = ["smallest_container"]
 tags = ["containers", "minimal"]
 categories = ["containers", "testing"]
@@ -94,8 +94,129 @@ One would imagine that this is a very small application.
 
 **What if I were to tell you that we could reduce the size of this application by 60%?**
 
-#### Static Linking
-
 ### Compiler Options
+What I realised is that if I **aggressively** tune my compiler options, I can go even smaller again.
+Using the compiler options below I can compile my code to the smallest possible statically linked binary that I can.
+
+```
+gcc  -Os -fdata-sections -ffunction-sections -fipa-pta  -Wl,--gc-sections -Wl,-O1 -Wl,--as-needed -Wl,--strip-all paus
+le.c -o pausle-dynamic-aggressive
+```
+
+```
+[root@fedora]# ls -lh pausle-dynamic-aggressive
+-rwxr-xr-x. 1 root root 15K Aug  3 20:34 pausle-dynamic-aggressive
+```
+
+Just by using agressive compiler options, the size of the code is smaller again.
+
+
+
+#### Static Linking
+Static linking is where I include all of the libraries for the executable "inside" the binary itself. This is useful when operating inside a container as it removes the need to have shared libraries (and hence an entire operating system). This in theory should make the entire container image smaller, even if the size of the binary is slightly larger.
+
+To statically link the binary, I pass the -static option to the compiler.
+
+```
+gcc -Os -s -static -ffunction-sections -fipa-pta  -Wl,--gc-sections pausle.c -o pausle-static
+```
+
+This creates a slightly larger binary size
+
+```
+[root@fedora]# ls -lh pausle-static
+-rwxr-xr-x. 1 root root 708K Aug  3 20:38 pausle-static
+```
+
+**WOAH** 708K.
+
+If I look at the linking using ldd again, I get the following message.
+
+```
+[root@fedora]# ldd pausle-static
+        not a dynamic executable
+```
+
+This means that all of my libraries are included in the binary itself.
+
+## Building containers
+
+In order to build containers, I'm going to use the dockerfile format, it's simple and is mostly uderstood.
+
+I use the following file 
+
+```
+FROM registry.fedoraproject.org/fedora-minimal
+
+ADD pausle-dynamic /
+CMD ["/pausle-dynamic"]
+```
+
+I'm using a minimal fedora image here to build out my container image.
+I add my dynamically linked binary into my image as a layer.
+
+I can build this using the following command.
+
+```
+[root@fedora]# podman build --tag=pausle-dynamic .
+STEP 1: FROM registry.fedoraproject.org/fedora-minimal
+Getting image source signatures
+Copying blob 033c7516884e done
+Copying config 241281a93a done
+Writing manifest to image destination
+Storing signatures
+STEP 2: ADD pausle-dynamic /
+--> 54ab00ee58c
+STEP 3: CMD ["/pausle-dynamic"]
+STEP 4: COMMIT pausle-dynamic
+--> 96800d278c6
+96800d278c61d69101791d416fd139a3e70afff2033063354c08307fa2eb118c
+````
+
+This builds me a container that we can see below.
+
+```
+[root@fedora]# podman images
+REPOSITORY                                   TAG           IMAGE ID      CREATED         SIZE
+localhost/pausle-dynamic                     latest        96800d278c61  11 seconds ago  119 MB
+```
+
+This comes out to 119MB - remember that the original binary was only 25K in size!
+
+### Using Scratch
+Using the SCRATCH keyword, I can create a container that only has the required binary inside it.
+It's still a container, but doesn't have any of the ancilliary "operating system" requirements. 
+It doesn't have shared libraries, nor does it have any operating system tooling that you may expect to find.
+
+```
+FROM scratch
+
+ADD pausle-static /
+CMD ["/pausle-static"]
+```
+
+I need to add my statically compiled binary here because there are no shared libraries available for a dynamically linked library to use.
+
+If I check my container image sizes we see the following.
+
+```
+[root@fedora]# podman images
+REPOSITORY                                   TAG           IMAGE ID      CREATED        SIZE
+localhost/pausle-static                      latest        d6e9daeb1ce4  3 seconds ago  727 kB
+```
+
+You will notice that this container is only 727KB in size.
+It doesn't have anything inside it EXCEPT the binary or the application that I'm going to run.
+
+In this way, I can build very small and minimal container images.
+Even though my initial binary size is larger when I statically compile, it much reduces the overall size of my container image.
+
+### Other Benefits
+
+Other benefits are that only having a single binary inside your container reduces the attack surface that's available from a security perspective. There are no dependencies that need to be individually lifecycle managed, and no real provenance in terms of ancialliary tooling inside the container.
+
+The boot time of my container is much reduced because it's smaller - this is a good thing.
+
+Next up I'll talk a little about telemetry and how this can be included in your application stacks while keeping a minimal container footprint.
 
 
