@@ -1,6 +1,6 @@
 +++
 title = "NGINX Unit"
-date = "2021-08-03"
+date = "2021-08-11"
 aliases = ["nginx_unit"]
 tags = ["nginx", "unit"]
 categories = ["software", "dev"]
@@ -48,4 +48,4 @@ This is great because every team writes services the way that best fits them and
 
 This is why I think Unit is important.
 
-.....more to come
+![unit.JPG](images/unit.JPG)
