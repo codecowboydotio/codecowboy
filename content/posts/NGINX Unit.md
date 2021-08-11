@@ -48,4 +48,4 @@ This is great because every team writes services the way that best fits them and
 
 This is why I think Unit is important.
 
-![unit.JPG](images/unit.JPG)
+![unit.JPG](/images/unit.JPG)
