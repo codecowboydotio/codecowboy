@@ -49,3 +49,127 @@ This is great because every team writes services the way that best fits them and
 This is why I think Unit is important.
 
 ![unit.JPG](/images/unit.JPG)
+
+## Multiple languages
+
+NGINX Unit allows you to use multiple langugaes. In a modern application architecture, this is a very common thing to want to do.
+Multiple services, written by different teams in different languages - this is a completely common scenario.
+
+NGINX Unit allows you to deploy services written in multiple different languages on the same application server. 
+This makes deployment easier and makes the whole dev experience a lot easier also.
+
+## Declarative configuration
+NGINX Unit has a REST based declarative configuration.
+This is one of the other very nice things about Unit -  everything in the configuration is declarative. With a declarative configuration, everything is real time, and I don't need to worry about restarting applications.
+
+A simple configuration looks something like this:
+
+```
+{
+        "listeners": {
+                "*:8080": {
+                        "pass": "applications/python"
+                },
+
+                "*:80": {
+                        "pass": "routes"
+                }
+        },
+
+        "routes": [
+                {
+                        "action": {
+                                "share": "/www/pacman-unit/"
+                        }
+                }
+        ],
+
+        "applications": {
+                "python": {
+                        "type": "python",
+                        "path": "/www/git-pull-api/",
+                        "module": "wsgi",
+                        "callable": "app"
+                }
+        }
+}
+```
+
+## Components 
+
+Each component of the configuration above allows you to step through connecting to, and serving my application.
+A picutre is worth a thousand words here, so here is one that I like as it explains the concepts of unit nicely.
+
+![unit-config.JPG](/images/unit-config.JPG)
+
+Listeners expose the application publicly, and can have characteristics like ports, certificates, names and so on.
+Listeners can pass to either routes or directly to applications. In the case above, my first listener passes directly to my application named "python".
+
+My second listener passes to a route. While I only have one route, it is possible to have multiple routes. Each route can have multiple conditions or matches and actions. In the case above, the route simply passes to a directory that serves out a static website (and yes it's pacman).
+
+Routes in unit are handled by a separate router process. This software based router handles request routing for unit.
+
+A more complex route block looks like this:
+```
+        "routes": [
+                {
+                        "match": {
+                                "host": "static.svkcode.org"
+                        },
+
+                        "action": {
+                                "share": "/www/pacman-canvas"
+                        }
+                },
+                {
+                        "match": {
+                                "host": "api.svkcode.org"
+                        },
+
+                        "action": {
+                                "pass": "upstreams/rr-lb"
+                        }
+                },
+                {
+                        "match": {
+                                "host": "jsp.svkcode.org"
+                        },
+
+                        "action": {
+                                "pass": "applications/java"
+                        }
+                }
+```
+
+Each route in this case passes to a different application based on the incoming host header. In this way, the unit router can be used to handle incoming request routing at a very granular level.
+
+
+My application block is the last piece of the puzzle here.
+
+```
+        "applications": {
+                "python": {
+                        "type": "python",
+                        "path": "/www/git-pull-api/",
+                        "module": "wsgi",
+                        "callable": "app"
+                }
+```
+
+My application block tells unit to run my application.
+
+**That's right unit is an application server.**
+
+The example above is a python application, but unit can also run nodejs, java, golang, perl (yes really - though I haven't tried it), php, ruby, python and so on.
+
+The intention here is that unit handles instantiating the application and everything is configured via the declarative configuration language of unit in real time.
+
+
+## Low barrier to adoption
+
+Unit offers a very low barrier to entry.
+1. The concepts are simple and sensible.
+2. 
+
+## Conclusion
+
