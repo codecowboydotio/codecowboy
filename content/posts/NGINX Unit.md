@@ -169,7 +169,8 @@ The intention here is that unit handles instantiating the application and everyt
 
 Unit offers a very low barrier to entry.
 1. The concepts are simple and sensible.
-2. 
+2. The declarative configuration is JSON based with a "get it, put it" mentality.
+3. 
 
 ## Conclusion
 
