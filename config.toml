@@ -1,4 +1,4 @@
-aaseurl      = "http://codecowboy.io"
+baseurl      = "http://codecowboy.io"
 title        = "Codecowboydotio"
 languageCode = "en-us"
 theme        = "hello-friend-ng"
