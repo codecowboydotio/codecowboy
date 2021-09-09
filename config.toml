@@ -93,6 +93,11 @@ paginate     = 10
     url        = "about/"
 
   [[menu.main]]
+    identifier = "categories"
+    name       = "Categories"
+    url        = "categories/"
+
+  [[menu.main]]
     identifier = "tags"
     name       = "Tags"
     url        = "tags/"
