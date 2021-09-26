@@ -23,16 +23,50 @@ Maps are cool because they allow you to have groups of key value pairs that can 
 A very simple example of a map is as follows:
 
 ```
-variable "origins" {
+variable "tcp_lb" {
   type = map
   default = {
     unit-config-origin = "8888"
     unit-git-origin = "8080"
-    unit-app-origin = "8181"
   }
 }
 ```
+You will notice that the map above is actually a variable. That's right **you can use a map as a variable**. 
 
-## A more complex example
+In this case, I am using a map to assign different ports to origin servers within a [volterra](http://volterra.io) resource.
+In this way, I don't need to declare the same resource over and over, I can use a loop within my resource to access all of the items within my map.
+
+## The resource
+The resource that uses the map above looks like this:
+
+```
+resource "volterra_tcp_loadbalancer" "unit-config" {
+  for_each  = var.tcp_lb
+  name      = "${each.key}"
+  namespace = var.ns
+
+  listen_port = "${each.value}"
+  dns_volterra_managed = true
+  domains = ["${var.domain_host}.${var.domain}"]
+  advertise_on_public_default_vip = true
+
+  retract_cluster = true
+
+  origin_pools_weights {
+    pool {
+      name = "${each.key}"
+      namespace = var.ns
+    }
+  }
+
+  hash_policy_choice_round_robin = true
+}
+```
+
+There are two pieces to this resource that I need to point out.
+
+- **The for loop**
+- **Accessing map keys and values**
+
 
 ## Conclusion
