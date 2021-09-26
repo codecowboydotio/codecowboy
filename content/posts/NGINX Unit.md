@@ -170,7 +170,8 @@ The intention here is that unit handles instantiating the application and everyt
 Unit offers a very low barrier to entry.
 1. The concepts are simple and sensible.
 2. The declarative configuration is JSON based with a "get it, put it" mentality.
-3. 
+3. Everything is real time - make a change, it's reflected immediately.
 
 ## Conclusion
-
+NGINX Unit is a good application server, and has a lot of uses. 
+Look out for additional posts on how to use it, how to configure it, and where it fits in a knative world.
