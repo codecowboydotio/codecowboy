@@ -65,8 +65,61 @@ resource "volterra_tcp_loadbalancer" "unit-config" {
 
 There are two pieces to this resource that I need to point out.
 
-- **The for loop**
+- **The for_each loop**
 - **Accessing map keys and values**
 
+### The for_each loop
+The for_each loop is used to loop through the map within the context of the resource. 
+The for_each loop in terraofrm is documented [here](https://www.terraform.io/docs/language/meta-arguments/for_each.html#basic-syntax). The interesting thing is that a for_each loop can **accept a map** as an input!
+
+```
+  for_each  = var.tcp_lb
+```
+Note that the for_each loop references the variable that I defined above. The variable is actually a map, which the for_each loop can accept as an input. 
+The for_each loop will loop through each key within the variable tcp_lb. In my case, the variable has two values.
+The for_each loop will run twice as it iterates over my map variable.
+
+### Accessing map keys and values
+The map that I have defined has two keys and two values.
+Each key and each value can be acess separately within the context of the **for_each** loop.
+
+In order to access each of the map values or names, I can use the following syntax:
+
+```
+  name      = "${each.key}"
+```
+and
+```
+  listen_port = "${each.value}"
+```
+
+The **each.key** and **each.value** keywords are used to access either the key or the value within the map.
+
+In my case, on each iteration, the following will be true:
+
+```
+variable "tcp_lb" {
+  type = map
+  default = {
+    unit-config-origin = "8888"
+    unit-git-origin = "8080"
+  }
+}
+```
+One first iteration:
+
+```
+each.key = unit-config-origin
+each.value = 8888
+```
+
+On the second iteration:
+```
+each.key = unit-git-origin
+each.value = 8080
+```
 
 ## Conclusion
+Using terraform maps simplifies your code by reducing the number of resources that you need to duplicate. It also makes your code a lot more readable.
+
+There are traps and pitfalls using this method if you have dependand resources, but I'll cover this in another post. :)
