@@ -93,6 +93,11 @@ paginate     = 10
     url        = "about/"
 
   [[menu.main]]
+    identifier = "presentations"
+    name       = "Presentations"
+    url        = "/presos"
+
+  [[menu.main]]
     identifier = "categories"
     name       = "Categories"
     url        = "categories/"
