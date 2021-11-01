@@ -102,7 +102,7 @@ paginate     = 10
     name       = "Categories"
     url        = "categories/"
 
-  [[menu.main]]
-    identifier = "tags"
-    name       = "Tags"
-    url        = "tags/"
+#  [[menu.main]]
+#    identifier = "tags"
+#    name       = "Tags"
+#    url        = "tags/"
