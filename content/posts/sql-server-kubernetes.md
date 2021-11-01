@@ -2,7 +2,7 @@
 title = "SQL Server on Kubernetes"
 date = "2021-11-02"
 aliases = ["sql_server"]
-tags = ["kubernetes", "containers", databases"]
+tags = ["kubernetes", "containers", "databases"]
 categories = ["kubernetes", "software", "dev"]
 [ author ]
   name = "codecowboy.io"
