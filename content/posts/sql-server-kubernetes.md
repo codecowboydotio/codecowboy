@@ -46,7 +46,7 @@ metadata:
 ```
 
 ## Pods
-Create a deployment for SQL server. I am creating a deployment rather than a statefulset for demponstration purposes. 
+Create a deployment for SQL server. I am creating a deployment rather than a statefulset for demonstration purposes. 
 
 ```
 apiVersion: apps/v1
@@ -118,7 +118,36 @@ spec:
 ```
 
 ## Persistent Storage
+I'll cover this piece in a second blog post, because it deserves its own topic entirely.
+
+The database manifest works but will store data locally only. This means that it is only useful for development purposes. If the pod is restarted for any reason, data will be lost. 
 
 # Client side tools
+Install client side tools to connect to the database.
 
+There is a really good document [here](https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-red-hat?view=sql-server-ver15) that describes how to install the client side utilities in order to connect to your database.
 
+I use fedora, so am using the instructions for RHEL8 (close enough)
+
+Use curl to install the microsoft repository on your system.
+
+```
+sudo curl -o /etc/yum.repos.d/msprod.repo https://packages.microsoft.com/config/rhel/8/prod.repo
+```
+
+Install the client side tooling and the unix ODBC client
+```
+sudo yum install -y mssql-tools unixODBC-devel
+```
+
+Add the SQL tools to your default path and load the path into the current environment.
+```
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+Test your database.
+```
+sqlcmd -S localhost -U SA -P '<YourPassword>'
+```
