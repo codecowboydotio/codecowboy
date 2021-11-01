@@ -1,6 +1,6 @@
 +++
 title = "SQL Server on Kubernetes"
-date = "2021-11-02"
+date = "2021-11-01"
 aliases = ["sql_server"]
 tags = ["kubernetes", "containers", "databases"]
 categories = ["kubernetes", "software", "dev"]
