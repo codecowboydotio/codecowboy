@@ -122,4 +122,4 @@ each.value = 8080
 ## Conclusion
 Using terraform maps simplifies your code by reducing the number of resources that you need to duplicate. It also makes your code a lot more readable.
 
-There are traps and pitfalls using this method if you have dependand resources, but I'll cover this in another post. :)
+There are traps and pitfalls using this method if you have dependant resources, but I'll cover this in another post. :)
