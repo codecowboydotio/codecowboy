@@ -1,5 +1,5 @@
 +++
-title = "SQL Server on Kubernetes"
+title = "SQL Server on Kubernetes - Part 1"
 date = "2021-11-01"
 aliases = ["sql_server"]
 tags = ["kubernetes", "containers", "databases"]
@@ -13,10 +13,19 @@ Recently, I've been working with a customer who wants to provide databases on th
 Ever since Microsoft's SQL Server was released on Linux some years ago, I've been fascinated with it.
 I decided to give it a go recently on Kubernetes, and get it all working.
 
+This is part one, where I deploy SQL server without persistent storage. 
+In part two, I will discuss using persistent storage.
 
 ## Why databases?
+There is a lot of debate about whether or not you *should* run databases on kubernetes or not. If you're operating in a public cloud environment, this is much more clear cut to my mind than if you're not. If you are, then it may be better to use a service from a cloud provider where infrastructure is taken care of for you. It's just easier.
+
+If you are not operating in a public cloud environment, then running on kubernetes gives you the resilience and abstraction from infrastructure that is as close as you can get to running in a public cloud. This is very useful in disconnected environments and environments where you cannot access public cloud (yes they do exist).
+
+Suffice to say, there are reasons that you may want to do this.
 
 ## Why SQL server?
+
+SQL server is ubiquitous. It is the database that a lot of applications use. As applications get either refactored or shifted to kubernetes, it is reasonable to assume that there will be instances where running a SQL server database on kubernetes is needed.
 
 ## Secret
 In order to get the database up and running, you will need to have a secret. 
@@ -151,3 +160,86 @@ Test your database.
 ```
 sqlcmd -S localhost -U SA -P '<YourPassword>'
 ```
+
+## Create databases
+
+## Port forward from local machine to database
+As I have not created any ingress for my database, the easiest way for me to get connectivity is to port forward directly to it.
+I can use the command below to port forward from my local workstation to my database.
+
+First I need to get the pod name of my database in order to port forward to it.
+```
+kubectl get pods -n mssql
+
+NAME                       READY   STATUS    RESTARTS   AGE
+mssql-a-8469f884f7-rrbx9   1/1     Running   0          18m
+```
+
+I can then use the port-forward command to forward a local port to the pod port so that I can perform some testing and check that my database actually works.
+
+```
+kubectl port-forward mssql-a-<pod> 1433:1433 -n mssql --address 0.0.0.0
+```
+
+## Database connect and test
+Once everything has been created on the kubernetes side of the house, we can connect to the database and see that it is available.
+
+I can connect to my database using the password I set originally. As I have port forwarded to my cluster, no ingress is needed. This is useful for testing.
+
+I create a database named **foo**
+
+```
+[root@fedora]# sqlcmd -S localhost -U SA -P 'MyC0m9l&xP@ssw0rd'
+1> create database foo
+2> go
+```
+
+If I select the names of all databases from the sys.Database table, I can see that the last entry is my database **foo**.
+```
+1> select name from sys.Databases
+2> go
+name
+--------------------------------------------------------------------------------------------------------------------------------
+master
+tempdb
+model
+msdb
+foo
+
+(5 rows affected)
+```
+
+I can switch to the **foo** database and being to use it.
+I create a table and insert a single line of data into my newly created database.
+
+```
+1> use foo
+2> go
+Changed database context to 'foo'.
+
+1> create table bar (id INT, name VARCHAR(50))
+2> go
+
+1> insert into bar values (1, 'test')
+2> go
+
+(1 rows affected)
+```
+
+iIf I select all of the data from my table **bar** I can see the single line of data that I inserted above. 
+```
+1> select * from bar
+2> go
+id          name
+----------- --------------------------------------------------
+          1 test
+```
+
+I have a functional database that is running on kubernetes!
+
+
+## Conclusion
+Running databases on kubernetes isn't that difficult. There are reasons that you want to do this.
+The difficult part about this is the ephemeral nature of pods on kubernetes and how to handle persistent storage with databases.
+This is the topic of my next post, where I will show how to use persistent storage to make your databases on kubernetes more robust.
+
