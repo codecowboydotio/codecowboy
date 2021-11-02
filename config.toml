@@ -4,6 +4,12 @@ languageCode = "en-us"
 theme        = "hello-friend-ng"
 paginate     = 10
 
+defaultTheme = "dark"
+themeColor = "#252627"
+
+PygmentsCodeFences = true
+PygmentsStyle = "monokai"
+
 [params]
   dateform        = "Jan 2, 2006"
   dateformShort   = "Jan 2"
@@ -24,9 +30,6 @@ paginate     = 10
   keywords = "homepage, blog, technology"
   images = [""]
 
-  defaultTheme = "Hyde"
-  PygmentsCodeFences = true
-  PygmentsStyle = "monokai"
 
 [params.footer]
   trademark = true
