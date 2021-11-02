@@ -24,6 +24,7 @@ paginate     = 10
   keywords = "homepage, blog, technology"
   images = [""]
 
+  defaultTheme = "Hyde"
   PygmentsCodeFences = true
   PygmentsStyle = "monokai"
 
