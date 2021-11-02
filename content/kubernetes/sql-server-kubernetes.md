@@ -45,7 +45,7 @@ The pages [here](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-ove
 ### Namespace 
 First we create a namespace. Technically, you don't need to do this and can run everything in the default namespace, but for neatness sake, I always think it's worth creating a separate namespace.
 
-```
+```Yaml
 kind: Namespace
 apiVersion: v1
 metadata:
@@ -57,7 +57,7 @@ metadata:
 ### Pods
 Create a deployment for SQL server. I am creating a deployment rather than a statefulset for demonstration purposes. 
 
-```
+```Yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -111,7 +111,7 @@ Create a service that can be used to expose the pods that we created above. The 
 
 This service exposes the database pods on port 1433, the default SQL server port.
 
-```
+```Yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -140,24 +140,24 @@ I use fedora, so am using the instructions for RHEL8 (close enough)
 
 Use curl to install the microsoft repository on your system.
 
-```
+```Bash
 sudo curl -o /etc/yum.repos.d/msprod.repo https://packages.microsoft.com/config/rhel/8/prod.repo
 ```
 
 Install the client side tooling and the unix ODBC client
-```
+```Bash
 sudo yum install -y mssql-tools unixODBC-devel
 ```
 
 Add the SQL tools to your default path and load the path into the current environment.
-```
+```Bash
 echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
 echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
 Test your database.
-```
+```Bash
 sqlcmd -S localhost -U SA -P '<YourPassword>'
 ```
 
@@ -168,7 +168,7 @@ As I have not created any ingress for my database, the easiest way for me to get
 I can use the command below to port forward from my local workstation to my database.
 
 First I need to get the pod name of my database in order to port forward to it.
-```
+```Bash
 kubectl get pods -n mssql
 
 NAME                       READY   STATUS    RESTARTS   AGE
@@ -177,7 +177,7 @@ mssql-a-8469f884f7-rrbx9   1/1     Running   0          18m
 
 I can then use the port-forward command to forward a local port to the pod port so that I can perform some testing and check that my database actually works.
 
-```
+```Bash
 kubectl port-forward mssql-a-<pod> 1433:1433 -n mssql --address 0.0.0.0
 ```
 
@@ -188,14 +188,14 @@ I can connect to my database using the password I set originally. As I have port
 
 I create a database named **foo**
 
-```
+```Bash
 [root@fedora]# sqlcmd -S localhost -U SA -P 'MyC0m9l&xP@ssw0rd'
 1> create database foo
 2> go
 ```
 
 If I select the names of all databases from the sys.Database table, I can see that the last entry is my database **foo**.
-```
+```Bash
 1> select name from sys.Databases
 2> go
 name
@@ -212,7 +212,7 @@ foo
 I can switch to the **foo** database and being to use it.
 I create a table and insert a single line of data into my newly created database.
 
-```
+```Bash
 1> use foo
 2> go
 Changed database context to 'foo'.
@@ -227,7 +227,7 @@ Changed database context to 'foo'.
 ```
 
 iIf I select all of the data from my table **bar** I can see the single line of data that I inserted above. 
-```
+```Bash
 1> select * from bar
 2> go
 id          name
