@@ -9,6 +9,7 @@ paginate     = 10
   dateformShort   = "Jan 2"
   dateformNum     = "2006-01-02"
   dateformNumTime = "2006-01-02 15:04"
+  defaultTheme = "dark"
 
   # Subtitle for home
   homeSubtitle = "Ramblings of a developer"
