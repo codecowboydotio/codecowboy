@@ -161,8 +161,6 @@ Test your database.
 sqlcmd -S localhost -U SA -P '<YourPassword>'
 ```
 
-## Create databases
-
 ## Port forward from local machine to database
 As I have not created any ingress for my database, the easiest way for me to get connectivity is to port forward directly to it.
 I can use the command below to port forward from my local workstation to my database.
