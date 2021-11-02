@@ -93,6 +93,11 @@ paginate     = 10
     url        = "development/"
 
   [[menu.main]]
+    identifier = "kubernetes"
+    name       = "Kubernetes"
+    url        = "kubernetes/"
+
+  [[menu.main]]
     identifier = "about"
     name       = "About"
     url        = "about/"
