@@ -39,7 +39,7 @@ In this way, I don't need to declare the same resource over and over, I can use 
 ## The resource
 The resource that uses the map above looks like this:
 
-```
+```Bash
 resource "volterra_tcp_loadbalancer" "unit-config" {
   for_each  = var.tcp_lb
   name      = "${each.key}"
@@ -72,7 +72,7 @@ There are two pieces to this resource that I need to point out.
 The for_each loop is used to loop through the map within the context of the resource. 
 The for_each loop in terraofrm is documented [here](https://www.terraform.io/docs/language/meta-arguments/for_each.html#basic-syntax). The interesting thing is that a for_each loop can **accept a map** as an input!
 
-```
+```Bash
   for_each  = var.tcp_lb
 ```
 Note that the for_each loop references the variable that I defined above. The variable is actually a map, which the for_each loop can accept as an input. 
@@ -85,11 +85,11 @@ Each key and each value can be acess separately within the context of the **for_
 
 In order to access each of the map values or names, I can use the following syntax:
 
-```
+```Bash
   name      = "${each.key}"
 ```
 and
-```
+```Bash
   listen_port = "${each.value}"
 ```
 
@@ -97,7 +97,7 @@ The **each.key** and **each.value** keywords are used to access either the key o
 
 In my case, on each iteration, the following will be true:
 
-```
+```Bash
 variable "tcp_lb" {
   type = map
   default = {
@@ -108,13 +108,13 @@ variable "tcp_lb" {
 ```
 One first iteration:
 
-```
+```Bash
 each.key = unit-config-origin
 each.value = 8888
 ```
 
 On the second iteration:
-```
+```Bash
 each.key = unit-git-origin
 each.value = 8080
 ```
