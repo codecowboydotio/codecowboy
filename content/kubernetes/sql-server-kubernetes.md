@@ -195,7 +195,7 @@ I create a database named **foo**
 ```
 
 If I select the names of all databases from the sys.Database table, I can see that the last entry is my database **foo**.
-```Bash
+```sql
 1> select name from sys.Databases
 2> go
 name
@@ -212,7 +212,7 @@ foo
 I can switch to the **foo** database and being to use it.
 I create a table and insert a single line of data into my newly created database.
 
-```Bash
+```sql
 1> use foo
 2> go
 Changed database context to 'foo'.
@@ -226,8 +226,8 @@ Changed database context to 'foo'.
 (1 rows affected)
 ```
 
-iIf I select all of the data from my table **bar** I can see the single line of data that I inserted above. 
-```Bash
+If I select all of the data from my table **bar** I can see the single line of data that I inserted above. 
+```sql
 1> select * from bar
 2> go
 id          name
