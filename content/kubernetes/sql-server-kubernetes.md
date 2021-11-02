@@ -34,7 +34,7 @@ The easiest way to do this is to create an opaque secret.
 
 The command below creates an opaque secret with a password that is complex enough to start the database.
 
-```
+```Bash
 kubectl create secret generic mssql --from-literal=SA_PASSWORD="MyC0m9l&xP@ssw0rd" --namespace=mssql
 ```
 
