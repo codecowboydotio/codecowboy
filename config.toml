@@ -107,10 +107,10 @@ paginate     = 10
     name       = "Presentations & Media"
     url        = "presos/"
 
-  [[menu.main]]
-    identifier = "categories"
-    name       = "Categories"
-    url        = "categories/"
+#  [[menu.main]]
+#    identifier = "categories"
+#    name       = "Categories"
+#    url        = "categories/"
 
 #  [[menu.main]]
 #    identifier = "tags"
