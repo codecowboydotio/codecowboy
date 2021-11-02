@@ -83,9 +83,9 @@ paginate     = 10
 
   # And you can even create generic menu
   [[menu.main]]
-    identifier = "blog"
-    name       = "Blog"
-    url        = "posts/"
+    identifier = "automation"
+    name       = "Automation"
+    url        = "automation/"
 
   [[menu.main]]
     identifier = "development"
