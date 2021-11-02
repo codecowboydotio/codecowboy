@@ -22,7 +22,7 @@ Maps are cool because they allow you to have groups of key value pairs that can 
 ## A simple example
 A very simple example of a map is as follows:
 
-```
+```Bash
 variable "tcp_lb" {
   type = map
   default = {
