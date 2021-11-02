@@ -88,6 +88,11 @@ paginate     = 10
     url        = "posts/"
 
   [[menu.main]]
+    identifier = "development"
+    name       = "Development"
+    url        = "development/"
+
+  [[menu.main]]
     identifier = "about"
     name       = "About"
     url        = "about/"
