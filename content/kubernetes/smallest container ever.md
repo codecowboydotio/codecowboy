@@ -43,7 +43,7 @@ In order for the application to work within a containerised environment, it need
 
 C is my chosen language of choice today, and I created the following application.
 
-```
+```C++
 #include <unistd.h>
 
 int main(void) { 
@@ -66,13 +66,13 @@ When using dynamic linking, shared libraries within the operatig system are used
 
 The code snippet below creates a dynamically linked binary from my C code above. I've named the application "pausle" because all it does is "pause".
 
-```
+```Bash
 [root@fedora]# gcc pausle.c -o pausle-dynamic
 ```
 
 If I use the **ldd** command to see the dynamically linked libraries as part of my binary, you can see that there are three shared libraries used by the **pausle-dynamic** application.:1
 
-```
+```Bash
 [root@fedora]# ldd pausle-dynamic
         linux-vdso.so.1 (0x00007ffc93da0000)
         libc.so.6 => /lib64/libc.so.6 (0x00007f32a782c000)
@@ -82,7 +82,7 @@ If I use the **ldd** command to see the dynamically linked libraries as part of 
 
 Finally, we can see that the size of the dynamically linked binary is 25K.
 
-```
+```Bash
 [root@fedora]# ls -lh pausle-dynamic
 -rwxr-xr-x. 1 root root 25K Jul  9 21:48 pausle-dynamic
 ```
@@ -98,12 +98,12 @@ One would imagine that this is a very small application.
 What I realised is that if I **aggressively** tune my compiler options, I can go even smaller again.
 Using the compiler options below I can compile my code to the smallest possible statically linked binary that I can.
 
-```
+```Bash
 gcc  -Os -fdata-sections -ffunction-sections -fipa-pta  -Wl,--gc-sections -Wl,-O1 -Wl,--as-needed -Wl,--strip-all paus
 le.c -o pausle-dynamic-aggressive
 ```
 
-```
+```Bash
 [root@fedora]# ls -lh pausle-dynamic-aggressive
 -rwxr-xr-x. 1 root root 15K Aug  3 20:34 pausle-dynamic-aggressive
 ```
@@ -117,13 +117,13 @@ Static linking is where I include all of the libraries for the executable "insid
 
 To statically link the binary, I pass the -static option to the compiler.
 
-```
+```Bash
 gcc -Os -s -static -ffunction-sections -fipa-pta  -Wl,--gc-sections pausle.c -o pausle-static
 ```
 
 This creates a slightly larger binary size
 
-```
+```Bash
 [root@fedora]# ls -lh pausle-static
 -rwxr-xr-x. 1 root root 708K Aug  3 20:38 pausle-static
 ```
@@ -132,7 +132,7 @@ This creates a slightly larger binary size
 
 If I look at the linking using ldd again, I get the following message.
 
-```
+```Bash
 [root@fedora]# ldd pausle-static
         not a dynamic executable
 ```
@@ -145,7 +145,7 @@ In order to build containers, I'm going to use the dockerfile format, it's simpl
 
 I use the following file 
 
-```
+```Bash
 FROM registry.fedoraproject.org/fedora-minimal
 
 ADD pausle-dynamic /
@@ -157,7 +157,7 @@ I add my dynamically linked binary into my image as a layer.
 
 I can build this using the following command.
 
-```
+```Bash
 [root@fedora]# podman build --tag=pausle-dynamic .
 STEP 1: FROM registry.fedoraproject.org/fedora-minimal
 Getting image source signatures
@@ -175,7 +175,7 @@ STEP 4: COMMIT pausle-dynamic
 
 This builds me a container that we can see below.
 
-```
+```Bash
 [root@fedora]# podman images
 REPOSITORY                                   TAG           IMAGE ID      CREATED         SIZE
 localhost/pausle-dynamic                     latest        96800d278c61  11 seconds ago  119 MB
@@ -188,7 +188,7 @@ Using the SCRATCH keyword, I can create a container that only has the required b
 It's still a container, but doesn't have any of the ancilliary "operating system" requirements. 
 It doesn't have shared libraries, nor does it have any operating system tooling that you may expect to find.
 
-```
+```Bash
 FROM scratch
 
 ADD pausle-static /
@@ -199,7 +199,7 @@ I need to add my statically compiled binary here because there are no shared lib
 
 Let's build this out.
 
-```
+```Bash
 [root@fedora]# podman build --tag=pausle-static .
 STEP 1: FROM scratch
 STEP 2: ADD pausle-static /
@@ -212,7 +212,7 @@ d6e9daeb1ce4211e3f04dd535494a3e78228c3642d22d350d6e9d4f2241e5861
 
 If I check my container image sizes we see the following.
 
-```
+```Bash
 [root@fedora]# podman images
 REPOSITORY                                   TAG           IMAGE ID      CREATED        SIZE
 localhost/pausle-static                      latest        d6e9daeb1ce4  3 seconds ago  727 kB

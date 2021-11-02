@@ -64,7 +64,7 @@ This is one of the other very nice things about Unit -  everything in the config
 
 A simple configuration looks something like this:
 
-```
+```JSON
 {
         "listeners": {
                 "*:8080": {
@@ -110,7 +110,7 @@ My second listener passes to a route. While I only have one route, it is possibl
 Routes in unit are handled by a separate router process. This software based router handles request routing for unit.
 
 A more complex route block looks like this:
-```
+```JSON
         "routes": [
                 {
                         "match": {
@@ -146,7 +146,7 @@ Each route in this case passes to a different application based on the incoming 
 
 My application block is the last piece of the puzzle here.
 
-```
+```JSON
         "applications": {
                 "python": {
                         "type": "python",
