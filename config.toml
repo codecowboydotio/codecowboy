@@ -21,8 +21,8 @@ paginate     = 10
   enableSharingButtons = true
 
   # Metadata mostly used in document's head
-  description = "Technology blog for codecowboy.io"
-  keywords = "homepage, blog, technology"
+  description = "Latest technology information for Kubernetes, Automation and Developers"
+  keywords = "blog, technology, kubernetes, automation, dev"
   images = [""]
 
   defaultTheme = "dark" 
