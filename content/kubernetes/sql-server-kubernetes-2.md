@@ -185,6 +185,48 @@ Used By:       mssql-a-59b4fbc56d-68rzj
 Events:        <none>
 ```
 
+In order to see the actual volumes you can use the following commands.
+
+This shows the volume, it's status and storage class, as well as the associated volume claim, including the namespace that the volume claim lives in.
+
+```Bash
+[root@fedora mssql]# kubectl get pv
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM              STORAGECLASS   REASON   AGE
+pvc-5cd23b78-9feb-4db0-b2b0-dca7f6b56371   1Gi        RWO            Delete           Bound    mssql/mssql-data   gp2                     33h
+```
+
+Similarly, when I perform a describe against the volume, we can see that this is running in AWS, we can see the type of storage and so on.
+
+
+```Bash
+[root@fedora mssql]# kubectl describe pv
+Name:              pvc-5cd23b78-9feb-4db0-b2b0-dca7f6b56371
+Labels:            failure-domain.beta.kubernetes.io/region=ap-southeast-2
+                   failure-domain.beta.kubernetes.io/zone=ap-southeast-2c
+Annotations:       kubernetes.io/createdby: aws-ebs-dynamic-provisioner
+                   pv.kubernetes.io/bound-by-controller: yes
+                   pv.kubernetes.io/provisioned-by: kubernetes.io/aws-ebs
+Finalizers:        [kubernetes.io/pv-protection]
+StorageClass:      gp2
+Status:            Bound
+Claim:             mssql/mssql-data
+Reclaim Policy:    Delete
+Access Modes:      RWO
+VolumeMode:        Filesystem
+Capacity:          1Gi
+Node Affinity:
+  Required Terms:
+    Term 0:        failure-domain.beta.kubernetes.io/zone in [ap-southeast-2c]
+                   failure-domain.beta.kubernetes.io/region in [ap-southeast-2]
+Message:
+Source:
+    Type:       AWSElasticBlockStore (a Persistent Disk resource in AWS)
+    VolumeID:   aws://ap-southeast-2c/vol-087cd704ef36ad587
+    FSType:     ext4
+    Partition:  0
+    ReadOnly:   false
+Events:         <none>
+```
 
 ## What if the pod restarts?
 If the pod restarts, the newly scheduled pod will use the existing PVC and your data will still be there!
@@ -192,3 +234,6 @@ If the pod restarts, the newly scheduled pod will use the existing PVC and your 
 This may cause transaction problems in your database, but for the most part the data will still be there.
 
 ## Conclustion
+Persistent volumes are cool, and they make your life running databases, but really persisting any storage on Kubernetes easier.
+
+I hope you had fun reading, look out for more topics soon!
