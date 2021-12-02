@@ -149,10 +149,46 @@ tmpfs           7.9G     0  7.9G   0% /sys/firmware
 You can see that the /var/opt/mssql filesystem is a filesystem that I can put data into.
 In my case, this is the default data directory for my SQL Server database.
 
+## How do I check this?
+
+If you want to check a persistent volume claim use the following commands.
+*kubectl get pvc* will show the current persistent volume claims and their status.
+
+For each persistent volume, you should be able to see the mode, capacity, storageclass and so on.
+
+```Bash
+[root@fedora mssql]# kubectl get pvc -n mssql
+NAME         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+mssql-data   Bound    pvc-5cd23b78-9feb-4db0-b2b0-dca7f6b56371   1Gi        RWO            gp2            33h
+```
+
+Further information can be gained by using the describe key word.
+
+
+```Bash
+[root@fedora mssql]# kubectl describe  pvc -n mssql
+Name:          mssql-data
+Namespace:     mssql
+StorageClass:  gp2
+Status:        Bound
+Volume:        pvc-5cd23b78-9feb-4db0-b2b0-dca7f6b56371
+Labels:        <none>
+Annotations:   pv.kubernetes.io/bind-completed: yes
+               pv.kubernetes.io/bound-by-controller: yes
+               volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/aws-ebs
+               volume.kubernetes.io/selected-node: ip-192-168-44-199.ap-southeast-2.compute.internal
+Finalizers:    [kubernetes.io/pvc-protection]
+Capacity:      1Gi
+Access Modes:  RWO
+VolumeMode:    Filesystem
+Used By:       mssql-a-59b4fbc56d-68rzj
+Events:        <none>
+```
 
 
 ## What if the pod restarts?
+If the pod restarts, the newly scheduled pod will use the existing PVC and your data will still be there!
+
+This may cause transaction problems in your database, but for the most part the data will still be there.
 
 ## Conclustion
-
-ZZ
