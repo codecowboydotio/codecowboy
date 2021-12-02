@@ -233,7 +233,7 @@ If the pod restarts, the newly scheduled pod will use the existing PVC and your 
 
 This may cause transaction problems in your database, but for the most part the data will still be there.
 
-## Conclustion
+## Conclusion
 Persistent volumes are cool, and they make your life running databases, but really persisting any storage on Kubernetes easier.
 
 I hope you had fun reading, look out for more topics soon!
