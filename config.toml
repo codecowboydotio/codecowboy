@@ -99,7 +99,7 @@ paginate     = 10
 
   [[menu.main]]
     identifier = "kubernetes"
-    name       = "Kubernetes Things"
+    name       = "Kubernetes"
     url        = "kubernetes/"
 
   [[menu.main]]
