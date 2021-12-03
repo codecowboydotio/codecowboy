@@ -11,6 +11,8 @@ paginate     = 10
   dateformNum     = "2006-01-02"
   dateformNumTime = "2006-01-02 15:04"
 
+  pluralizelisttitles = false
+
   # Subtitle for home
   homeSubtitle = "A source of information for Automation, Development and Kubernetes topics."
 
