@@ -9,6 +9,9 @@ categories = ["software", "dev"]
 +++
 
 # Intro
+I recently picked up libp2p again. It's a project that I've been checking in on for a number of years, and decided to check it again recently. The difference is that this time I had a use for it!
+
+You can find out more about libp2p [here](https://libp2p.io)
 
 ## What is it?
 
