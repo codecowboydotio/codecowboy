@@ -37,7 +37,7 @@ Libp2p also has the following high level features:
 Libp2p allows you to write distributed applications that can run almost anywhere and are independant of the platform they run on.
 
 ## How can it be used?
-Libp2p can be used to write distributed applications, as I mentioned above. In this case I'm going to demonstrate by writing a distributed control plane component for NGINX Unit.
+Libp2p can be used to write distributed applications, as I mentioned above. In this case I'm going to demonstrate by writing a distributed control plane component for NGINX Unit that syncs configurations.
 
 I wanted to explore the idea of using a peer to peer control plane to synchronise configurations among disparate NGINX unit instances. This made sense to me because unit has an API driven interface to configure it. Rather than using a "control plane" instance, I had thought to myself that every unit instance should have the following qualities.
 
@@ -694,8 +694,8 @@ const request = require('request')
 ## Conclusion
 Libp2p is a fantastic library that allows peer to peer connectivity and communication between nodes in a secure fashion using verifiable PKI and encryption.
 
-In my case it's been a fantastic journey of discovery (no pun intended) to figure out how to make libp2p work as a distributed control plane.
+In my case it's been a fantastic journey of discovery (no pun intended) to figure out how to make libp2p work as a distributed control plane. The benefits of this are obvious in that if every node *is* the control plane, then there are fewer failure domains. 
 
 The thing that I like the most about this is that it's all done in about 104 lines of code, and I'm fairly sure that I can make this smaller again by making my code a bit tighter and removing some of the obviously **development** heavy debugging from my code.
 
-
+Look out for the next edition where I walk through using the libp2p router component to cross layer three networks.
