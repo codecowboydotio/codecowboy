@@ -126,7 +126,7 @@ The basic code looks like this.
 
 This could be a topic in its own right, which I may get to as I extend this code.
 
-Libp2p has a robust security framework in that it used PKI to identify nodes. Each node has a certificate and public / private key pair. These can be auto generated or you can import your own. 
+Libp2p has a robust security framework in that it uses PKI to identify nodes. Each node has a certificate and public / private key pair. These can be auto generated or you can import your own. 
 
 In addition to this the transport layer has connection encryption.
 In my case I am using the NOISE module to provide this. This is a libp2p module that is based on the NOISE protocol. This is a well known protocol used by a number of projects, including libp2p.
@@ -435,6 +435,7 @@ Each new node that starts with the same code, will publish and subscribe message
 
 ### What have we got at this point?
 At this point, we have a piece of code that can be run on multiple nodes that can do the following things:
+
 1. Get a node address
 2. Discover other nodes on the networks
 3. Subscribe to a message bus topic
