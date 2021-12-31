@@ -39,13 +39,24 @@ Libp2p allows you to write distributed applications that can run almost anywhere
 ## How can it be used?
 Libp2p can be used to write distributed applications, as I mentioned above. In this case I'm going to demonstrate by writing a distributed control plane component for NGINX Unit.
 
+I wanted to explore the idea of using a peer to peer control plane to synchronise configurations among disparate NGINX unit instances. This made sense to me because unit has an API driven interface to configure it. Rather than using a "control plane" instance, I had thought to myself that every unit instance should have the following qualities.
+
+- Be self contained
+- Discover other instances
+- Have a way of triggering a configuration notification to other nodes
+- Have a REST endpoint.
+
+
 ## Components 
 My control plane will have a few conponents. 
 
 - Peer identity
 - Secure Connection
 - Peer discovery
+- Message bus
 - REST endpoint
+
+![libp2p_component_diagram.JPG](/images/libp2p_component_diagram.JPG)
 
 ## Peer Identity
 
@@ -53,8 +64,8 @@ My control plane will have a few conponents.
 
 ## Peer Discovery
 
-## REST Endpoint
+## Message Bus
 
-## Examples
+## REST Endpoint
 
 ## Conclusion
