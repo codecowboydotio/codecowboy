@@ -432,6 +432,23 @@ At this point, we have a piece of code that can be run on multiple nodes that ca
 
 It's certainly very interesting but not particularly useful at this point, but it's a decent scaffold that we can begin to use for other purposes.
 
+## What now?
+What now is a very good question. 
+
+In my case I want to synchronise configuration among a number of servers. 
+Each of these servers has a REST API that allows me to get configurations and put configurations back onto them.
+
+It's going to work something like this:
+
+Apply update to server.
+Hit REST endpoint on server.
+REST endpoint triggers a message over the message bus to say "I have a configuration update".
+All other servers subscribed to that topic then pull the configuration from the server that says it has a configuration update.
+
+It looks something like this:
+
+![libp2p_config_flow.JPG](/images/libp2p_config_flow.JPG)
+
 ## REST Endpoint
 
 ## Conclusion
