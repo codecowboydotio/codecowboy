@@ -61,6 +61,37 @@ A component diagram is below - I find this helps me visualise how things work. T
 ![libp2p_component_diagram.JPG](/images/libp2p_component_diagram.JPG)
 
 ## Peer Identity
+To begin with, we need to set up libp2p in order to make all of this work. While libp2p supports multiple languages, I am going to use javascript in my examples. 
+
+The first thing to do is the import all of the required libraries - you'll also need to *npm install* them as well. 
+Note that I'm using *express*, *request* and *body-parser* - each of these is used as part of my REST endpoint later on.
+
+```javascript
+const Libp2p = require('libp2p')
+const TCP = require('libp2p-tcp')
+const { NOISE } = require('libp2p-noise')
+const MPLEX = require('libp2p-mplex')
+const process = require('process')
+const { multiaddr } = require('multiaddr')
+const Gossipsub = require('libp2p-gossipsub')
+const Bootstrap = require('libp2p-bootstrap')
+const bootstrapers = require('./bootstrapers')
+const MulticastDNS = require('libp2p-mdns')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
+const { toString: uint8ArrayToString } = require('uint8arrays/to-string')
+const express = require('express')
+const bodyParser = require('body-parser')
+const request = require('request')
+```
+
+
+To begin with, we need to create a libp2p node. The node in its most basic form is an address to listen on, a transport, a muxer and a connection encryption module.
+
+I am also using peer discovery and a pub sub message bus, which I'll cover in detail later.
+
+An interesting note is that I am using TCP for reliability, but am listening on 0.0.0.0 or all interfaces. This has an odd side effect of listening on loopback as well as any other interfaces that present on the server where my code is running.
+
+The basic code looks like this.
 
 ```javascript
 ;(async () => {
@@ -94,6 +125,127 @@ A component diagram is below - I find this helps me visualise how things work. T
 ## Secure Connection
 
 ## Peer Discovery
+In order to perform peer discovery, I am using multicast DNS. 
+This means that this code is only appropriate for a LAN environment. Fortunately libp2p has a router component for crossing layer three networks, but that's going to become a second post.
+
+I've placed some logging into my code to log out to the console, the peer address that is assigned, as well as when other nodes are discovered. 
+
+Each node that starts will log out its own node ID, as well as the node ID's of any other nodes within the network that are discovered.
+
+```javascript
+  node.connectionManager.on('peer:connect', (connection) => {
+    console.log('Connection established to:', connection.remotePeer.toB58String())      // Emitted when a peer has been found
+  })
+
+  node.on('peer:discovery', (peerId) => {
+    // No need to dial, autoDial is on
+    console.log('Discovered:', peerId.toB58String())
+  })
+
+  console.log('My Node ID: ', node.peerId.toB58String())
+//  console.log(node)
+
+  await node.start()
+```
+
+## The full code to this point
+
+The full code to this point is as follows:
+
+```javascript
+const Libp2p = require('libp2p')
+const TCP = require('libp2p-tcp')
+const { NOISE } = require('libp2p-noise')
+const MPLEX = require('libp2p-mplex')
+const process = require('process')
+const { multiaddr } = require('multiaddr')
+const Gossipsub = require('libp2p-gossipsub')
+const Bootstrap = require('libp2p-bootstrap')
+const bootstrapers = require('./bootstrapers')
+const MulticastDNS = require('libp2p-mdns')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
+const { toString: uint8ArrayToString } = require('uint8arrays/to-string')
+const express = require('express')
+const bodyParser = require('body-parser')
+const request = require('request')
+
+;(async () => {
+  const node = await Libp2p.create({
+    addresses: {
+      listen: ['/ip4/0.0.0.0/tcp/0']
+    },
+    modules: {
+      transport: [TCP],
+      streamMuxer: [MPLEX],
+      connEncryption: [NOISE],
+      peerDiscovery: [MulticastDNS],
+      pubsub: Gossipsub
+    },
+    config: {
+      peerDiscovery: {
+        mdns: {
+          interval: 60e3,
+          enabled: true
+        }
+      },
+      pubsub: {
+        enabled: true,
+        emitSelf: false
+      }
+    }
+  })
+
+  node.connectionManager.on('peer:connect', (connection) => {
+    console.log('Connection established to:', connection.remotePeer.toB58String())      // Emitted when a peer has been found
+  })
+
+  node.on('peer:discovery', (peerId) => {
+    // No need to dial, autoDial is on
+    console.log('Discovered:', peerId.toB58String())
+  })
+
+  console.log('My Node ID: ', node.peerId.toB58String())
+//  console.log(node)
+
+  await node.start()
+
+
+})();
+```
+
+If you copy and paste the code, and have all of the modules installed, it will look something like this:
+The first node fires up and is assigned a node ID.
+It is constantly listening for other nodes on the network to connect to.
+
+```Bash
+[root@node-1 src]# node blog.js
+My Node ID:  QmZbKnrjE8MbZzyu1r7cRgzdEL1cpENHrRJzoYAayEPWW3
+```
+
+When the second node starts, it likewise assigns a node ID, but discovers the first node.
+We can see that the second node discovers the first node by looking at the node ID's.
+The last thing that the second node does is create a connection through to the first node.
+
+```Bash
+[root@node-2 src]# node blog.js
+My Node ID:  QmRbXUDxrme7hRHJX4haYVnHcSWEcfgiD5QLuH1HyUfUSs
+Discovered: QmZbKnrjE8MbZzyu1r7cRgzdEL1cpENHrRJzoYAayEPWW3
+Connection established to: QmZbKnrjE8MbZzyu1r7cRgzdEL1cpENHrRJzoYAayEPWW3
+Connection established to: QmZbKnrjE8MbZzyu1r7cRgzdEL1cpENHrRJzoYAayEPWW3
+Connection established to: QmZbKnrjE8MbZzyu1r7cRgzdEL1cpENHrRJzoYAayEPWW3
+```
+
+When we come back to node one, it has automatically discovered the other nodes, and has established a connection to them.
+
+```Bash
+[root@node-1 src]# node blog.js
+My Node ID:  QmZbKnrjE8MbZzyu1r7cRgzdEL1cpENHrRJzoYAayEPWW3
+Discovered: QmRbXUDxrme7hRHJX4haYVnHcSWEcfgiD5QLuH1HyUfUSs
+Connection established to: QmRbXUDxrme7hRHJX4haYVnHcSWEcfgiD5QLuH1HyUfUSs
+Connection established to: QmRbXUDxrme7hRHJX4haYVnHcSWEcfgiD5QLuH1HyUfUSs
+```
+
+At this point, the nodes have connectivity but not a lot else. They don't actually *do* anything.
 
 ## Message Bus
 
