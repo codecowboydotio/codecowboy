@@ -124,6 +124,17 @@ The basic code looks like this.
 
 ## Secure Connection
 
+This could be a topic in its own right, which I may get to as I extend this code.
+
+Libp2p has a robust security framework in that it used PKI to identify nodes. Each node has a certificate and public / private key pair. These can be auto generated or you can import your own. 
+
+In addition to this the transport layer has connection encryption.
+In my case I am using the NOISE module to provide this. This is a libp2p module that is based on the NOISE protocol. This is a well known protocol used by a number of projects, including libp2p.
+
+More information on the NOISE protocol can be found [here](http://www.noiseprotocol.org/)
+
+In short - using the noise protocol as part of my configuration means that I can encrypt the communication channels end to end as part of the library I'm using.
+
 ## Peer Discovery
 In order to perform peer discovery, I am using multicast DNS. 
 This means that this code is only appropriate for a LAN environment. Fortunately libp2p has a router component for crossing layer three networks, but that's going to become a second post.
@@ -450,5 +461,119 @@ It looks something like this:
 ![libp2p_config_flow.JPG](/images/libp2p_config_flow.JPG)
 
 ## REST Endpoint
+Finally the single thing that ties all of this together is the REST endpoint that I have written.
+This is an external interface for interacting with the peer to peer network that gets built.
+I have used the node **express** module to provide an HTTP listener that responds to POST requests. 
+
+```javascript
+  app = express()
+  port = process.env.PORT || 3000;
+
+  app.use(bodyParser.json())
+
+  app.post('/config', (req, res) => {
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+    let ar_host_port = req.rawHeaders[1].split(":")
+    console.log('publishing: ' + dateTime + ' ' + ar_host_port[0])
+    res.end('Published config event to all other nodes');
+    node.pubsub.publish(topic, ar_host_port[0])
+  })
+  app.listen(port, () => {
+    console.log('app listeneing on: ' + port)
+  })
+
+```
+
+The snippet above is a fairly conventional express app with the exception of two things.
+
+```javascript 
+    let ar_host_port = req.rawHeaders[1].split(":")
+    node.pubsub.publish(topic, ar_host_port[0])
+```
+
+The first line pulls the IP address of the receiving host from the express request headers. 
+This is useful to identify the IP address of the host that is sending the message onto the message bus.
+This is sent as part of the message to all other nodes, and tells subscribed nodes where to get their configuration from.
+
+If I run this code end to end it looks something like this:
+
+```Bash
+root@unit-1:~/libp2p-experiments/src# node mdns-unit.js
+My Node ID:  QmeU7j8JNPhg3kxYWndC2GENRiErBigPsHhN7keEAx664G
+pubsub subscribe
+app listeneing on: 3000
+Discovered: QmPL7k2Pk6iCeV9DWx61vjHKFtAvPbMAHAyhEJcVMKyQ4a
+Connection established to: QmPL7k2Pk6iCeV9DWx61vjHKFtAvPbMAHAyhEJcVMKyQ4a
+Connection established to: QmPL7k2Pk6iCeV9DWx61vjHKFtAvPbMAHAyhEJcVMKyQ4a
+Connection established to: QmPL7k2Pk6iCeV9DWx61vjHKFtAvPbMAHAyhEJcVMKyQ4a
+publishing: 2021-12-31 10:49:55 10.1.1.151
+```
+
+Above you can see node number one starts and automatically discovers node number two.
+Node one also publishes a message that contains the IP address of node one.
+
+```Bash
+root@unit-2:~/libp2p-experiements/src# node mdns-unit.js
+My Node ID:  QmPL7k2Pk6iCeV9DWx61vjHKFtAvPbMAHAyhEJcVMKyQ4a
+pubsub subscribe
+app listeneing on: 3000
+Discovered: QmeU7j8JNPhg3kxYWndC2GENRiErBigPsHhN7keEAx664G
+Connection established to: QmeU7j8JNPhg3kxYWndC2GENRiErBigPsHhN7keEAx664G
+Connection established to: QmeU7j8JNPhg3kxYWndC2GENRiErBigPsHhN7keEAx664G
+Connection established to: QmeU7j8JNPhg3kxYWndC2GENRiErBigPsHhN7keEAx664G
+received: 10.1.1.151 from QmeU7j8JNPhg3kxYWndC2GENRiErBigPsHhN7keEAx664G
+pulling config from QmeU7j8JNPhg3kxYWndC2GENRiErBigPsHhN7keEAx664G
+Body that I got is:  {
+  listeners: { '*:80': { pass: 'routes' } },
+  routes: [ { action: [Object] } ]
+}
+------
+{
+  listeners: { '*:80': { pass: 'routes' } },
+  routes: [ { action: [Object] } ]
+}
+{ success: 'Reconfiguration done.' }
+```
+
+The output above shows the node starting and discovering the first node.
+Importantly, it also shows a message being **received** from the first node. 
+The second node then connects to the IP address in message and pulls the NGINX Unit configuration from that node, and applies it to localhost.
+
+You can see the message **Reconfiguration Done** - this is some debug output that I print to the screen. It is the response from the PUT request to the unit server that updates the configuration.
+
+## Handling the REST request
+The code block below handles the publish event from any other node.
+This code will run when a message is received on the topic that the node is subscribed to.
+
+The code does three things:
+1. Receiving an event on the message bus.
+2. Getting the configuration from my NGINX Unit server.
+3. Processing the configuration and applying it locally.
+
+```javascript
+  node.pubsub.on(topic, (msg) => {
+    console.log(`received: ${uint8ArrayToString(msg.data)} from ${msg.from}`)
+    console.log(`pulling config from ${msg.from}`)
+    let conf_url = 'http://' + msg.data + ':8888/config'
+    request(conf_url, { json: true }, (err, res, body) => {
+      if (err) { return console.log(err); }
+      console.log('Body that I got is: ', body)
+      const unit_config = body
+      console.log('------')
+      console.log(unit_config)
+      // let's try to put the config locally
+      request.put({
+        headers: {'content-type' : 'application/json'},
+        url: 'http://127.0.0.1:8888/config',
+        json: unit_config
+      }, function (error, response, bdy){
+           console.log(bdy)
+      }) //end request.put
+    })
+  })
+```
 
 ## Conclusion
