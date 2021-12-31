@@ -394,6 +394,44 @@ received data: I am a libp2p node, hear me ROAR
 foo QmeWfbAN9W7hZ5x6zkfNuixtyN9vg9cUTXkYdXfVXzNcwf
 ```
 
+### Running the code
+Running the code now looks like this:
+Each node will both publish and subscribe to messages on the bus.
+
+```Bash
+My Node ID:  QmWnjT4paQSozSUWH3DZ5RMbdFEdCQwbFNo911oyNs4qWx
+pubsub subscribe
+Discovered: QmWav8yx1Feaqg1frQjp1MFKtdNDa3spuuQkTMTBPZBDwm
+Connection established to: QmWav8yx1Feaqg1frQjp1MFKtdNDa3spuuQkTMTBPZBDwm
+Connection established to: QmWav8yx1Feaqg1frQjp1MFKtdNDa3spuuQkTMTBPZBDwm
+Connection established to: QmWav8yx1Feaqg1frQjp1MFKtdNDa3spuuQkTMTBPZBDwm
+Connection established to: QmWav8yx1Feaqg1frQjp1MFKtdNDa3spuuQkTMTBPZBDwm
+publishing:  2021-12-31 14:31:32
+received: 2021-12-31 14:31:33
+publishing:  2021-12-31 14:31:33
+received: 2021-12-31 14:31:34
+publishing:  2021-12-31 14:31:34
+received: 2021-12-31 14:31:35
+publishing:  2021-12-31 14:31:35
+received: 2021-12-31 14:31:36
+publishing:  2021-12-31 14:31:36
+```
+
+You can see in the output above that the node starts, just as before. It establishes a connection to the other nodes in the network, and listens to messages. The node is subscribing to messages on the bus, but is also publishing messages onto the bus.
+
+Each new node that starts with the same code, will publish and subscribe messages in the same way.
+
+
+### What have we got at this point?
+At this point, we have a piece of code that can be run on multiple nodes that can do the following things:
+1. Get a node address
+2. Discover other nodes on the networks
+3. Subscribe to a message bus topic
+4. Listen for messages from other nodes on that topic
+5. Process messages from other nodes.
+
+It's certainly very interesting but not particularly useful at this point, but it's a decent scaffold that we can begin to use for other purposes.
+
 ## REST Endpoint
 
 ## Conclusion
