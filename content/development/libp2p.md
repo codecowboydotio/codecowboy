@@ -56,9 +56,40 @@ My control plane will have a few conponents.
 - Message bus
 - REST endpoint
 
+A component diagram is below - I find this helps me visualise how things work. The thing to remember is that everything is peer to peer - which means that there is no central controller for the message bus component. 
+
 ![libp2p_component_diagram.JPG](/images/libp2p_component_diagram.JPG)
 
 ## Peer Identity
+
+```javascript
+;(async () => {
+  const node = await Libp2p.create({
+    addresses: {
+      listen: ['/ip4/0.0.0.0/tcp/0']
+    },
+    modules: {
+      transport: [TCP],
+      streamMuxer: [MPLEX],
+      connEncryption: [NOISE],
+      peerDiscovery: [MulticastDNS],
+      pubsub: Gossipsub
+    },
+    config: {
+      peerDiscovery: {
+        mdns: {
+          interval: 60e3,
+          enabled: true
+        }
+      },
+      pubsub: {
+        enabled: true,
+        emitSelf: false
+      }
+    }
+  })
+
+```
 
 ## Secure Connection
 
