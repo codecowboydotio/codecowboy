@@ -1,6 +1,6 @@
 +++
 title = "k0s - small kubernetes - part 1"
-date = "2022-02-11"
+date = "2022-02-10"
 aliases = ["k0s"]
 tags = ["kubernetes", "containers", "micro"]
 categories = ["kubernetes", "software", "dev"]
