@@ -58,6 +58,99 @@ To install a multi node cluster, it's best to use a second binary called **k0sct
 curl -L https://github.com/k0sproject/k0sctl/releases/download/v0.13.0-beta.1/k0sctl-linux-x64 -o k0sctl
 ```
 
+Once you have the **k0sctl** binary installed, you can then use it to create a default cluster bootstrap yaml file.
+
+```Bash
+k0sctl init > k0sctl.yaml
+```
+
+This will create a file called k0sctl.yaml that has the following contents. The file below has IP addresses that are relevant to my setup. Each node must be reachable via passwordless ssh from the node where **k0sctl** is installed. See the note below for more on this.
+
+```Yaml
+apiVersion: k0sctl.k0sproject.io/v1beta1
+kind: Cluster
+metadata:
+  name: k0s-cluster
+spec:
+  hosts:
+  - ssh:
+      address: 10.1.1.160
+      user: root
+      port: 22
+      keyPath: /root/.ssh/id_rsa
+    role: controller
+  - ssh:
+      address: 10.1.1.170
+      user: root
+      port: 22
+      keyPath: /root/.ssh/id_rsa
+    role: worker
+  k0s:
+    version: 1.23.3+k0s.0
+    dynamicConfig: false
+```
+
+If your SSH is configured correctly to all of your nodes, you should be able to run the following command:
+
+```Bash
+k0sctl apply --config ./k0sctl.yaml
+```
+
+This will perform a multi cluster installation on the two nodes specified. The output will look something like this:
+
+```Bash
+
+⠀⣿⣿⡇⠀⠀⢀⣴⣾⣿⠟⠁⢸⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀█████████ █████████ ███
+⠀⣿⣿⡇⣠⣶⣿⡿⠋⠀⠀⠀⢸⣿⡇⠀⠀⠀⣠⠀⠀⢀⣠⡆⢸⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀███          ███    ███
+⠀⣿⣿⣿⣿⣟⠋⠀⠀⠀⠀⠀⢸⣿⡇⠀⢰⣾⣿⠀⠀⣿⣿⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀███          ███    ███
+⠀⣿⣿⡏⠻⣿⣷⣤⡀⠀⠀⠀⠸⠛⠁⠀⠸⠋⠁⠀⠀⣿⣿⡇⠈⠉⠉⠉⠉⠉⠉⠉⠉⢹⣿⣿⠀███          ███    ███
+⠀⣿⣿⡇⠀⠀⠙⢿⣿⣦⣀⠀⠀⠀⣠⣶⣶⣶⣶⣶⣶⣿⣿⡇⢰⣶⣶⣶⣶⣶⣶⣶⣶⣾⣿⣿⠀█████████    ███    ██████████
+
+k0sctl v0.13.0-beta.1 Copyright 2021, k0sctl authors.
+Anonymized telemetry of usage will be sent to the authors.
+By continuing to use k0sctl you agree to these terms:
+https://k0sproject.io/licenses/eula
+INFO ==> Running phase: Connect to hosts
+INFO [ssh] 10.1.1.160:22: connected
+INFO [ssh] 10.1.1.170:22: connected
+INFO ==> Running phase: Detect host operating systems
+INFO [ssh] 10.1.1.160:22: is running Fedora Linux 35 (Server Edition)
+INFO [ssh] 10.1.1.170:22: is running Fedora Linux 35 (Server Edition)
+INFO ==> Running phase: Prepare hosts
+INFO ==> Running phase: Gather host facts
+INFO [ssh] 10.1.1.160:22: using kube as hostname
+INFO [ssh] 10.1.1.170:22: using kube-worker as hostname
+INFO [ssh] 10.1.1.160:22: discovered ens224 as private interface
+INFO [ssh] 10.1.1.170:22: discovered ens224 as private interface
+INFO [ssh] 10.1.1.160:22: discovered 192.168.141.131 as private address
+INFO [ssh] 10.1.1.170:22: discovered 192.168.141.132 as private address
+INFO ==> Running phase: Validate hosts
+INFO ==> Running phase: Gather k0s facts
+INFO ==> Running phase: Validate facts
+INFO ==> Running phase: Download k0s on hosts
+INFO [ssh] 10.1.1.170:22: downloading k0s 1.23.3+k0s.0
+INFO ==> Running phase: Configure k0s
+WARN [ssh] 10.1.1.160:22: generating default configuration
+INFO [ssh] 10.1.1.160:22: validating configuration
+INFO [ssh] 10.1.1.160:22: configuration was changed
+INFO ==> Running phase: Initialize the k0s cluster
+INFO [ssh] 10.1.1.160:22: installing k0s controller
+INFO [ssh] 10.1.1.160:22: waiting for the k0s service to start
+INFO [ssh] 10.1.1.160:22: waiting for kubernetes api to respond
+INFO ==> Running phase: Install workers
+INFO [ssh] 10.1.1.170:22: validating api connection to https://192.168.141.131:6443
+INFO [ssh] 10.1.1.160:22: generating token
+INFO [ssh] 10.1.1.170:22: writing join token
+INFO [ssh] 10.1.1.170:22: installing k0s worker
+INFO [ssh] 10.1.1.170:22: starting service
+INFO [ssh] 10.1.1.170:22: waiting for node to become ready
+INFO ==> Running phase: Disconnect from hosts
+INFO ==> Finished in 2m9s
+INFO k0s cluster version 1.23.3+k0s.0 is now installed
+INFO Tip: To access the cluster you can now fetch the admin kubeconfig using:
+INFO      k0sctl kubeconfig
+```
+
 #### A Note on SSH
 
 ## Deployment
