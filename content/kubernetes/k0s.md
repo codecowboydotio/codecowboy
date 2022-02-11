@@ -151,7 +151,34 @@ INFO Tip: To access the cluster you can now fetch the admin kubeconfig using:
 INFO      k0sctl kubeconfig
 ```
 
+At this point there is a multi cluster kubernetes installation that's running and I can use as normal.
+I can even run **k0sctl kubeconfig** to get my kubeconfig file and simply use that to run commands against the cluster.
+
+```Bash
+**********************************************
+kubectl --kubeconfig ./k0s_kube_config get pods
+```
+
+
+
 #### A Note on SSH
+I found initially I had a few weird ssh problems. I wont go into them in a lot of detail suffice to say that running the ssh-agent and adding keys was enough to make the multi cluster installation work okay.
+
+```Bash
+[root@kube ~]# eval $(ssh-agent)
+Agent pid 1086
+[root@kube ~]# ssh-add
+Identity added: /root/.ssh/id_rsa (root@kube)
+Identity added: /root/.ssh/id_ecdsa (root@kube)
+```
+
+The other odd thing was that in order for the installation to work at all I had to create both an RSA and an ECDSA key. I haven't delved into this in more detail yet, but will look over the weekend.
+
+```Bash
+ssh-keygen -t ecdsa
+```
+
+Add the keys as above, and everything should install without a problem.
 
 ## Deployment
 
