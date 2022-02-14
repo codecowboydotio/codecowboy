@@ -181,8 +181,107 @@ ssh-keygen -t ecdsa
 Add the keys as above, and everything should install without a problem.
 
 ## Deployment
+This is where things get funky. I was very impressed to find that **k0s** has a deployer!
+
+[https://docs.k0sproject.io/v1.23.3+k0s.0/manifests/#overview](https://docs.k0sproject.io/v1.23.3+k0s.0/manifests/#overview)
+
+If you create a subdirectory under **/var/lib/k0s/manifests** on a controller node, and place manifests within it, these will automatically be deployed to the cluster. Pruning works as well, so if you remoe a directory, the manifest deployer will update the cluster state. 
+
+This is a very handy way of deploying a consistent configuration across multiple nodes, or if you are stamping out multiple edge nodes that are not necessarily part of the same cluster - think automating this.
+
+An example is below:
+
+```Bash
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: svk
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: svk-swapi-api
+  namespace: svk
+  labels:
+    app: svk-swapi-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: svk-swapi-api
+  template:
+    metadata:
+      labels:
+        app: svk-swapi-api
+    spec:
+      containers:
+      - image: public.ecr.aws/y6q2t0j9/demos:swapi-api
+        imagePullPolicy: IfNotPresent
+        name: svk-swapi-api
+        ports:
+          - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: swapi-svc
+  namespace: svk
+  labels:
+    app: svk-swapi-api
+spec:
+  type: ClusterIP
+  selector:
+    app: svk-swapi-api
+  ports:
+  - name: port
+    port: 3000
+    targetPort: 3000
+```
+
+All I need to do is place the manifest above in the appropriate directory **/var/lib/k0s/manifests** and the namespace, service and pods will be created for me.
+
+```Bash
+[root@kube svk]# k0s kubectl get pods -n svk
+NAMESPACE     NAME                              READY   STATUS    RESTARTS   AGE
+svk           svk-swapi-api-5bb8b884d4-mkb5h    1/1     Running   0          2m36s
+svk           svk-swapi-api-5bb8b884d4-tlzlh    1/1     Running   0          2m36s
+
+[root@kube svk]# kubectl get namespace 
+NAME              STATUS        AGE
+default           Active        18m
+kube-node-lease   Active        18m
+kube-public       Active        18m
+kube-system       Active        18m
+svk               Active        2m36s
+
+[root@kube svk]# k0s kubectl get svc -A
+NAMESPACE     NAME             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                  AGE
+default       kubernetes       ClusterIP   10.96.0.1       <none>        443/TCP                  18m
+kube-system   kube-dns         ClusterIP   10.96.0.10      <none>        53/UDP,53/TCP,9153/TCP   17m
+kube-system   metrics-server   ClusterIP   10.101.198.75   <none>        443/TCP                  17m
+svk           swapi-svc        ClusterIP   10.110.74.132   <none>        3000/TCP                 2m36s
+```
+
+There is also a HELM deployer as well. 
+
+## Storage
+The most impressive thing for me was that k0s has a storage provider built in by default. I Could easily create PV's and PVC's without a problem.
+
+```Bash
+[root@kube svk]# k0s kubectl get storageclass
+NAME               PROVISIONER        RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+openebs-device     openebs.io/local   Delete          WaitForFirstConsumer   false                  8m39s
+openebs-hostpath   openebs.io/local   Delete          WaitForFirstConsumer   false                  8m39s
+```
+
+This requires additional configuration from the default to enable, but it's two options in a yaml configuration file and a restart. Very simple.
+
+
+## CNI
+The default CNI is kube-router. This can be a bit limiting, so Calico is also supported. In addition to Calico, you can deploy your own CNI via the configuration file. This makes k0s quite flexible for testing and development purposes.
 
 ## Ingress
+
 
 ## Conclusion
 I was very pleasantly surprised by **k0s** it was easy to deploy and get up and running in either a single node cluster or a multi node cluster. The documentation was very good, and **it just worked**. This is perhaps the most important part for me. As a developer, I want to have the ability to get up and running super fast, without a lot of fuss to be able to try out different configurations or deploy applications.
