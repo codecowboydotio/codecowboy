@@ -180,7 +180,7 @@ ssh-keygen -t ecdsa
 
 Add the keys as above, and everything should install without a problem.
 
-####I figured this part out!!!!
+#### I figured this part out!!!!
 
 *ssh-rsa* is not listed as a *PubkeyAcceptedKeyTypes* string in the file */etc/crypto-policies/back-ends/opensshserver.config*
 
