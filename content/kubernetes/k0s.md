@@ -182,9 +182,9 @@ Add the keys as above, and everything should install without a problem.
 
 #### I figured this part out!!!!
 
-*ssh-rsa* is not listed as a *PubkeyAcceptedKeyTypes* string in the file */etc/crypto-policies/back-ends/opensshserver.config*
+**ssh-rsa** is not listed as a **PubkeyAcceptedKeyTypes** string in the file **/etc/crypto-policies/back-ends/opensshserver.config**
 
-You simple add it to the end of the *PubkeyAcceptedKeyTypes* stanza ad you should be good to go - assuming that your */etc/ssh/sshd_config* is similarly configured.
+You simple add it to the end of the **PubkeyAcceptedKeyTypes** stanza ad you should be good to go - assuming that your **/etc/ssh/sshd_config** is similarly configured.
 
 ## Deployment
 This is where things get funky. I was very impressed to find that **k0s** has a deployer!
