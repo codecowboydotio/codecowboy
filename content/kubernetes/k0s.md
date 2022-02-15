@@ -155,8 +155,20 @@ At this point there is a multi cluster kubernetes installation that's running an
 I can even run **k0sctl kubeconfig** to get my kubeconfig file and simply use that to run commands against the cluster.
 
 ```Bash
-**********************************************
-kubectl --kubeconfig ./k0s_kube_config get pods
+k0sctl kubeconfig > k0s_kube_config
+```
+
+Now that I have saved the kubeconfig file, I can use as part of a standard kubectl command.
+
+```Bash
+kubectl --kubeconfig ./k0s_kube_config get pods -A
+
+NAMESPACE     NAME                                                      READY   STATUS    RESTARTS   AGE
+kube-system   coredns-6d9f49dcbb-nh9nf                                  0/1     Pending   0          19m
+kube-system   metrics-server-74c967d8d4-jcs97                           0/1     Pending   0          19m
+openebs       openebs-1644923849-localpv-provisioner-7cb44cdf66-fzqww   0/1     Pending   0          19m
+openebs       openebs-1644923849-ndm-operator-5ccb889c9d-2524p          0/1     Pending   0          19m
+
 ```
 
 
@@ -184,7 +196,9 @@ Add the keys as above, and everything should install without a problem.
 
 **ssh-rsa** is not listed as a **PubkeyAcceptedKeyTypes** string in the file **/etc/crypto-policies/back-ends/opensshserver.config**
 
-You simple add it to the end of the **PubkeyAcceptedKeyTypes** stanza ad you should be good to go - assuming that your **/etc/ssh/sshd_config** is similarly configured.
+You simple add it to the end of the **PubkeyAcceptedKeyTypes** stanza and you should be good to go - assuming that your **/etc/ssh/sshd_config** is similarly configured.
+
+This seems to be a change in defaults in Fedora since about Fedora 33. This is documented here: [https://fedoraproject.org/wiki/Changes/StrongCryptoSettings2](https://fedoraproject.org/wiki/Changes/StrongCryptoSettings2)
 
 ## Deployment
 This is where things get funky. I was very impressed to find that **k0s** has a deployer!
