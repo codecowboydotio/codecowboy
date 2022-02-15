@@ -180,6 +180,12 @@ ssh-keygen -t ecdsa
 
 Add the keys as above, and everything should install without a problem.
 
+####I figured this part out!!!!
+
+*ssh-rsa* is not listed as a *PubkeyAcceptedKeyTypes* string in the file */etc/crypto-policies/back-ends/opensshserver.config*
+
+You simple add it to the end of the *PubkeyAcceptedKeyTypes* stanza ad you should be good to go - assuming that your */etc/ssh/sshd_config* is similarly configured.
+
 ## Deployment
 This is where things get funky. I was very impressed to find that **k0s** has a deployer!
 
@@ -281,7 +287,7 @@ This requires additional configuration from the default to enable, but it's two 
 The default CNI is kube-router. This can be a bit limiting, so Calico is also supported. In addition to Calico, you can deploy your own CNI via the configuration file. This makes k0s quite flexible for testing and development purposes.
 
 ## Ingress
-
+This is the part of k0s that I found most impressive.
 
 ## Conclusion
 I was very pleasantly surprised by **k0s** it was easy to deploy and get up and running in either a single node cluster or a multi node cluster. The documentation was very good, and **it just worked**. This is perhaps the most important part for me. As a developer, I want to have the ability to get up and running super fast, without a lot of fuss to be able to try out different configurations or deploy applications.
