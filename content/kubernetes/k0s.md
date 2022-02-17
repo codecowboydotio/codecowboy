@@ -370,7 +370,9 @@ Everything should just work when you hit the load balancer address.
 
 ## Conclusion
 I was very pleasantly surprised by **k0s** it was easy to deploy and get up and running in either a single node cluster or a multi node cluster. The documentation was very good, and **it just worked**. 
+
 This is perhaps the most important part for me. As a developer, I want to have the ability to get up and running super fast, without a lot of fuss to be able to try out different configurations or deploy applications.
+
 The configurability of different CNI's, CSI's and CRI's makes k0s very good to use testing and deployment. The addition of multiple ingress controllers out of the box also means that anything you can deploy is highly flexible and configurable and **just works** out of the box.
 
 Next up, I'll be looking at k3s.
