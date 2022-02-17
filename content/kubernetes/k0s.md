@@ -303,7 +303,7 @@ Note that there is no igress at this point, I'm interacting with the clusterIP d
 There is also a HELM deployer as well. 
 
 ## Storage
-The most impressive thing for me was that k0s has a storage provider built in by default. I Could easily create PV's and PVC's without a problem.
+Another impressive thing for me was that k0s has a storage provider built in by default. I Could easily create PV's and PVC's without a problem.
 
 ```Bash
 [root@kube svk]# k0s kubectl get storageclass
