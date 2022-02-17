@@ -199,32 +199,26 @@ This is a very handy way of deploying a consistent configuration across multiple
 An example is below:
 
 ```Bash
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: svk
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: svk-swapi-api
-  namespace: svk
   labels:
-    app: svk-swapi-api
+    app: svk-swapi
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: svk-swapi-api
+      app: svk-swapi
   template:
     metadata:
       labels:
-        app: svk-swapi-api
+        app: svk-swapi
     spec:
       containers:
       - image: public.ecr.aws/y6q2t0j9/demos:swapi-api
         imagePullPolicy: IfNotPresent
-        name: svk-swapi-api
+        name: svk-swapi
         ports:
           - containerPort: 3000
 ---
@@ -234,11 +228,11 @@ metadata:
   name: swapi-svc
   namespace: svk
   labels:
-    app: svk-swapi-api
+    app: svk-swapi
 spec:
   type: ClusterIP
   selector:
-    app: svk-swapi-api
+    app: svk-swapi
   ports:
   - name: port
     port: 3000
@@ -269,6 +263,43 @@ kube-system   metrics-server   ClusterIP   10.101.198.75   <none>        443/TCP
 svk           swapi-svc        ClusterIP   10.110.74.132   <none>        3000/TCP                 2m36s
 ```
 
+At this point, I have acess to my service
+
+```Bash
+curl -s http://10.110.74.132:3000/people/1 | jq
+{
+  "edited": "2014-12-20T21:17:56.891Z",
+  "name": "Luke Skywalker",
+  "created": "2014-12-09T13:50:51.644Z",
+  "gender": "male",
+  "skin_color": "fair",
+  "hair_color": "blond",
+  "height": "172",
+  "eye_color": "blue",
+  "mass": "77",
+  "homeworld": 1,
+  "birth_year": "19BBY",
+  "image": "luke_skywalker.jpg",
+  "id": 1,
+  "vehicles": [
+    14,
+    30
+  ],
+  "starships": [
+    12,
+    22
+  ],
+  "films": [
+    1,
+    2,
+    3,
+    6
+  ]
+}
+```
+
+Note that there is no igress at this point, I'm interacting with the clusterIP directly on the worker node.
+
 There is also a HELM deployer as well. 
 
 ## Storage
@@ -290,6 +321,56 @@ The default CNI is kube-router. This can be a bit limiting, so Calico is also su
 ## Ingress
 This is the part of k0s that I found most impressive.
 
+Out of the box, there is support for NGINX, metallb and tetrate.
+
+I'm using metallb here, but all of the different ingresses work.
+iFirst generate a kubeconfig file.
+
+```Bash
+k0sctl kubeconfig > k0s_config
+```
+
+Next install the metallb namespace and deployment
+
+```Bash
+kubectl --kubeconfig k0s_config apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.2/manifests/namespace.yaml
+
+kubectl --kubeconfig k0s_config apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.2/manifests/metallb.yaml
+```
+
+At this point you should have metallb installed and deployed.
+You can validate this with the following commands
+
+```Bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-server-service
+spec:
+  selector:
+    app: svk-swapi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
+```
+
+You can validate that the loadbalancer has been created.
+
+```Bash
+kubectl --kubeconfig k0s_config get svc
+NAME                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE
+api-server-service   LoadBalancer   10.111.147.81   192.168.50.240   80:31746/TCP   4m22s
+```
+
+Everything should just work when you hit the load balancer address. 
+
+
 
 ## Conclusion
-I was very pleasantly surprised by **k0s** it was easy to deploy and get up and running in either a single node cluster or a multi node cluster. The documentation was very good, and **it just worked**. This is perhaps the most important part for me. As a developer, I want to have the ability to get up and running super fast, without a lot of fuss to be able to try out different configurations or deploy applications.
+I was very pleasantly surprised by **k0s** it was easy to deploy and get up and running in either a single node cluster or a multi node cluster. The documentation was very good, and **it just worked**. 
+This is perhaps the most important part for me. As a developer, I want to have the ability to get up and running super fast, without a lot of fuss to be able to try out different configurations or deploy applications.
+The configurability of different CNI's, CSI's and CRI's makes k0s very good to use testing and deployment. The addition of multiple ingress controllers out of the box also means that anything you can deploy is highly flexible and configurable and **just works** out of the box.
+
+Next up, I'll be looking at k3s.
