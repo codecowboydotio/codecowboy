@@ -174,29 +174,16 @@ openebs       openebs-1644923849-ndm-operator-5ccb889c9d-2524p          0/1     
 
 
 #### A Note on SSH
-I found initially I had a few weird ssh problems. I wont go into them in a lot of detail suffice to say that running the ssh-agent and adding keys was enough to make the multi cluster installation work okay.
-
-```Bash
-[root@kube ~]# eval $(ssh-agent)
-Agent pid 1086
-[root@kube ~]# ssh-add
-Identity added: /root/.ssh/id_rsa (root@kube)
-Identity added: /root/.ssh/id_ecdsa (root@kube)
-```
-
-The other odd thing was that in order for the installation to work at all I had to create both an RSA and an ECDSA key. I haven't delved into this in more detail yet, but will look over the weekend.
-
-```Bash
-ssh-keygen -t ecdsa
-```
-
-Add the keys as above, and everything should install without a problem.
-
-### I figured this part out!!!!
+I found initially I had a few weird ssh problems. I wont go into them in a lot of detail suffice to say that running the steps below everything worked.
 
 **ssh-rsa** is not listed as a **PubkeyAcceptedKeyTypes** string in the file **/etc/crypto-policies/back-ends/opensshserver.config**
 
-You simple add it to the end of the **PubkeyAcceptedKeyTypes** stanza and you should be good to go - assuming that your **/etc/ssh/sshd_config** is similarly configured.
+You simple add it to the end of the **PubkeyAcceptedKeyTypes** stanza and you should be good to go - assuming that your **/etc/ssh/sshd_config** is similarly configured to allow public key access. 
+
+```Bash
+grep -i pub /etc/ssh/sshd_config
+PubkeyAuthentication yes
+```
 
 This seems to be a change in defaults in Fedora since about Fedora 33. This is documented here: [https://fedoraproject.org/wiki/Changes/StrongCryptoSettings2](https://fedoraproject.org/wiki/Changes/StrongCryptoSettings2)
 
@@ -302,6 +289,7 @@ The default CNI is kube-router. This can be a bit limiting, so Calico is also su
 
 ## Ingress
 This is the part of k0s that I found most impressive.
+
 
 ## Conclusion
 I was very pleasantly surprised by **k0s** it was easy to deploy and get up and running in either a single node cluster or a multi node cluster. The documentation was very good, and **it just worked**. This is perhaps the most important part for me. As a developer, I want to have the ability to get up and running super fast, without a lot of fuss to be able to try out different configurations or deploy applications.
