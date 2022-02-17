@@ -324,7 +324,7 @@ This is the part of k0s that I found most impressive.
 Out of the box, there is support for NGINX, metallb and tetrate.
 
 I'm using metallb here, but all of the different ingresses work.
-iFirst generate a kubeconfig file.
+I first generate a kubeconfig file.
 
 ```Bash
 k0sctl kubeconfig > k0s_config
