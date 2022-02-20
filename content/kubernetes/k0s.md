@@ -339,7 +339,8 @@ kubectl --kubeconfig k0s_config apply -f https://raw.githubusercontent.com/metal
 ```
 
 At this point you should have metallb installed and deployed.
-You can validate this with the following commands
+
+I then deploy an ingress of type loadbalancer using the manifest below.
 
 ```Bash
 apiVersion: v1
@@ -364,8 +365,7 @@ NAME                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)    
 api-server-service   LoadBalancer   10.111.147.81   192.168.50.240   80:31746/TCP   4m22s
 ```
 
-Everything should just work when you hit the load balancer address. 
-
+Everything should just work when you hit the load balancer external address. 
 
 
 ## Conclusion
