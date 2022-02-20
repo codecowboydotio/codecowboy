@@ -1,6 +1,6 @@
 +++
 title = "k0s - small kubernetes - part 1"
-date = "2022-02-10"
+date = "2022-02-19"
 aliases = ["k0s"]
 tags = ["kubernetes", "containers", "micro"]
 categories = ["kubernetes", "software", "dev"]
@@ -376,3 +376,4 @@ This is perhaps the most important part for me. As a developer, I want to have t
 The configurability of different CNI's, CSI's and CRI's makes k0s very good to use testing and deployment. The addition of multiple ingress controllers out of the box also means that anything you can deploy is highly flexible and configurable and **just works** out of the box.
 
 Next up, I'll be looking at k3s.
+
