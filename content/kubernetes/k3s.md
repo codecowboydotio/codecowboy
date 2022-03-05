@@ -385,6 +385,43 @@ kubernetes   ClusterIP   10.43.0.1      <none>        443/TCP   70m
 swapi-svc    ClusterIP   10.43.43.121   <none>        80/TCP    44m
 ```
 
+I can validate that the ingress is working by sending a request to one of my addresses in my ingress output above. 
+
+```Bash
+[root@kube ~]# curl http://192.168.50.200/people/1
+{
+  "edited": "2014-12-20T21:17:56.891Z",
+  "name": "Luke Skywalker",
+  "created": "2014-12-09T13:50:51.644Z",
+  "gender": "male",
+  "skin_color": "fair",
+  "hair_color": "blond",
+  "height": "172",
+  "eye_color": "blue",
+  "mass": "77",
+  "homeworld": 1,
+  "birth_year": "19BBY",
+  "image": "luke_skywalker.jpg",
+  "id": 1,
+  "vehicles": [
+    14,
+    30
+  ],
+  "starships": [
+    12,
+    22
+  ],
+  "films": [
+    1,
+    2,
+    3,
+    6
+  ]
+}
+```
+I can see that I am returned the same output from my Star Wars API that I had when I was connecting to the service using a cluster IP.
+
+
 ## Conclusion
 **k3s** is relatively easy to install, configure and get going. I would say the documentation on the k3s site could be a little clearer and include relevant examples for deployment. I found myself going to check documentation for other bundles projects during deployment. While this isn't a problem per se, it would be nice it the documentation we all in one place. 
 
