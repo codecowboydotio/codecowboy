@@ -1,6 +1,6 @@
 +++
 title = "k3s - small kubernetes - part 2"
-date = "2022-02-21"
+date = "2022-03-05"
 aliases = ["k3s"]
 tags = ["kubernetes", "containers", "micro"]
 categories = ["kubernetes", "software", "dev"]
@@ -13,7 +13,7 @@ I recently sat down and thought to myself "I wonder how the current market of mi
 
 So I have been experimenting with different micro or mini distributions. 
 
-This post is about **k0s**.
+This post is about **k3s**.
 
 ## k3s
 **k3s** is an open source project that you can find here: [https://k3s.io/] (https://k3s.io/).
@@ -162,7 +162,7 @@ curl -sfL https://get.k3s.io | sh -
 
 On the first node in your cluster, after a successful installation, check for a node token. This is used to join other nodes to the cluster.
 
-``` Bash
+```Bash
 # cat /var/lib/rancher/k3s/server/node-token
 
 # K107368ba05971c9f7b89fc3c8612f31371ccb26dbd2fa0f1f78d52f7323daf9cbc::server:ac873d131ebcb77ed65dfdfd4500482b
