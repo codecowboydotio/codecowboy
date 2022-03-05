@@ -309,7 +309,7 @@ local-path (default)   rancher.io/local-path   Delete          WaitForFirstConsu
 Traefik ingress controller is installed by default.
 
 Using the following manifest we can use the default traefik ingress controller.
-Things to note are that by default traefik will listen to ports 80 and 443, so I have had to modify the service on my **k3s** installation as well as add ingress rules.
+Things to note are that by default traefik will listen to ports 80 and 443, so I have had to modify the service on my **swapi** service as well as add ingress rules.
 
 ```Yaml
 ---
