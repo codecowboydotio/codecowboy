@@ -159,13 +159,12 @@ Install the cluster master node as per a single cluster. This is the same step a
 ```Bash
 curl -sfL https://get.k3s.io | sh -
 ```
-
 On the first node in your cluster, after a successful installation, check for a node token. This is used to join other nodes to the cluster.
 
 ```Bash
-# cat /var/lib/rancher/k3s/server/node-token
+cat /var/lib/rancher/k3s/server/node-token
 
-# K107368ba05971c9f7b89fc3c8612f31371ccb26dbd2fa0f1f78d52f7323daf9cbc::server:ac873d131ebcb77ed65dfdfd4500482b
+K107368ba05971c9f7b89fc3c8612f31371ccb26dbd2fa0f1f78d52f7323daf9cbc::server:ac873d131ebcb77ed65dfdfd4500482b
 ```
 
 Run the following command to download k3s and install it on the node. Pass the additional configuration options of:
@@ -175,7 +174,7 @@ Run the following command to download k3s and install it on the node. Pass the a
 
 
 ```Bash
-# curl -sfL https://get.k3s.io | K3S_URL=https://192.168.50.200:6443 K3S_TOKEN=K107368ba05971c9f7b89fc3c8612f31371ccb26dbd2fa0f1f78d52f7323daf9cbc::server:ac873d131ebcb77ed65dfdfd4500482b sh -
+curl -sfL https://get.k3s.io | K3S_URL=https://192.168.50.200:6443 K3S_TOKEN=K107368ba05971c9f7b89fc3c8612f31371ccb26dbd2fa0f1f78d52f7323daf9cbc::server:ac873d131ebcb77ed65dfdfd4500482b sh -
 ```
 
 #### A Note on SSH
