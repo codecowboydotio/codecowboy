@@ -172,12 +172,18 @@ Run the following command to download k3s and install it on the node. Pass the a
 **K3S_URL** - This is the IP or hostname of the api server. The first node that you installed.
 **K3S_TOKEN** - This is the token that comes from the first node to allow other nodes to join the cluster.
 
-
 ```Bash
 curl -sfL https://get.k3s.io | K3S_URL=https://192.168.50.200:6443 K3S_TOKEN=K107368ba05971c9f7b89fc3c8612f31371ccb26dbd2fa0f1f78d52f7323daf9cbc::server:ac873d131ebcb77ed65dfdfd4500482b sh -
 ```
 
-#### A Note on SSH
+If we check the nodes that are part of the cluster now, we see that our new node has been successfully added to the cluster.
+
+```Bash
+[root@kube ~]# k3s kubectl get nodes
+NAME     STATUS   ROLES                  AGE   VERSION
+worker   Ready    <none>                 18m   v1.22.7+k3s1
+kube     Ready    control-plane,master   23m   v1.22.7+k3s1
+``` 
 
 ## Deployment
 
@@ -235,24 +241,25 @@ service/swapi-svc created
 We can see that the pod have been deployed successfully.
 
 ```Bash
-kubectl get pods
-NAME                             READY   STATUS    RESTARTS   AGE
-svk-swapi-api-6bbf7b44dd-hlsgt   1/1     Running   0          32s
-svk-swapi-api-6bbf7b44dd-2krl5   1/1     Running   0          32s
+[root@kube ~]# kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get pods -o wide
+NAME                             READY   STATUS    RESTARTS   AGE     IP          NODE     NOMINATED NODE   READINESS GATES
+svk-swapi-api-6bbf7b44dd-qx2vx   1/1     Running   0          5m11s   10.42.0.9   kube     <none>           <none>
+svk-swapi-api-6bbf7b44dd-glvz7   1/1     Running   0          5m11s   10.42.1.3   worker   <none>           <none>
 ```
 
 Part of my deployment is to create a service. 
 
 ```Yaml
- kubectl get svc
-NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
-swapi-svc    ClusterIP   10.43.241.158   <none>        3000/TCP   63s
+[root@kube ~]# kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get svc -o wide
+NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE     SELECTOR
+kubernetes   ClusterIP   10.43.0.1      <none>        443/TCP    33m     <none>
+swapi-svc    ClusterIP   10.43.43.121   <none>        3000/TCP   7m39s   app=svk-swapi
 ```
 
 I can validate that the service is working on the node by using curl
 
 ```Bash
-curl 10.43.241.158:3000/people/1
+curl 10.43.43.121:3000/people/1
 
 {
   "edited": "2014-12-20T21:17:56.891Z",
@@ -287,9 +294,102 @@ curl 10.43.241.158:3000/people/1
 
 ## Storage
 
+There is a local storage class provisioned by default. This is great because it means that I can use persistant volumes without any additional configuration right out of the box.
+
+```Bash
+[root@kube ~]# k3s kubectl get storageclasss
+NAME                   PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+local-path (default)   rancher.io/local-path   Delete          WaitForFirstConsumer   false                  35m
+```
+
 ## CNI
+**k3s** supports a wide range of CNI's, with all the usual suspects being available - flannel, cannel, calico and so on.
 
 ## Ingress
+Traefik ingress controller is installed by default.
+
+Using the following manifest we can use the default traefik ingress controller.
+Things to note are that by default traefik will listen to ports 80 and 443, so I have had to modify the service on my **k3s** installation as well as add ingress rules.
+
+```Yaml
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: swapi-ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: swapi-svc
+            port:
+              number: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: svk-swapi-api
+  labels:
+    app: svk-swapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: svk-swapi
+  template:
+    metadata:
+      labels:
+        app: svk-swapi
+    spec:
+      containers:
+      - image: public.ecr.aws/y6q2t0j9/demos:swapi-api
+        imagePullPolicy: IfNotPresent
+        name: svk-swapi
+        ports:
+          - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: swapi-svc
+  labels:
+    app: svk-swapi
+spec:
+  selector:
+    app: svk-swapi
+  ports:
+  - name: port
+    port: 80
+    targetPort: 3000
+```
+
+I can validate this in a few different ways. Checking for types of ingress, I see the following. I see both nodes because at this point I am not using a load balancer across both nodes, I'm just using an ingress controller.
+
+```Bash
+[root@kube ~]# k3s kubectl get ingress
+NAME            CLASS    HOSTS   ADDRESS                         PORTS   AGE
+swapi-ingress   <none>   *       192.168.50.200,192.168.50.210   80      8m22s
+```
+
+Similarly the service has changed to listen on port 80.
+```Bash
+[root@kube ~]# k3s kubectl get svc
+NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.43.0.1      <none>        443/TCP   70m
+swapi-svc    ClusterIP   10.43.43.121   <none>        80/TCP    44m
+```
 
 ## Conclusion
+**k3s** is relatively easy to install, configure and get going. I would say the documentation on the k3s site could be a little clearer and include relevant examples for deployment. I found myself going to check documentation for other bundles projects during deployment. While this isn't a problem per se, it would be nice it the documentation we all in one place. 
 
+The installation is **different** from **k0s** in that you need to add worker nodes. This is not a good thing or a bad thing, it's just a different approach. I like the simplicty of just adding a worker node using a standard method using a token. There were no ssh problems to troubleshoot in doing this.
+
+The fact that **k3s** includes **traefik** for ingress is a **HUGE** advantage. This cannot be understated. Easy routing and ingress makes **k3s** very neat. 
+
+All in all, this is a good distribution for getting up and running quickly.
