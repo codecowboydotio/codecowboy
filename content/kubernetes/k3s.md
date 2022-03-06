@@ -309,7 +309,7 @@ local-path (default)   rancher.io/local-path   Delete          WaitForFirstConsu
 Traefik ingress controller is installed by default.
 
 Using the following manifest we can use the default traefik ingress controller.
-Things to note are that by default traefik will listen to ports 80 and 443, so I have had to modify the service on my **swapi** service as well as add ingress rules.
+Things to note are that by default traefik will listen to ports 80 and 443, so I have had to modify the service on my **swapi** manifest as well as add ingress rules.
 
 ```Yaml
 ---
@@ -423,7 +423,7 @@ I can see that I am returned the same output from my Star Wars API that I had wh
 
 
 ## Conclusion
-**k3s** is relatively easy to install, configure and get going. I would say the documentation on the k3s site could be a little clearer and include relevant examples for deployment. I found myself going to check documentation for other bundles projects during deployment. While this isn't a problem per se, it would be nice it the documentation we all in one place. 
+**k3s** is relatively easy to install, configure and get going. I would say the documentation on the k3s site could be a little clearer and include relevant examples for deployment. I found myself going to check documentation for other bundled projects (like traefik) during deployment. While this isn't a problem per se, it would be nice if the documentation were all in one place. 
 
 The installation is **different** from **k0s** in that you need to add worker nodes. This is not a good thing or a bad thing, it's just a different approach. I like the simplicty of just adding a worker node using a standard method using a token. There were no ssh problems to troubleshoot in doing this.
 
