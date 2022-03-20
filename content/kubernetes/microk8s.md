@@ -25,6 +25,8 @@ microk8s is sponsored and developed primarily by Canonical.
 
 The installation is very easy and similarly low touch as the other distributuions I've looked at so far.
 
+I even got very self indulgent and did another video, you can see it [here](https://youtu.be/LEOHbhw7pmY)
+
 ### Single Node Cluster
 
 Single node cluster installation is really easy if you use the defaults. 
