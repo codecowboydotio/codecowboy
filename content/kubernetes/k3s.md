@@ -26,6 +26,8 @@ k3s is sponsored and developed primarily by Rancher.
 
 The installation is very easy and similarly low touch as the other distributuions I've looked at so far.
 
+I got all self indulgent and did a video [here](https://www.youtube.com/watch?v=FLjiE7XjAFs)
+
 ### Single Node Cluster
 
 Single node cluster installation is really easy is you use the defaults. 

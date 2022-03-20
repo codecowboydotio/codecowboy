@@ -702,7 +702,7 @@ Ingress is disabled
 
 ### Traefik Ingress
 
-**microk8s** also comes with Traefik for Ingress. This is super cool to have two ingress types that I can swith on and off and just use. 
+**microk8s** also comes with Traefik for Ingress. This is super cool to have two ingress types that I can switch on and off and just use. 
 
 I enable it like this:
 
@@ -719,7 +719,7 @@ ingress.networking.k8s.io/traefik-web-ui created
 traefik ingress controller has been installed on port 8080
 ```
 
-Again, I can re-deploy my star wars API with an additional annotation to denote that it is a traefik ingress. 
+Again, I can re-deploy my star wars API with an additional annotation to denote that it is a **traefik** ingress. 
 
 Note that the ingress definition has an additional annotation that tells the ingress that it is a class of **traefik**. Other than the annotation it is the same as the NGINX ingress above.
 
