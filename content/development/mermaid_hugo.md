@@ -336,4 +336,8 @@ This has a lot of benefits if you need to keep code separate, but also need to u
 
 ## Sub Tree Thoughts
 
-Sub trees are good - they're close to submodules in some ways but are slightly more independent for my purposes. For example, when I push my main repository, my sub tree is not pushed. This is really good if you are a **consumer** rather than a committer of a secondary project in your repository. 
+Sub trees are good - they're close to submodules in some ways but are slightly more independent for my purposes. For example, when I push my main repository, my sub tree is not pushed. This is really good if you are a **consumer** rather than a committer of a secondary project in your repository, and you only want to receive updates.
+
+For example, If I have another team providing me templates that I consume for a specific purpose, like security templates, or pipelines that I can pull down and run - sub trees are a fantastic way to go.
+
+Look out for the next blog where I look at this example and work through using sub trees and what it looks like.
