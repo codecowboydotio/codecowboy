@@ -42,7 +42,7 @@ graph LR;
     A[team A/frontend] --> B[monorepo]
     C[team B/service 1] --> B
     D[team C/service 2] --> B
-    E[team C/service 3] --> B
+    E[team D/service 3] --> B
 {{< /mermaid >}}
 
 ## Advantages
@@ -248,11 +248,92 @@ This is the case if you are using a repository, like a HUGO theme, that you add 
 
 ## Sub Trees
 
-
 Sub trees are another feature of git. They allow you to nest another repository inside a sub directory. 
+
+{{< notice tip >}}
+You may need to install git subtree as it's not installed by default.
+{{< /notice >}}
+
+```Bash
+dnf -y install git-subtree
+```
+
+On fedora the command above performs the installation for me.
+
+
+Let's use the same example of my Star Wars API again.
+
+```Bash
+[root@fedora test]# git clone http://github.com/codecowboydotio/swapi-json-server
+Cloning into 'swapi-json-server'...
+warning: redirecting to https://github.com/codecowboydotio/swapi-json-server/
+remote: Enumerating objects: 669, done.
+remote: Counting objects: 100% (390/390), done.
+remote: Compressing objects: 100% (196/196), done.
+remote: Total 669 (delta 181), reused 290 (delta 87), pack-reused 279
+Receiving objects: 100% (669/669), 7.83 MiB | 4.30 MiB/s, done.
+Resolving deltas: 100% (249/249), done.
+```
+
+When I change into my new directory, I can add another project as a sub tree.
+
+```Bash
+git subtree add --prefix subtree https://github.com/codecowboydotio/libp2p-experiements main --squash
+```
+
+This pulls down the second project (my libp2p experiments) and I can then see the following:
+
+```Bash
+[root@fedora swapi-json-server]# git subtree add --prefix subtree https://github.com/codecowboydotio/libp2p-experiements main --squash
+git fetch https://github.com/codecowboydotio/libp2p-experiements main
+remote: Enumerating objects: 133, done.
+remote: Counting objects: 100% (133/133), done.
+remote: Compressing objects: 100% (81/81), done.
+remote: Total 133 (delta 90), reused 90 (delta 50), pack-reused 0
+Receiving objects: 100% (133/133), 25.19 KiB | 1.48 MiB/s, done.
+Resolving deltas: 100% (90/90), done.
+From https://github.com/codecowboydotio/libp2p-experiements
+ * branch            main       -> FETCH_HEAD
+Added dir 'subtree'
+```
+
+I have now successfully added my second project as a completely independent sub tree. This means that both projects can be updated and maintained separately. 
+
+If I want to update the sub tree at some point in the future because it has changed and there is new functionality that I want to get, I can do the following:
+
+```Bash
+git subtree pull --prefix subtree https://github.com/codecowboydotio/libp2p-experiements main --squash
+```
+
+This looks like this:
+```Bash
+[root@fedora swapi-json-server]# git subtree pull --prefix subtree https://github.com/codecowboydotio/libp2p-experiements main --squash
+From https://github.com/codecowboydotio/libp2p-experiements
+ * branch            main       -> FETCH_HEAD
+Subtree is already at commit d75b61d41646ed05675a72e6e7cac588ed3ac770.
+```
+
+Note that the command is run from the root of the main project. If you are in another directory you will get the following message.
+
+```Bash
+[root@fedora subtree]# git subtree pull --prefix subtree https://github.com/codecowboydotio/libp2p-experiements main --squash
+You need to run this command from the toplevel of the working tree.
+```
+
+## Squash
+
+You will note that I have used the **squash** option as part of my commands when using sub tree. All this does is bundle up historical commits into a single commit. This makes managing things like sub trees a lot easier.
 
 # Conclusion
 
+Submodules and sub trees both have good points and bad points. Below are some of my thoughts on both of these.
+
 ## Submodule Thoughts
 
+Submodules have a bad wrap on the internet. People **really** don't like them. There are a lot of blog posts that say "don't use them". Even though they didn't work for me, I think that they have a place. If you are using multiple repositories and you own them all. A submodule is pushed when you push code to your main repository. That is, **everything** submodule and all is pushed. 
+
+This has a lot of benefits if you need to keep code separate, but also need to update the submodule project.
+
 ## Sub Tree Thoughts
+
+Sub trees are good - they're close to submodules in some ways but are slightly more independent for my purposes. For example, when I push my main repository, my sub tree is not pushed. This is really good if you are a **consumer** rather than a committer of a secondary project in your repository. 
