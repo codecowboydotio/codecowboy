@@ -16,17 +16,18 @@ Both have pros and cons, and in this post I explore them both.
 
 ## What prompted this?
 
-Recently I decided to update my hugo instance to use mermaid. [Mermaid](https://mermaid-js.github.io/mermaid/#/) is a library that allows you embed diagrams in markdown. This means that I can create diagrams simply by using markdown.
+Recently I decided to update my hugo instance to use mermaid. [Mermaid](https://mermaid-js.github.io/mermaid/#/) is a library that allows you to embed diagrams in markdown. This means that I can create diagrams simply by using markdown.
 
 My hugo theme, was installed as a git submodule. What's more, I didn't own the theme, or have commit access to it. This meant that I could not add a new shortcode for mermaid into my theme easily.
 
-I ended up removing the submodule and just loning the theme directly into my codebase.
+I ended up removing the submodule and just cloning the theme directly into my codebase.
 
 This made me think about the **best way to manage dependencies** between different projects. 
 
 # Project Dependancies
 
 Often, there are times when you need to manage dependencies between different projects. 
+
 - There is no **easy** way to do this. 
 - There is no **right** way to do this. 
 
