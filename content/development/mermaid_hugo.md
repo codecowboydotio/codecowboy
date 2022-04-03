@@ -340,4 +340,4 @@ Sub trees are good - they're close to submodules in some ways but are slightly m
 
 For example, If I have another team providing me templates that I consume for a specific purpose, like security templates, or pipelines that I can pull down and run - sub trees are a fantastic way to go.
 
-Look out for the next blog where I look at this example and work through using sub trees and what it looks like.
+Look out for the next blog where I look at this example and work through using sub trees for security templates from an external team, and what that looks like.
