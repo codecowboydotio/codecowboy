@@ -247,6 +247,7 @@ This is the case if you are using a repository, like a HUGO theme, that you add 
 
 ## Sub Trees
 
+
 Sub trees are another feature of git. They allow you to nest another repository inside a sub directory. 
 
 # Conclusion
