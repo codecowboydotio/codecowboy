@@ -24,7 +24,7 @@ I ended up removing the submodule and just cloning the theme directly into my co
 
 This made me think about the **best way to manage dependencies** between different projects. 
 
-# Project Dependancies
+# Project Dependencies
 
 Often, there are times when you need to manage dependencies between different projects. 
 
