@@ -25,7 +25,7 @@ pluralizelisttitles = false
   # Metadata mostly used in document's head
   description = "Latest technology information for Kubernetes, Automation and Developers"
   keywords = "blog, technology, kubernetes, automation, dev, developer"
-  images = ["https://codecowboy.io/images/codecowboyio-og.jpg"]
+  images = ["https://codecowboy.io/images/codecowboyio-final.jpg"]
 
   defaultTheme = "dark" 
   PygmentsCodeFences = true
