@@ -390,6 +390,7 @@ There are a lot of good things about a code first technique.
 
 - I never wrote mocks.
 - I barely wrote tests.
+- Deep down I know this will be less maintainable / controllable by other people.
 
 ## When to use it
 
