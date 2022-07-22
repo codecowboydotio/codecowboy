@@ -1,6 +1,6 @@
 +++
 title = "Code first api development"
-date = "2022-07-23"
+date = "2022-07-22"
 aliases = ["dev"]
 tags = ["dev"]
 categories = ["software", "dev"]
