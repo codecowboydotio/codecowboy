@@ -1,5 +1,5 @@
 +++
-title = "Pulumi - yaml"
+title = "Pulumi - creating cloud infrastructure using yaml"
 date = "2022-08-02"
 aliases = ["pulumi_yaml"]
 tags = ["pulumi", "iac"]
