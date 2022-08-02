@@ -97,7 +97,7 @@ What if I want to create a VPC, subnet, internet gateway, instance and security 
 
 The image below is exactly what we are going to create.
 
-![Infra stack to create using YAML](images/pulumi.jpg)
+![Infra stack to create using YAML](/images/pulumi.jpg)
 
 
 ### AWS VPC
