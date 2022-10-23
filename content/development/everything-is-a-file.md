@@ -42,6 +42,10 @@ Essentially, everything is passeed through the filesystem namespace - **everythi
 # A Simple program
 A very simple program that I have is as follows.
 
+All this does is print out its name and sleep for 20 seconds.
+
+It is the building blocks and the basis for what we are about to do next.
+
 ```C
 [root@fedora ~]# more test.c
 #include <stdio.h>
@@ -55,14 +59,95 @@ int main(int argc, char *argv[]) {
 
 ```
 
+I can compile my program using gcc as below.
+```C 
+gcc test.c
+```
+
+When I run my newly compiled program, it prints its name, waits 20 seconds and then exits. 
+This is perfect. 
+
+The name a.out is the default name given to a program when you don't specify an output file as a compile option.
 ```C
 [root@fedora ~]# ./a.out
 Program Name: ./a.out
 ```
 
-# Change the name of the process
+The sleep for 20 seconds is important here because I can validate that my program is running by using the Linux **ps** command.
 
-# Server side code
+```Bash
+[root@fedora development]# ps -ef | grep a.out | grep -v grep
+root        4094    3237  0 20:38 pts/0    00:00:00 ./a.out
+```
+
+We can see that the program is running, and it has a name of a.out
+
+
+# Change the name of the process
+What if I want to change the name of the process **after** it has started?
+
+This is relatively easy to achieve in C.
+
+I add the following lines of code to my program. 
+I add a **#define** to just define the name that I want to change my program to.
+I add a **memset** to set the size of the program name to the size of the string innocuous name.
+I add a **strcpy** to actually copy the innocuous name over the top of the program name.
+
+```C 
+#define INNOCUOUS_NAME "everything_is_a_file"
+    memset(argv[0],0,strlen(argv[0]));
+    strcpy(argv[0], INNOCUOUS_NAME);
+```
+
+The full code ow looks like this.
+I have added another sleep command, and an additional print command so that I have time to run some **ps** commands and show that the program, once started renames itself.
+
+```C
+#include <stdio.h>
+#include <string.h>
+
+#define INNOCUOUS_NAME "everything_is_a_file"
+
+int main(int argc, char *argv[]) {
+    printf("Program Name: %s\n",argv[0]);
+    sleep(20);
+    memset(argv[0],0,strlen(argv[0]));
+    strcpy(argv[0], INNOCUOUS_NAME);
+    printf("Resetting program name: %s\n",argv[0]);
+    sleep(60);
+    return 0;
+}
+```
+
+## Let's see it work.
+In action, I compile my program again.
+
+```C 
+gcc test.c
+```
+
+Then I run the program.
+The program prints out its initial name, which is just the binary name.
+After 20 seconds, I overwrite the program name with the name **everything_is_a_file** which is the string in my **#define** in my code.
+
+```C
+[root@fedora ~]# ./a.out
+Program Name: ./a.out
+Resetting program name: everything_is_a_file
+```
+
+While running a **ps** on the output initially, I see that process **4128** is named **a.out**
+```C
+[root@fedora development]# ps -ef | grep a.out | grep -v grep
+root        4128    3237  0 20:45 pts/0    00:00:00 ./a.out
+```
+
+After 20 seconds, the program renames itself. I run the **ps** command again, but this time I use the process id or **PID**, **4128**. I can see that the program name has changed to **everything_is_a_file**.
+
+```C
+[root@fedora development]# ps -ef | grep 4128 | grep -v grep
+root        4128    3237  0 20:45 pts/0    00:00:00 everything_is_a_file
+```
 
 # Hiding in plain site
 
