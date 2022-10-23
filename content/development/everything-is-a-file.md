@@ -149,8 +149,17 @@ After 20 seconds, the program renames itself. I run the **ps** command again, bu
 root        4128    3237  0 20:45 pts/0    00:00:00 everything_is_a_file
 ```
 
-# Hiding in plain site
+# Why do this?
+There are two main use cases that I can think of here (there are probably more). The first is that if I am a nefarious actor, I can start a program and make it look like any other random process on my system.I Could make it look like a device driver for example by naming it "keyboard" or "udev" or something **innocouous**.
+
+The second more useful non nefarious use case is where I may want to fork a process and name it in a particular way rather than simply using threads. This can be quite handy as a way of giving a human readable name to each thread.
 
 # Conclusion
 
-Look out for my next post where I will talk about pre-commit hooks and how they can be managed 
+If I were nefarious and added some server side code, I could easily hide my running process in plain sight. I could start a remote shell, exfiltrate data, or do just about anything that I had access to do. I could do this while looking like an innocuous program that would be overlooked.
+
+It is instructive and interesting to understand how things work on Linux systems. I hope this has given you an insight into how things work, and has piqued your interest in doing some further reading.
+
+Happy programming!
+
+@codecowboydotio
