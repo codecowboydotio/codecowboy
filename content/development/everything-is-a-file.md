@@ -24,15 +24,41 @@ I thought that I would write about this with some code examples, and given I'm c
 
 The rationale here is that if you understand how things work, you can better defend against them.
 
+To really understand Linux, you need to understand C. 
+It's the language that the operating system is written in, and it's the language that allows you to interact with Linux at a level that allows for a lot of fun.
+
+I'm going to walk through how to do some things in Linux that might surprise you.
+
+## Everything is a file
 On a Linux system, everything is a file. **Everything**
 
 This means, regular files, devices, memory, processes, **everything**
 
 There's a great wikipedia page on this [here](https://en.wikipedia.org/wiki/Everything_is_a_file)
 
-## Everything is a file
+Essentially, everything is passeed through the filesystem namespace - **everything is a file**.
+
 
 # A Simple program
+A very simple program that I have is as follows.
+
+```C
+[root@fedora ~]# more test.c
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+    printf("Program Name: %s\n",argv[0]);
+    sleep(20);
+    return 0;
+}
+
+```
+
+```C
+[root@fedora ~]# ./a.out
+Program Name: ./a.out
+```
 
 # Change the name of the process
 
