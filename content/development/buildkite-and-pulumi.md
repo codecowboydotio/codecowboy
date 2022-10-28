@@ -269,6 +269,7 @@ Duration: 44s
 ```
 
 Once it's all built I can use the pulumi console to check it out.
+One of the nicer things I like is that you get a neat graph based view of all of the infrastructure coponents that you've just built.... and it's all automagic!
 
 ![pulumi-graph-buildkite.jpg](/images/pulumi-graph-buildkite.jpg)
 
@@ -295,6 +296,12 @@ I like it a lot because it's simple to get up and running, has enough complixty 
 ### Why use it?
 
 Buildkite's speed to get up and running, and the fact that it takes care of a lot of the mundane things for you.
+
+### Buildkite Agent
+
+In the first part of this blog, I built out a buildkite agent using Pulumi. Part of the user data on my agent, it automagically registers with buildkite. It looks like this.
+
+![buildkite-agent-register.jpg](/images/buildkite-agent-register.jpg)
 
 ## Buildkite pipeline
 
