@@ -305,13 +305,84 @@ In the first part of this blog, I built out a buildkite agent using Pulumi. Part
 
 ## Buildkite pipeline
 
+My pipeline in buildkite is very simple, it doesn't do a lot. It installs some stuff, and runs a pre deployment scan on some artifacts before I deploy.
+
+The thing I like most is that there are two methods to creating and using a pipeline. You can do it all in the web interface (I'm sure people do it, but I don't get it), or you can just include a pipeline.yml file in a directory in your repository.
+
+I do the latter.
+
+In order for this to work, you need to include the following into your pipeline definition in the web interface.
+
+```Yaml
+steps:
+  - label: ":pipeline: Pipeline upload"
+    command: buildkite-agent pipeline upload
+```
+
+This essentially tells buildkite that it is looking for your pipeline in your repository. 
+
+In my case, the pipeline is relatively simple.
+
+```Yaml
+steps:
+  - label: "Install tooling"
+    command: |
+      echo -e "--- Installing \033[33mScanner\033[0m :heart:"
+      sudo curl -sfL 'https://raw.githubusercontent.com/cli/main/install.sh' | bash
+  - label: "Building Image"
+    command: |
+      echo -e "--- Building Image :heart::heart::heart:"
+      docker build . -t swapi
+  - label: "Running Scan"
+    command: |
+      echo "--- Running scan on branch $BUILDKITE_BRANCH "
+      <scan-tool> -p happy-friday --api-token <token> image scan swapi
+    if: build.branch == "dev"
+  - label: "Running scan on branch $BUILDKITE_BRANCH"
+    command: <scan-tool> --api-token <token> --project-key happy-friday-prod image scan swapi
+    if: build.branch == "main"
+  - label: "Running full scan"
+    command: <scan-tool> --api-token <token> --project-key happy-friday-prod image scan swapi
+    if: build.message =~ /^full/
+```
+
+Essentially this pipeline installs my scan tool, and then it runs the scan tool. 
+I have some if statements that will run various combinations depending on the branch I am operating on, but the main thing here is that I have a simple pipeline that has the flexibility to run different things on different branches post commit.
+
 ### Variables
+
+Buildkite has a number of variables that are inbuilt to the platform. There are a *lot* of them. I am using only a few in my pipeline.
+
+I am using the **build.message** variable to conditionally perform a step if the build message starts with the word **full**. This is not particularly elegant, but it does show the flexibility that you have in terms of buildkite. 
+
+I really like this because buildkite allows you to use regex in your conditions - this means that I can pretty much do *anything*.
+
+I am also using the **build.branch** to select a step if the commit relates to a particular branch.
 
 ### Steps
 
-### Jobs
+Steps in buildkite are easy to get up and running with.
+A step has a number of entities. A step can have a **label**, and can also have **conditionals** like I have above, can be tied to an **agent queue** and more. 
+
+
+```Yaml
+agents:
+  queue: "something"
+
+steps:
+  - command: "blah.sh"
+  - command: "blahblah.sh"
+  - label: "Yada"
+    command: "yada.sh"
+    agents:
+      queue: "other"
+```
+
+In my case, my steps are very basic and just use a command and conditionals.
 
 
 # Conclusion
+
+All in all, using pulumi to spin up my agents for buildkite lets me run agents and agent groups as part of my CI tooling that is very easy and is integrated into my developer workflow. Using buildkite gives me a great level of flexibility in my pipelines while also just having an easy button for getting up and running.
 
 Look out for my next post where I will talk about pre-commit hooks and how they can be managed 
