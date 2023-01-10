@@ -96,7 +96,9 @@ Today, there is no user interface, so two single API calls will deploy an applic
 
 I can deploy my code, only my code, and it's fast. There is no artifact to build, no container to deploy, just my raw code, and it runs.
 
-
+{{< notice note >}}
+Deploy code not containers
+{{< /notice >}}
 
 # Where to from here?
 
