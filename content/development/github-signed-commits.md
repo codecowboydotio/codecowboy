@@ -20,6 +20,7 @@ As part of some hygiene around the project, we decided to implement signed commi
 
 # What now?
 
+In order to get signed commits working you need to follow a few simple steps. This looks like a lot but really isn't.
 
 
 ## Generating a GPG key
