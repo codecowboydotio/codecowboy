@@ -180,6 +180,16 @@ When I look inside my github account at this particular commit I see the followi
 
 ![signed commit](/images/signed-commit.jpg)
 
+## One last thing
+
+One last thing is that to make this work repeatably on every login, you may need to add your terminal to be the GPG_TTY.
+
+```Bash
+export GPG_TTY=$(tty)
+```
+
+This sets the current terminal you're using to be the correct terminal for GPG to use. Place this in your login .profile or .shell_profile (whichever shell you use) so that it's automatically set for every login.
+
 
 # Conclusion
 
