@@ -418,3 +418,12 @@ It is flexible enough to allow for the creation of custom templates and has very
 
 It's a good choice if you want to focus on code and not infrastructure.
 
+## A note on jq
+
+I use jq a lot, and things like this: 
+
+```Bash
+aws cloudformation list-stacks | jq '.[] | .[] | select (.StackStatus != "DELETE_COMPLETE")'
+```
+
+come pretty naturally to me. Perhaps one day I will write a collection of useful jq one liners :)
