@@ -470,6 +470,44 @@ const server = new aws.ec2.Instance(var_project_name + "-" + var_vpc_name + "-in
 When I run it from the beginning, I get the following output:
 
 ```Yaml
+[root@fedora aws-javascript]# pulumi up -y
+Previewing update (dev)
+
+View in Browser (Ctrl+O): https://app.pulumi.com/codecowboydotio/aws-javascript/
+
+     Type                              Name                            Plan
+ +   pulumi:pulumi:Stack               aws-javascript-dev              create
+ +   ├─ aws:ec2:Vpc                    pulumi-javascript-vpc           create
+ +   ├─ aws:ec2:InternetGateway        pulumi-javascript-vpc-igw       create
+ +   ├─ aws:ec2:SecurityGroup          pulumi-javascript-vpc-sg        create
+ +   ├─ aws:ec2:Subnet                 pulumi-javascriptvpc-subnet     create
+ +   ├─ aws:ec2:RouteTable             pulumi-javascript-vpc-rt        create
+ +   ├─ aws:ec2:RouteTableAssociation  pulumi-javascript-vpc-rta       create
+ +   └─ aws:ec2:Instance               pulumi-javascript-vpc-instance  create
+
+
+Resources:
+    + 8 to create
+
+Updating (dev)
+
+View in Browser (Ctrl+O): https://app.pulumi.com/codecowboydotio/aws-javascript/
+
+     Type                              Name                            Status
+ +   pulumi:pulumi:Stack               aws-javascript-dev              created (4s)
+ +   ├─ aws:ec2:Vpc                    pulumi-javascript-vpc           created (6s)
+ +   ├─ aws:ec2:InternetGateway        pulumi-javascript-vpc-igw       created (1s)
+ +   ├─ aws:ec2:Subnet                 pulumi-javascriptvpc-subnet     created (12s)
+ +   ├─ aws:ec2:SecurityGroup          pulumi-javascript-vpc-sg        created (5s)
+ +   ├─ aws:ec2:RouteTable             pulumi-javascript-vpc-rt        created (2s)
+ +   ├─ aws:ec2:RouteTableAssociation  pulumi-javascript-vpc-rta       created (1s)
+ +   └─ aws:ec2:Instance               pulumi-javascript-vpc-instance  created (26s)
+
+
+Resources:
+    + 8 created
+
+Duration: 56s
 ```
 
 
@@ -478,12 +516,53 @@ When I run it from the beginning, I get the following output:
 Cleanup is just as easy. 
 
 ```Shell
-pulumi delete -y
+pulumi destroy -y
 ```
 
 This deletes all of the resources that have been created.
 
 ```Shell
+[root@fedora aws-javascript]# pulumi destroy -y
+Previewing destroy (dev)
+
+View in Browser (Ctrl+O): https://app.pulumi.com/codecowboydotio/aws-javascript/
+
+     Type                              Name                            Plan
+ -   pulumi:pulumi:Stack               aws-javascript-dev              delete
+ -   ├─ aws:ec2:RouteTableAssociation  pulumi-javascript-vpc-rta       delete
+ -   ├─ aws:ec2:Instance               pulumi-javascript-vpc-instance  delete
+ -   ├─ aws:ec2:RouteTable             pulumi-javascript-vpc-rt        delete
+ -   ├─ aws:ec2:InternetGateway        pulumi-javascript-vpc-igw       delete
+ -   ├─ aws:ec2:SecurityGroup          pulumi-javascript-vpc-sg        delete
+ -   ├─ aws:ec2:Subnet                 pulumi-javascriptvpc-subnet     delete
+ -   └─ aws:ec2:Vpc                    pulumi-javascript-vpc           delete
+
+
+Resources:
+    - 8 to delete
+
+Destroying (dev)
+
+View in Browser (Ctrl+O): https://app.pulumi.com/codecowboydotio/aws-javascript/
+
+     Type                              Name                            Status
+ -   pulumi:pulumi:Stack               aws-javascript-dev              deleted
+ -   ├─ aws:ec2:RouteTableAssociation  pulumi-javascript-vpc-rta       deleted (4s)
+ -   ├─ aws:ec2:RouteTable             pulumi-javascript-vpc-rt        deleted (1s)
+ -   ├─ aws:ec2:Instance               pulumi-javascript-vpc-instance  deleted (32s)
+ -   ├─ aws:ec2:InternetGateway        pulumi-javascript-vpc-igw       deleted (1s)
+ -   ├─ aws:ec2:Subnet                 pulumi-javascriptvpc-subnet     deleted (1s)
+ -   ├─ aws:ec2:SecurityGroup          pulumi-javascript-vpc-sg        deleted (1s)
+ -   └─ aws:ec2:Vpc                    pulumi-javascript-vpc           deleted (0.82s)
+
+
+Resources:
+    - 8 deleted
+
+Duration: 43s
+
+The resources in the stack have been deleted, but the history and configuration associated with the stack are still maintained.
+If you want to remove the stack completely, run `pulumi stack rm dev`.
 ```
 
 ## Conclusion
