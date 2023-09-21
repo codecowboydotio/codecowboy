@@ -1,6 +1,6 @@
 +++
 title = "Pulumi - creating cloud infrastructure using javascript"
-date = "2023-09-21"
+date = "2023-09-20"
 aliases = ["pulumi_javascript"]
 tags = ["pulumi", "iac"]
 categories = ["automation", "software", "dev"]
