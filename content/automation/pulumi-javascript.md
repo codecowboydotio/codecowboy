@@ -259,11 +259,6 @@ const main_rt_assoc = new aws.ec2.RouteTableAssociation(var_project_name + "-" +
 
 Again, the object identifier of **vpc ID** in object notation is used. I also use the internet gateway ID as well. For the route table association, I use the subnet identifier created above and the route table id.
 
-When I run this, the output is as follows:
-
-```Shell
-```
-
 ### Security Group
 The next step is to create a security group and associate that security group with a VPC.
 
@@ -288,9 +283,6 @@ const group = new aws.ec2.SecurityGroup(var_project_name + "-" + var_vpc_name + 
 ```
 
 The security group is created with ingress and egress rules that are overly permissive as part of this demonstration series.
-
-The output from this step when I run it is:
-
 
 ### Instance 
 
@@ -344,13 +336,6 @@ const server = new aws.ec2.Instance(var_project_name + "-" + var_vpc_name + "-in
   },
 });
 ```
-
-
-When I run this, I get the following output:
-
-```Shell
-```
-
 
 ## End to end
 End to end the entire python file looks like this:
