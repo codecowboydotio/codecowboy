@@ -231,7 +231,7 @@ I want to make sure that I can simply clone the scaffold, do nothing but change 
 
 You can clone this at the github repo here:
 
-[caffold github repository](https://github.com/codecowboydotio/scaffolds)
+[Scaffold github repository](https://github.com/codecowboydotio/scaffolds)
 
 This repo will grow over time to include other cloud providers and use cases in terraform.
 
