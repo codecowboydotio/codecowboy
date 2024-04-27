@@ -122,7 +122,7 @@ This makes my code a lot more portable and means that it can be run in any regio
 ### Tags
 Tags are a very interesting topic and I've written about them before 
 
-HERE
+[Terraform Maps](https://codecowboy.io/automation/terraform-maps/)
 
 I do two things with tags.
 
