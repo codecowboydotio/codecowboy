@@ -231,8 +231,9 @@ I want to make sure that I can simply clone the scaffold, do nothing but change 
 
 You can clone this at the github repo here:
 
-This repo will grow over time to include other cloud providers and use cases in terraform.
+[caffold github repository](https://github.com/codecowboydotio/scaffolds)
 
+This repo will grow over time to include other cloud providers and use cases in terraform.
 
 ## Conclusion
 Using a standard template as a scaffold that you can extend is a lot of fun and makes my setups and experimentation easier.
