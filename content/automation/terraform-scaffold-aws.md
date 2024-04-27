@@ -25,15 +25,13 @@ The basic scaffold that I share here is agnostic and sets up the "base AWS infra
 My standard scaffold looks like this:
 
 
+```
 ├── aws.tf
-
 ├── tags.tf
-
 ├── vars.tf
-
 ├── web-server-az2a.sh.tpl
-
 └── web-server-az2a.tf
+```
 
 Each of the files contains various basic AWS components. 
 
