@@ -39,7 +39,7 @@ The basic scaffold that I share here is agnostic and sets up the "base AWS infra
 ## A starting point.
 My standard scaffold looks like this:
 
-
+```
 ├── api.tf
 ├── aws.tf
 ├── bucket.tf
@@ -47,7 +47,7 @@ My standard scaffold looks like this:
 ├── tags.tf
 ├── vars.tf
 ├── lambda_code/webhook.py
-
+```
 
 Each of the files contains various basic AWS components. 
 
