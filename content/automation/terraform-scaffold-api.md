@@ -28,7 +28,7 @@ The architecture for this scaffold is an API gateway, that points all routes to 
 
 This is useful for integration testing.
 
-![AWS API Gateway](/images/aws-api-gateway.png)
+![AWS API Gateway](/images/aws-api-gateway.jpg)
 
 ## The basic scaffold
 
