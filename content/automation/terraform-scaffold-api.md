@@ -28,9 +28,7 @@ The architecture for this scaffold is an API gateway, that points all routes to 
 
 This is useful for integration testing.
 
-####################3
-#DIAGRAM
-#####################
+![AWS API Gateway](/images/aws-api-gateway.png)
 
 ## The basic scaffold
 
@@ -138,7 +136,6 @@ resource "aws_api_gateway_method" "proxy" {
    authorization = "NONE"
 }
 ```
-
 
 I then create an integration between my API gateway proxy resources and the function that I create. This allows my API gateway to call my underlying resource (in this case my lambda function).
 
