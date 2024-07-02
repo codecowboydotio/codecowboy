@@ -71,6 +71,14 @@ def lambda_handler(event, context):
     API_KEY = "XXXXXXXXXXXXXXXXX"
 ```
 
+This includes defining the endpoint address and any API key that you may need to talk to that endpoint.
+In my case, I am using httpbin as a way to demonstrate how this integration works.
+
+
+The next piece of code takes the inputs and sends the response as a POST request to the endpoint that was defined in our variable above.
+
+Note that I am setting the content type as part of the request. This is set as an object, so that any other headers that are required to be passed (such as API key) can be passed easily. The POST request includes the headers object.
+
 ```Python
     # sending post request and saving response as response object
     # inside lambda we need to encode the data object as json before sending
@@ -87,6 +95,20 @@ def lambda_handler(event, context):
       body = data,
       headers = headers
     )
+```
+
+
+
+
+```Python
+
+    # extracting response text
+    logger.info('Response from external API resp : %s', response)
+    logger.info('Response from external API resp : %s', response.status)
+
+    return {
+        'statusCode' : '200',
+        'body': response.data.decode("utf-8")
 ```
 
 ```
