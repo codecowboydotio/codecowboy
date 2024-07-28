@@ -99,6 +99,7 @@ This is important because there are times when you will need to POST to another 
     )
 ```
 
+## Function logging
 
 The very last thing that we do is we put a log entry into the cloudwatch logs. This is useful for debugging purposes. 
 
@@ -114,6 +115,8 @@ Then we return a 200 with the response of the other API.
         'statusCode' : '200',
         'body': response.data.decode("utf-8")
 ```
+
+## The full code
 
 The full code is below.
 
