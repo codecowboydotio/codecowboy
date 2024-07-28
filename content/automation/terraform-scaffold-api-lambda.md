@@ -105,8 +105,8 @@ The very last thing that we do is we put a log entry into the cloudwatch logs. T
 
 Then we return a 200 with the response of the other API.
 
-```Python
 
+```Python
     # extracting response text
     logger.info('Response from external API resp : %s', response)
     logger.info('Response from external API resp : %s', response.status)
@@ -120,7 +120,7 @@ Then we return a 200 with the response of the other API.
 
 The full code is below.
 
-```
+```Python
 import json
 import urllib3
 import logging
