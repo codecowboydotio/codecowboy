@@ -176,7 +176,12 @@ def lambda_handler(event, context):
     }
 ```
 
-```
+## The response
+
+If we send a curl request to our new endpoint, we end up with the following response.
+This response 
+
+```Json
 {
   "args": {},
   "data": "{\"foo\": \"bar\"}",
@@ -197,3 +202,8 @@ def lambda_handler(event, context):
   "url": "https://httpbin.org/post"
 }
 ```
+
+## Conclusion
+This is a neat way to set up a webhook in AWS. The webhook essentially acts as a proxy, sending requests through to the endpoint defined in the function. This means that we can do transformations between any other API endpoint and our own endpoint. This is a powerful way to integrate between systems.
+
+I hope someone finds this useful, if you do, drop me an email :)
