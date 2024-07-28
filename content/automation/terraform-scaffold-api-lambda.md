@@ -79,6 +79,8 @@ The next piece of code takes the inputs and sends the response as a POST request
 
 Note that I am setting the content type as part of the request. This is set as an object, so that any other headers that are required to be passed (such as API key) can be passed easily. The POST request includes the headers object.
 
+This is important because there are times when you will need to POST to another service that has requirements around specific headers being set.
+
 ```Python
     # sending post request and saving response as response object
     # inside lambda we need to encode the data object as json before sending
@@ -98,7 +100,9 @@ Note that I am setting the content type as part of the request. This is set as a
 ```
 
 
+The very last thing that we do is we put a log entry into the cloudwatch logs. This is useful for debugging purposes. 
 
+Then we return a 200 with the response of the other API.
 
 ```Python
 
@@ -110,6 +114,8 @@ Note that I am setting the content type as part of the request. This is set as a
         'statusCode' : '200',
         'body': response.data.decode("utf-8")
 ```
+
+The full code is below.
 
 ```
 import json
