@@ -1,6 +1,6 @@
 +++
 title = "Pulumi - creating cloud infrastructure in digital ocean"
-date = "2024-11-01"
+date = "2024-11-02"
 aliases = ["pulumi_digital_ocean"]
 tags = ["pulumi", "iac"]
 categories = ["automation", "software", "dev"]
