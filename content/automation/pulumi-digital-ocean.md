@@ -37,6 +37,11 @@ We create a new template for our project using the new command.
 
 ```Shell
 pulumi new digitalocean-python --name blog_post --description "blog post tutorial"
+```
+
+You should see some output that looks like this:
+
+```Shell
 This command will walk you through creating a new Pulumi project.
 
 Enter a value or leave blank to accept the (default), and press <ENTER>.
@@ -79,6 +84,15 @@ I have chosen full access, however I do recommend limiting the scope for practic
 ![Generate API key](/images/do-generate-api-key.jpg)
 
 ### Configure and SSH key
+Next, we will configure an SSH key in digital ocean, so that we are able to log into our newly created droplet. 
+We strictly don't need to do this, but it's useful for completeness.
+
+Within the digital ocean portal, go to the settings menu.
 ![Settings Menu](/images/do-settings-menu.jpg)
 
+Then click on the security tab.
+Once you're there, click on the create ssh key button.
+
+There are detailed instructions within the dialogue that pops up telling you how to create / import an ssh key.
 ![SSH key](/images/do-add-ssh-key.jpg)
+
