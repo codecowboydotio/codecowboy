@@ -1,9 +1,9 @@
 +++
-title = "Pulumi - creating cloud infrastructure in digital ocean"
+title = "Pulumi - creating kubernetes in digital ocean"
 date = "2024-11-02"
-aliases = ["pulumi_digital_ocean"]
+aliases = ["pulumi_k8s_digital_ocean"]
 tags = ["pulumi", "iac"]
-categories = ["automation", "software", "dev"]
+categories = ["automation", "software", "dev", "k8s"]
 [ author ]
   name = "codecowboy.io"
 +++
