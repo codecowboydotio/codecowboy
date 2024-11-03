@@ -10,14 +10,13 @@ categories = ["automation", "software", "dev", "k8s"]
 
 # Intro
 As many of you know, I've been using Pulumi for a while and I am a big fan.
-Today, I'm going to walk through creating resources in digital ocean.
+Today, I'm going to walk through creating Kubernetes in digital ocean.
 
 ## Why digital ocean?
 A lot of people will wonder **"why digital ocean"??** the answer is simple.
-It's cheap, fast, and has most of the services I need. 
+It's extremely well integrated, and this makes it very compelling to use. 
 
-As always, as this is my first digital ocean post, I will start with a simple virtual machine, or a droplet in digital ocean terminology.
-I will eventually walk through other services with digital ocean, but I think a virtual machine is a simple and good enough place to start.
+I'm going to walk through creating a simple kubernetes cluster (with three nodes), and then deploying a simple application and load balancer to the cluster.
 
 # Initial Setup
 
@@ -38,7 +37,7 @@ I am going to choose python for this this exercise.
 We create a new template for our project using the new command.
 
 ```Shell
-pulumi new digitalocean-python --name blog_post --description "blog post tutorial"
+pulumi new digitalocean-python --name do-k8s --description "Digital Ocean k8s example"
 ```
 
 You should see some output that looks like this:
@@ -49,7 +48,7 @@ This command will walk you through creating a new Pulumi project.
 Enter a value or leave blank to accept the (default), and press <ENTER>.
 Press ^C at any time to quit.
 
-Created project 'blog_post'
+Created project 'do-k8s'
 
 Please enter your desired stack name.
 To create a stack in an organization, use the format <org-name>/<stack-name> (e.g. `acmecorp/dev`).
@@ -95,19 +94,6 @@ export DIGITALOCEAN_TOKEN=dop_<your key>
 This is the easy way without using Pulumi secrets.
 {{< /notice >}}
 
-### Configure and SSH key
-Next, we will configure an SSH key in digital ocean, so that we are able to log into our newly created droplet. 
-We strictly don't need to do this, but it's useful for completeness.
-
-Within the digital ocean portal, go to the settings menu.
-![Settings Menu](/images/do-settings-menu.jpg)
-
-Then click on the security tab.
-Once you're there, click on the create ssh key button.
-
-There are detailed instructions within the dialogue that pops up telling you how to create / import an ssh key.
-![SSH key](/images/do-add-ssh-key.jpg)
-
 # Pulumi Program
 I have chosen python as my starting point for today, so let's take a look at what the command we ran earlier actually created for me.
 If you remember, we ran a **pulumi new** command to create a scaffold for us.
@@ -139,25 +125,25 @@ pulumi config
 
 I can see that I have defined a number of variables underneath the **cfg** namespace, which shows as a nested value.
 I use nested values as a default, so that I can store multiple configuration values with different options.
-Essentially the configuration is namespaced.
 
 ```Shell
 KEY               VALUE
-cfg:image-name    ubuntu-24-04-x64
-cfg:ssh-key-name  digital-ocean-key
-cfg:vm-name       do-vm
+cfg:cluster-name  do-pulumi-k8s
+cfg:node-count    3
+cfg:node-name     node
+cfg:node-size     s-1vcpu-2gb
+cfg:region        syd1
 pulumi:tags       {"pulumi:template":"digitalocean-python"}
-
 ```
 
 ### Setting configuration values
 In order to set my configuration values I do the following:
 
 ```Shell
-pulumi config set cfg:vm-name do-droplet
+pulumi config set cfg:cluster-name do-pulumi-k8s
 ```
 
-This sets the configuration value of **vm-name** to **do-droplet** within the **cfg** namespace.
+This sets the configuration value of **cluster-name** to **do-pulumi-k8s** within the **cfg** namespace.
 I can then reference this in my codebase.
 
 ## Pulumi program
@@ -171,10 +157,12 @@ import pulumi_digitalocean as do
 
 
 ## Import configuration variables
-stack_config= pulumi.Config("cfg")
-var_ssh_key_name= stack_config.require("ssh-key-name")
-var_image=stack_config.require("image-name")
-var_vm_name=stack_config.require("vm-name")
+stack_config = pulumi.Config("cfg")
+var_cluster_name = stack_config.require("cluster-name")
+var_node_name = stack_config.require("node-name")
+var_node_size = stack_config.require("node-size")
+var_node_count = int(stack_config.require("node-count"))
+var_region = stack_config.require("region")
 ```
 
 In the code above, I import the pulumi modules, but also import my stack configuration. These are the configuration values that I set using the **pulumi config set** command earlier. 
@@ -182,33 +170,67 @@ In the code above, I import the pulumi modules, but also import my stack configu
 These are variables that I may want to change over time, and are maintained outside my codebase. 
 These variables are imported and referenced within my pulumi codebase. 
 
-...yes I have some interesting habits, but some of these are also for readability within a blog.
-
-## Create the droplet
-In order to create the droplet, I need to supply a number of configuration parameters to the **do.Droplet** interface. 
+## Create the cluster
+In order to create the cluster, I need to supply a number of configuration parameters to the **do.KubernetesCluster** interface. 
 These are: 
-- name: The name of the droplet in the web interface.
-- image: The image to use for the droplet - see here: [https://docs.digitalocean.com/products/droplets/details/images/](https://docs.digitalocean.com/products/droplets/details/images/) 
-- region: The region where you would like your droplet to live - see here: [https://docs.digitalocean.com/platform/regional-availability/](https://docs.digitalocean.com/platform/regional-availability/)
-- size: The size of the droplet - see here: [https://slugs.do-api.dev/](https://slugs.do-api.dev/) 
-- ssh_keys: The id of the ssh key (in order to get this, you perform a lookup by name, and then use the **id** method)
+- name = The k8s cluster name (this will be reflected in the web UI)
+- region = The region where you would like your cluster to live - see here: [https://docs.digitalocean.com/platform/regional-availability/](https://docs.digitalocean.com/platform/regional-availability/)
+- version = The version of kubernetes. I choose "latest" but you can also use a defined version (see below)
+- node_pool = This is the node pool using the KubernetesClusterNodePoolArgs interface
+    name = The name of the node pool
+    size = The size of the instances within the node pool. These are droplet sizes, remember in digital ocean terms, a worker node is a droplet or VM - see here: [https://slugs.do-api.dev/](https://slugs.do-api.dev/) 
+    node_count = The number of nodes in the node pool. I'm going to start with three (this is the default maximum in digital ocean without raising a support ticket).
+
+### Kubernetes version
+
+To get the list of supported kubernetes versions, you can use the following command **doctl**. This is the ditigal ocean control command:
 
 ```Shell
-# Get my ssh key identifier
-ssh_key= do.get_ssh_key(name=var_ssh_key_name)
-
-# Create a web server
-web = do.Droplet("web",
-    name=var_vm_name,
-    image=var_image,
-    region=do.Region.SYD1,
-    size="s-1vcpu-512mb-10gb",
-    ssh_keys=[ssh_key.id],
-)
-
-pulumi.export('public_ip', web.ipv4_address)
+ doctl kubernetes options versions
 ```
-Lastly, I print out the public IP address of my droplet so that I can connect to it.
+
+The slug version can be used in place of **latest** if needed.
+
+```Shell
+Slug           Kubernetes Version    Supported Features
+1.31.1-do.3    1.31.1                cluster-autoscaler, docr-integration, ha-control-plane, token-authentication
+1.30.5-do.3    1.30.5                cluster-autoscaler, docr-integration, ha-control-plane, token-authentication
+1.29.9-do.3    1.29.9                cluster-autoscaler, docr-integration, ha-control-plane, token-authentication
+```
+
+## Cluster Code
+The following code represents the code to create the cluster.
+
+The code creates a cluster, and a node pool, with three nodes using the latest supported version of Kubernetes within digital ocean.
+
+That's it!
+
+```Shell
+cluster = do.KubernetesCluster("do-cluster",
+    name = var_cluster_name,
+    region = var_region,
+    version = "latest",
+    node_pool = do.KubernetesClusterNodePoolArgs(
+        name = var_cluster_name + "-" + var_node_name,
+        size = var_node_size,
+        node_count = var_node_count,
+    ),
+);
+```
+
+## Outputs
+In order to use the cluster, we will need to export the kubeconfig.
+Below we export two things, one is the cluster configuration, the other is the kube_config variable. This is the kubeconfig that we can write to a file and use as a variable to run **kubectl**.
+
+```Shell
+pulumi.export('cluster_info', cluster)
+pulumi.export('kubeconfig', cluster.kube_configs)
+```
+
+This prints out a bunch of configuration items when the program runs and creates my infrastructure. 
+
+
+
 
 ## The full program
 The full program is: 
