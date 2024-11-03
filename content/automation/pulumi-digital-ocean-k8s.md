@@ -1,6 +1,6 @@
 +++
 title = "Pulumi - creating kubernetes in digital ocean"
-date = "2024-11-02"
+date = "2024-11-12"
 aliases = ["pulumi_k8s_digital_ocean"]
 tags = ["pulumi", "iac"]
 categories = ["automation", "software", "dev", "k8s"]
