@@ -367,7 +367,12 @@ The amazing piece here is that I deploy my load balancer object using a standard
 
 **This is definitely something that digital ocean have gotten right.**
 
+## The application
+Now that I have ingress configured, I can hit the external address with a web browser, and I should get the default NGINX page.
 
+![K8s nginx](/images/do-k8s-nginx.jpg)
+
+You can see from the picture above that the IP address matches my ingress and load balancer in the section above. 
 
 # Conclusion
 Pulumi works well with digital ocean, and has a great level of configurability while maintaining simplicity of configuration.
