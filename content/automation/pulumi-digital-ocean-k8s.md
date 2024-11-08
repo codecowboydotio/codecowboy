@@ -278,7 +278,7 @@ This is where thngs get really fun, and it's possibly the thing I like the most 
 
 I can use the following manifest to create an NGINX container.
 
-```yaml
+```Yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -295,7 +295,7 @@ spec:
 
 In order to apply this I use the following command:
 
-``Shell
+```Shell
 kubectl apply -f nginx.yaml
 ```
 
