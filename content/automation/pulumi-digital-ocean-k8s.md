@@ -374,6 +374,38 @@ Now that I have ingress configured, I can hit the external address with a web br
 
 You can see from the picture above that the IP address matches my ingress and load balancer in the section above. 
 
+The comment at the end is just a lazy way for me to remember the command the create the kubeconfig. I will eventually get around to fixing this.
+
+## The full code
+Below is the full code - end to end.
+
+```Python
+import pulumi
+import pulumi_digitalocean as do
+
+stack_config = pulumi.Config("cfg")
+var_cluster_name = stack_config.require("cluster-name")
+var_node_name = stack_config.require("node-name")
+var_node_size = stack_config.require("node-size")
+var_node_count = int(stack_config.require("node-count"))
+var_region = stack_config.require("region")
+
+cluster = do.KubernetesCluster("do-cluster",
+    name = var_cluster_name,
+    region = var_region,
+    version = "latest",
+    node_pool = do.KubernetesClusterNodePoolArgs(
+        name = var_cluster_name + "-" + var_node_name,
+        size = var_node_size,
+        node_count = var_node_count,
+    ),
+);
+
+pulumi.export('kubeconfig', cluster.kube_configs)
+
+# pulumi stack output kubeconfig --show-secrets | jq -r .[].raw_config > kubeconfig.json
+```
+
 # Conclusion
 Pulumi works well with digital ocean, and has a great level of configurability while maintaining simplicity of configuration.
 
