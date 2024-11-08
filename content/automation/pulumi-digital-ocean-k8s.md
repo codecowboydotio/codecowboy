@@ -352,13 +352,26 @@ kubernetes   ClusterIP      10.245.0.1       <none>           443/TCP        75m
 nginx        LoadBalancer   10.245.224.107   170.64.244.121   80:32104/TCP   41m
 ```
 
+{{< notice info >}}
+This is the piece that's really amazing
+{{< /notice >}}
+
 When I look in the digital ocean UI I see the following.
+I first see a load balancer object, when I check the load balancer object, I see the three nodes or droplets.
+
+![K8s lb](/images/do-k8s-lb.jpg)
 
 ![K8s lb nodes](/images/do-k8s-lb-nodes.jpg)
+
+The amazing piece here is that I deploy my load balancer object using a standard kubernetes manifest. There is absolutely no need for me as a developer to wire anything togther. No need to deploy roles or IAM objects. No need to configure ingress classes. Everything is just pre-configured and ready to go. 
+
+**This is definitely something that digital ocean have gotten right.**
+
 
 
 # Conclusion
 Pulumi works well with digital ocean, and has a great level of configurability while maintaining simplicity of configuration.
-I highly recommend having test of pulumi with digital ocean!
 
-Look out for the next post where I will test out pulumi with digital ocean's kubernetes infrastructure.
+The ease of getting a cluster up and running makes digital ocean very attractive. 
+
+Digital ocean have gotten the balance right between ease of use and simplicity. Everything just works out of the box. This is a huge plus in terms of getting up and running, and I highly recommend giving it a go.
