@@ -1,6 +1,6 @@
 +++
 title = "Pulumi - creating kubernetes in digital ocean"
-date = "2024-11-12"
+date = "2024-11-08"
 aliases = ["pulumi_k8s_digital_ocean"]
 tags = ["pulumi", "iac"]
 categories = ["automation", "software", "dev", "k8s"]
@@ -228,91 +228,134 @@ pulumi.export('kubeconfig', cluster.kube_configs)
 ```
 
 This prints out a bunch of configuration items when the program runs and creates my infrastructure. 
-
-
-
-
-## The full program
-The full program is: 
+You will note that the kubeconfig parameter is showing as a secret.
 
 ```Shell
-"""A DigitalOcean Python Pulumi program"""
-
-import pulumi
-import pulumi_digitalocean as do
-
-## Import configuration variables
-stack_config = pulumi.Config("cfg")
-var_ssh_key_name = stack_config.require("ssh-key-name")
-var_image=stack_config.require("image-name")
-var_vm_name=stack_config.require("vm-name")
-
-# Get my ssh key identifier
-ssh_key = do.get_ssh_key(name=var_ssh_key_name)
-
-# Create a web server
-web = do.Droplet("web",
-    name=var_vm_name,
-    image=var_image,
-    region=do.Region.SYD1,
-    size="s-1vcpu-512mb-10gb",
-    ssh_keys=[ssh_key.id],
-)
-
-pulumi.export('public_ip', web.ipv4_address)
+kubeconfig: [secret]
 ```
-
-## Run it
-Now let's run it. 
-
-In order to run this and see if a droplet is created, I simply run the command
+We can unwrap this with a simple shell command.
 
 ```Shell
-pulumi up -y
+pulumi stack output kubeconfig --show-secrets | jq -r .[].raw_config > kubeconfig.json
 ```
 
-This should create my droplet and print out its IP address for me.
+This prints out the kubeconfig for my cluster as a json blob and pipes it to a file called **kubeconfig.json**.
 
-### The output from the cli
-After I have run my command, I can see the output from the CLI
+I can then export my **KUBECONFIG** environment variable and use **kubectl** to query my cluster.
 
 ```Shell
-pulumi up -y
-Previewing update (dev)
-
-View in Browser (Ctrl+O): https://app.pulumi.com/XXXX
-
-     Type                           Name            Plan
- +   pulumi:pulumi:Stack            do-droplet-dev  create
- +   └─ digitalocean:index:Droplet  web             create
-
-Outputs:
-    public_ip: output<string>
-
-Resources:
-    + 2 to create
-
-Updating (dev)
-
-View in Browser (Ctrl+O): https://app.pulumi.com/XXXX
-
-     Type                           Name            Status
- +   pulumi:pulumi:Stack            do-droplet-dev  created (27s)
- +   └─ digitalocean:index:Droplet  web             created (23s)
-
-Outputs:
-    public_ip: "XX.XX.XX.210"
-
-Resources:
-    + 2 created
-
-Duration: 35s
+export KUBECONFIG=/my_pulumui_directory/kubeconfig.json
 ```
 
-I can also validate this within the web browser in the digital ocean portal.
-The droplet has the name that was part of my configuration, as well as the size and is located in the region that I specified. 
+Let's take a look at my cluster:
 
-![Droplet Info](/images/do-droplet-info.jpg)
+```Shell
+kubectl get nodes
+
+NAME                       STATUS   ROLES    AGE   VERSION
+do-pulumi-k8s-node-gcqmf   Ready    <none>   25m   v1.31.1
+do-pulumi-k8s-node-gcqmx   Ready    <none>   25m   v1.31.1
+do-pulumi-k8s-node-gcqmy   Ready    <none>   25m   v1.31.1
+```
+
+As we can see my entire cluster is up and running inside digital ocean.
+
+## Validation within the UI
+I can also validate this within the UI
+
+Within the UI, I can click on the **kubernetes** menu item, and I will see my cluster. 
+The cluster has the name that I set in my configuration.
+
+![K8s cluster](/images/do-k8s-cluster.jpg)
+
+If I click on the cluster name, and select the **resources** tab, I will see the nodepool and the nodes within my cluster.
+These correspond to the **kubectl** output above.
+
+![K8s node pool](/images/do-k8s-nodepool.jpg)
+
+## Deploy an application
+This is where thngs get really fun, and it's possibly the thing I like the most about the digital ocean kubernetes experience so far.
+
+I can use the following manifest to create an NGINX container.
+
+```Yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: nginx-example
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx:latest
+    ports:
+      - containerPort: 80
+```
+
+In order to apply this I use the following command:
+
+``Shell
+kubectl apply -f nginx.yaml
+```
+
+I can see that the pod is created by using the **kubectl describe** command. 
+This shows me that the pod is created and has an internal IP address. 
+This pod isn't yet exposed to the world yet. I need some sort of ingress in order for that to occur.
+
+```Shell
+kubectl describe pod nginx-pod
+
+Name:             nginx-pod
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             do-pulumi-k8s-node-gcyjf/10.126.0.3
+Start Time:       Mon, 04 Nov 2024 13:28:09 +1100
+Labels:           app=nginx-example
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.141
+```
+
+## Ingress
+This is the super super cool part. 
+The Ingress in digital ocean **just works**. Unlike other providers, there is no need to mess around with creating roles, or creating ingress classes and so on. 
+
+I can simply apply the following manifest:
+
+```Yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-size-unit: "3"
+    service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: "false"
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx-example
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+```
+This gives me a load balancer and ingress that points to my cluster and workload.
+
+```Shell
+kubectl get svc
+
+NAME         TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)        AGE
+kubernetes   ClusterIP      10.245.0.1       <none>           443/TCP        75m
+nginx        LoadBalancer   10.245.224.107   170.64.244.121   80:32104/TCP   41m
+```
+
+When I look in the digital ocean UI I see the following.
+
+![K8s lb nodes](/images/do-k8s-lb-nodes.jpg)
+
 
 # Conclusion
 Pulumi works well with digital ocean, and has a great level of configurability while maintaining simplicity of configuration.
