@@ -1,5 +1,5 @@
 +++
-title = "Pulumi - creating kubernetes in digital ocean"
+title = "Pulumi - creating a kubernetes cluster in digital ocean"
 date = "2024-11-08"
 aliases = ["pulumi_k8s_digital_ocean"]
 tags = ["pulumi", "iac"]
@@ -278,7 +278,7 @@ This is where thngs get really fun, and it's possibly the thing I like the most 
 
 I can use the following manifest to create an NGINX container.
 
-```Yaml
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
