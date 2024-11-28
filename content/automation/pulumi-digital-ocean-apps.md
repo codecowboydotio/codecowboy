@@ -1,6 +1,6 @@
 +++
 title = "Pulumi - creating an app in digital ocean using the app platform"
-date = "2024-11-28"
+date = "2024-11-30"
 aliases = ["pulumi_k8s_digital_ocean"]
 tags = ["pulumi", "iac"]
 categories = ["automation", "software", "dev", "serverless"]
@@ -236,6 +236,11 @@ python-3.12.2
 ```
 
 The versions that can be used are listed in the python buildpack reference document above.
+
+### Alternatives
+It is also possible to configure these parameters by using a yaml file. Digital ocean call this an **"App Specification"**. This is essentially a yaml file that is placed within the repo under a directory named "**.do/app.yaml**". This will be recognized by the app platform and used as your applications specification.
+
+This is a more flexible way of configuring your application, however, for the sake of simplicity, I will use the defaults.
 
 ## The full code
 
