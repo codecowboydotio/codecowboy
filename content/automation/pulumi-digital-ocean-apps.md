@@ -300,3 +300,8 @@ config:
       pulumi:template: digitalocean-python
 ```
 # Conclusion
+The digital ocean app platform is a neat way to deploy applications in a serverless way. I particularly like the way it pulls the application code from a git url.
+
+Using pulumi to deploy an entire application configuration to digital ocean is super cool and makes life a lot easier. The codebase is small, elegant and easy to work with.
+
+I highly recommend trying this out.
