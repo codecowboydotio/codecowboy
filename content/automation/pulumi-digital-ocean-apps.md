@@ -272,4 +272,31 @@ python_sample = digitalocean.App("python-sample", spec={
 pulumi.export('app_url', python_sample.live_url)
 ```
 
+## Pulumi configuration variables
+The following is a full list of the pulumi cfg files.
+
+The following is the Pulumi.dev.yaml
+
+```Shell
+config:
+  cfg:app-name: python-app
+  cfg:app-size: apps-s-1vcpu-1gb
+  cfg:service-name: py-service
+  cfg:branch: main
+```
+
+The following is the Pulumi.yaml file.
+```Shell
+name: do-app
+description: A minimal DigitalOcean Python Pulumi program
+runtime:
+  name: python
+  options:
+    toolchain: pip
+    virtualenv: venv
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: digitalocean-python
+```
 # Conclusion
