@@ -1,6 +1,6 @@
 +++
 title = "Pulumi - creating an app in digital ocean using the app platform"
-date = "2024-11-30"
+date = "2024-12-28"
 aliases = ["pulumi_k8s_digital_ocean"]
 tags = ["pulumi", "iac"]
 categories = ["automation", "software", "dev", "serverless"]
@@ -243,5 +243,33 @@ It is also possible to configure these parameters by using a yaml file. Digital 
 This is a more flexible way of configuring your application, however, for the sake of simplicity, I will use the defaults.
 
 ## The full code
+The following is the full pulumi codebase
+
+```Python
+import pulumi
+import pulumi_digitalocean as digitalocean
+
+stack_config = pulumi.Config("cfg")
+var_app_name = stack_config.require("app-name")
+var_app_size = stack_config.require("app-size")
+var_service_name = stack_config.require("service-name")
+var_branch = stack_config.require("branch")
+
+python_sample = digitalocean.App("python-sample", spec={
+    "name": var_app_name,
+    "region": "ams",
+    "services": [{
+        "name": var_service_name,
+        "instance_count": 2,
+        "instance_size_slug": var_app_size,
+        "git": {
+            "repo_clone_url": "https://github.com/codecowboydotio/do-pulumi-app",
+            "branch": var_branch,
+        },
+    }],
+})
+
+pulumi.export('app_url', python_sample.live_url)
+```
 
 # Conclusion
