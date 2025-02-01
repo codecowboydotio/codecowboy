@@ -48,7 +48,7 @@ pluralizelisttitles = false
   msapplication = "#1b1c1d"
   theme = "#1b1c1d"
 
-[author]
+[params.author]
   name = "codecowboy"
 
 [taxonomies]
@@ -75,18 +75,15 @@ pluralizelisttitles = false
 [languages]
   [languages.en]
     title = "Codecowboy.io"
+    copyright = '<a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>'
+
+  [languages.en.params]
     subtitle = "Ramblings of a developer"
     keywords = ""
-    copyright = '<a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>'
     readOtherPosts = "Read other posts"
-
     [languages.en.params.logo]
       logoText = "codecowboy.io"
       logoHomeLink = "/"
-    # or
-    #
-    # path = "/img/your-example-logo.svg"
-    # alt = "Your example logo alt text"
 
   # And you can even create generic menu
   [[menu.main]]
