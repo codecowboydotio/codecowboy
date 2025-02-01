@@ -17,8 +17,9 @@ params:
   author: codecowboy
   description: "Latest technology information for Kubernetes, Automation and Developers"
   DateFormat: "January 2, 2006"
-  ShowShareButtons: true
   ShowCodeCopyButtons: true
+  ShowPostNavLinks: true
+  ShowShareButtons: true
   keywords: [blog, technology, kubernetes, automation, dev, developer]
   images:
     - "https://codecowboy.io/images/codecowboyio-final.jpg"
