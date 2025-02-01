@@ -1,7 +1,8 @@
 baseurl      = "http://codecowboy.io"
 title        = "Codecowboydotio"
 languageCode = "en-us"
-theme        = ["hello-friend-ng", "hugo-notice"]
+theme        = ["PaperMod", "hugo-notice"]
+#theme        = ["hello-friend-ng", "hugo-notice"]
 paginate     = 10
 pluralizelisttitles = false
 
