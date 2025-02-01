@@ -2,8 +2,7 @@
 title = "About"
 date = "2021-06-11"
 aliases = ["about-us","about-codecowboy","contact"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 I am a developer who likes to write about things that I find interesting.
@@ -17,4 +16,3 @@ Meeting other people, and finding out what they're up to and doing is what I fin
 My github root is here:
 
 * https://github.com/codecowboydotio
-*
