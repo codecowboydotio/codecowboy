@@ -1,25 +1,20 @@
 +++
 title = "About"
-description = "Hugo, the world's fastest framework for building websites"
-date = "2019-02-28"
-aliases = ["about-us", "about-hugo", "contact"]
-author = "Hugo Authors"
+date = "2021-06-11"
+aliases = ["about-us","about-codecowboy","contact"]
+[ author ]
+  name = "codecowboy.io"
 +++
 
-Written in Go, Hugo is an open source static site generator available under the [Apache Licence 2.0.](https://github.com/gohugoio/hugo/blob/master/LICENSE) Hugo supports TOML, YAML and JSON data file types, Markdown and HTML content files and uses shortcodes to add rich content. Other notable features are taxonomies, multilingual mode, image processing, custom output formats, HTML/CSS/JS minification and support for Sass SCSS workflows.
+I am a developer who likes to write about things that I find interesting.
+Some of these interesting things I do as part of my day job, and some I don't.
 
-Hugo makes use of a variety of open source projects including:
+I mostly write about things that I'm either doing, or that interest me. This covers a wide range of topics from software dev through to containers and kubernetes, and my favourite topic - using the unix command tput to generate cool terminal graphics.
 
-* https://github.com/yuin/goldmark
-* https://github.com/alecthomas/chroma
-* https://github.com/muesli/smartcrop
-* https://github.com/spf13/cobra
-* https://github.com/spf13/viper
+I run a couple of meetups, which is fantastic fun and a great way to meet other people who do interesting things.
+Meeting other people, and finding out what they're up to and doing is what I find exciting. 
 
-Hugo is ideal for blogs, corporate websites, creative portfolios, online magazines, single page applications or even a website with thousands of pages.
+My github root is here:
 
-Hugo is for people who want to hand code their own website without worrying about setting up complicated runtimes, dependencies and databases.
-
-Websites built with Hugo are extremely fast, secure and can be deployed anywhere including, AWS, GitHub Pages, Heroku, Netlify and any other hosting provider.
-
-Learn more and contribute on [GitHub](https://github.com/gohugoio).
+* https://github.com/codecowboydotio
+*
