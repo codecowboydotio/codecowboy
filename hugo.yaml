@@ -17,6 +17,7 @@ params:
   description: "Latest technology information for Kubernetes, Automation and Developers"
   env: production
   DateFormat: "January 2, 2006"
+  ShowBreadCrumbs: true
   ShowCodeCopyButtons: true
   ShowPostNavLinks: true
   ShowReadingTime: true
@@ -46,9 +47,6 @@ params:
 #      mask: "#1b1c1d"
 #      msapplication: "#1b1c1d"
 #      theme: "#1b1c1d"
-
-
-
 
 languages:
   en:
