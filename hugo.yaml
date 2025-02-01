@@ -30,6 +30,15 @@ params:
     Content: |
       👋 Welcome to **codecowboy.io**, a site that's devoted to technology and things that interest me. I have a lot on automation and kubernetes, and other topics as I become interested.
 
+  socialIcons:
+    - name: "twitter"
+      url: "https://twitter.com/codecowboydotio"
+    - name: "email"
+      url: "mailto:nobody@example.com"
+    - name: "github"
+      url: "https://github.com/codecowboydotio"
+    - name: "linkedin"
+      url: "https://www.linkedin.com/in/scottv1/"
 #  footer:
 #    trademark: true
 #    rss: true
@@ -54,15 +63,6 @@ taxonomies:
   tag: "tags"
   series: "series"
 
-social:
-  - name: "twitter"
-    url: "https://twitter.com/codecowboydotio"
-  - name: "email"
-    url: "mailto:nobody@example.com"
-  - name: "github"
-    url: "https://github.com/codecowboydotio"
-  - name: "linkedin"
-    url: "https://www.linkedin.com/in/scottv1/"
 
 languages:
   en:
