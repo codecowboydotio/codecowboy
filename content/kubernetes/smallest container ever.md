@@ -4,8 +4,7 @@ date = "2021-07-09"
 aliases = ["smallest_container"]
 tags = ["containers", "minimal"]
 categories = ["containers", "testing"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # Intro

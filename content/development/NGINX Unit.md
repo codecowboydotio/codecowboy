@@ -4,8 +4,7 @@ date = "2021-08-11"
 aliases = ["nginx_unit"]
 tags = ["nginx", "unit"]
 categories = ["software", "dev"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # Intro

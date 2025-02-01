@@ -4,8 +4,7 @@ date = "2021-11-01"
 aliases = ["sql_server"]
 tags = ["kubernetes", "containers", "databases"]
 categories = ["kubernetes", "software", "dev"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # Intro

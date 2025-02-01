@@ -4,8 +4,7 @@ date = "2022-03-05"
 aliases = ["k3s"]
 tags = ["kubernetes", "containers", "micro"]
 categories = ["kubernetes", "software", "dev"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 ## Intro

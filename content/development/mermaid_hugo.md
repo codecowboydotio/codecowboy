@@ -4,8 +4,7 @@ date = "2022-04-03"
 aliases = ["git"]
 tags = ["git"]
 categories = ["software", "dev"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # Intro

@@ -4,8 +4,7 @@ date = "2023-01-09"
 aliases = ["tetsuo"]
 tags = ["serverless"]
 categories = ["software", "dev"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # Intro

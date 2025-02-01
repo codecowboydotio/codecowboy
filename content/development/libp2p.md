@@ -4,8 +4,7 @@ date = "2021-12-30"
 aliases = ["libp2p"]
 tags = ["libp2p", "control plane"]
 categories = ["software", "dev"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # Intro

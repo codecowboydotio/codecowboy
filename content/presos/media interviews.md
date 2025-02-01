@@ -4,8 +4,7 @@ date = "2021-09-29"
 aliases = ["media"]
 tags = ["interviews", "media" ]
 categories = ["interviews", "media"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # 2021
