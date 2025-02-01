@@ -1,4 +1,5 @@
 +++
+author = "codecowboy"
 title = "Pulumi - creating an app in digital ocean using the app platform"
 date = "2024-12-28"
 aliases = ["pulumi_k8s_digital_ocean"]
