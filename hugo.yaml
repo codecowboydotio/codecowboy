@@ -31,7 +31,8 @@ params:
   homeInfoParams:
     Title: "codecowboy.io"
     Content: |
-      👋 Welcome to **codecowboy.io**, a site that's devoted to technology and things that interest me. I have a lot on automation and kubernetes, and other topics as I become interested.
+      👋 Welcome to **codecowboy.io**, a site that's devoted to technology and things that interest me. I write a lot about automation, kubernetes, cloud and developer related topics... and anything else that interest me.
+      - You can read more about me [here](http://codecowboy.io/about)
 
   socialIcons:
     - name: "twitter"
