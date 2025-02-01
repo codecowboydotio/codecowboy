@@ -17,6 +17,7 @@ params:
   description: "Latest technology information for Kubernetes, Automation and Developers"
   env: production
   DateFormat: "January 2, 2006"
+  pluralizelisttitles = false
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: true
   ShowPostNavLinks: true
