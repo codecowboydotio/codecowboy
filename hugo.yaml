@@ -11,7 +11,7 @@ paginate: 10
 mainsections: ["posts", "automation", "development", "kubernetes", "presos"]
 
 params:
-  #author: codecowboy
+  author: codecowboy
   defaultTheme: light
   disableThemeToggle: false
   description: "Latest technology information for Kubernetes, Automation and Developers"
