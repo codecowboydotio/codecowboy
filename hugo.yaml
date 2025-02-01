@@ -9,6 +9,7 @@ theme:
 #   - "hugo-notice"
 paginate: 10
 pluralizelisttitles: false
+mainsections: ["posts"]
 
 params:
   dateform: "Jan 2, 2006"
