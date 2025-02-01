@@ -9,15 +9,25 @@ theme:
 #   - "hugo-notice"
 paginate: 10
 pluralizelisttitles: false
-mainsections: ["posts", "automation", "development", "kubernetes"]
+mainsections: ["posts", "automation", "development", "kubernetes", "presos"]
 
 params:
-  dateform: "Jan 2, 2006"
-  dateformShort: "Jan 2"
-  dateformNum: "2006-01-02"
-  dateformNumTime: "2006-01-02 15:04"
+#  dateform: "Jan 2, 2006"
+#  dateformShort: "Jan 2"
+#  dateformNum: "2006-01-02"
+#  dateformNumTime: "2006-01-02 15:04"
+  defaultTheme: light
+  disableThemeToggle: false
+  ShowShareButtons: true
+  ShowCodeCopyButtons: true
+  description: "Latest technology information for Kubernetes, Automation and Developers"
+  keywords: "blog, technology, kubernetes, automation, dev, developer"
+  images:
+    - "https://codecowboy.io/images/codecowboyio-final.jpg"
+  PygmentsCodeFences: true
+  PygmentsStyle: "monokai"
   homeInfoParams:
-    Title: "foo"
+    Title: "codecowboy.io"
     Content: |
       👋 Welcome to demo page of Hugo's theme PaperMod!
 
@@ -26,16 +36,6 @@ params:
       - Feel free to show your support by giving us a star 🌟 on GitHub and sharing with your friends and social media .
 
       - PaperMod is based on theme [Paper](https://github.com/nanxiaobei/hugo-paper/tree/4330c8b12aa48bfdecbcad6ad66145f679a430b3).
-  homeSubtitle: "A source of information for Automation, Development and Kubernetes topics."
-  disableReadOtherPosts: false
-  enableSharingButtons: true
-  description: "Latest technology information for Kubernetes, Automation and Developers"
-  keywords: "blog, technology, kubernetes, automation, dev, developer"
-  images:
-    - "https://codecowboy.io/images/codecowboyio-final.jpg"
-  defaultTheme: "dark"
-  PygmentsCodeFences: true
-  PygmentsStyle: "monokai"
 
   footer:
     trademark: true
