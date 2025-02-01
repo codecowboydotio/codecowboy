@@ -8,7 +8,6 @@ theme:
 #   - "hello-friend-ng"
 #   - "hugo-notice"
 paginate: 10
-pluralizelisttitles: false
 mainsections: ["posts", "automation", "development", "kubernetes", "presos"]
 
 params:
@@ -19,6 +18,7 @@ params:
   DateFormat: "January 2, 2006"
   ShowCodeCopyButtons: true
   ShowPostNavLinks: true
+  ShowReadingTime: true
   ShowShareButtons: true
   keywords: [blog, technology, kubernetes, automation, dev, developer]
   images:
