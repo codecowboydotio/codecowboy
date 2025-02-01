@@ -9,7 +9,7 @@ theme:
 #   - "hugo-notice"
 paginate: 10
 pluralizelisttitles: false
-mainsections: ["posts"]
+mainsections: ["posts", "automation", "development", "kubernetes"]
 
 params:
   dateform: "Jan 2, 2006"
