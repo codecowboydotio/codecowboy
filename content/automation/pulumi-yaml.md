@@ -4,8 +4,7 @@ date = "2022-08-02"
 aliases = ["pulumi_yaml"]
 tags = ["pulumi", "iac"]
 categories = ["automation", "software", "dev"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # Intro

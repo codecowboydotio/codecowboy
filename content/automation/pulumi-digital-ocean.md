@@ -4,8 +4,7 @@ date = "2024-11-02"
 aliases = ["pulumi_digital_ocean"]
 tags = ["pulumi", "iac"]
 categories = ["automation", "software", "dev"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # Intro

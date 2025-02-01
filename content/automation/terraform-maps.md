@@ -4,8 +4,7 @@ date = "2021-09-26"
 aliases = ["terraform_maps"]
 tags = ["terraform", "iac"]
 categories = ["automation", "software", "dev"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # Intro

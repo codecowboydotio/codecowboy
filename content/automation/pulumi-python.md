@@ -4,8 +4,7 @@ date = "2022-12-19"
 aliases = ["pulumi_python"]
 tags = ["pulumi", "iac"]
 categories = ["automation", "software", "dev"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # Intro

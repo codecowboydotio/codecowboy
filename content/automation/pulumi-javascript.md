@@ -4,8 +4,7 @@ date = "2023-09-21"
 aliases = ["pulumi_javascript"]
 tags = ["pulumi", "iac"]
 categories = ["automation", "software", "dev"]
-[ author ]
-  name = "codecowboy.io"
+author = "codecowboy.io"
 +++
 
 # Intro
