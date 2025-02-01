@@ -12,16 +12,14 @@ pluralizelisttitles: false
 mainsections: ["posts", "automation", "development", "kubernetes", "presos"]
 
 params:
-#  dateform: "Jan 2, 2006"
-#  dateformShort: "Jan 2"
-#  dateformNum: "2006-01-02"
-#  dateformNumTime: "2006-01-02 15:04"
   defaultTheme: light
   disableThemeToggle: false
+  author: codecowboy
+  description: "Latest technology information for Kubernetes, Automation and Developers"
+  DateFormat: "January 2, 2006"
   ShowShareButtons: true
   ShowCodeCopyButtons: true
-  description: "Latest technology information for Kubernetes, Automation and Developers"
-  keywords: "blog, technology, kubernetes, automation, dev, developer"
+  keywords: [blog, technology, kubernetes, automation, dev, developer]
   images:
     - "https://codecowboy.io/images/codecowboyio-final.jpg"
   PygmentsCodeFences: true
