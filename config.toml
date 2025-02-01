@@ -90,6 +90,10 @@ pluralizelisttitles = false
 
   # And you can even create generic menu
   [[menu.main]]
+    identifier = "blog"
+    name       = "Blog"
+    url        = "blog/"
+  [[menu.main]]
     identifier = "automation"
     name       = "Automation"
     url        = "automation/"
