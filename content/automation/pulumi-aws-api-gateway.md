@@ -20,6 +20,7 @@ I am building out a few things today.
 Essentially this is a pattern that allows me to quickly build out new integrations with REST API's. 
 I can send arbitrary data to my API gateway and lambda function, perform transformations, and then send the data on to another API.
 
+![AWS API Gateway](/images/aws_api_gateway.jpg)
 
 ## Why?
 The rationale for doing this is something like this:
