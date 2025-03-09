@@ -139,7 +139,7 @@ rest_api = aws.apigateway.RestApi(
 ### API resources
 
 Next we need to create some resources. These are three things:
-
+![API Gateway logical view](/images/pulumi-api-gateway-logical.jpg)
 Resource
 Method
 Integration
