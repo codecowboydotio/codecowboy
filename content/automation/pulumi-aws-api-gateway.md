@@ -20,7 +20,7 @@ I am building out a few things today.
 Essentially this is a pattern that allows me to quickly build out new integrations with REST API's. 
 I can send arbitrary data to my API gateway and lambda function, perform transformations, and then send the data on to another API.
 
-![AWS API Gateway](/images/aws_api_gateway.jpg)
+![API Gateway logical view](/images/pulumi-api-gateway-logical.jpg)
 
 ## Why?
 The rationale for doing this is something like this:
@@ -144,7 +144,7 @@ Next we need to create some resources. These are three things:
 - Method: This represents the HTTP method that the API gateway allows. In my case, I al allowing ANY method, or all methods with no authentication.
 - Integration: The integration ties these together with my lambda function. While the API gateway allows all methods, at the front, the integration to my lambda function allows a POST.
 
-![API Gateway logical view](/images/pulumi-api-gateway-logical.jpg)
+![AWS API Gateway](/images/aws_api_gateway.jpg)
 
 
 ```Python
