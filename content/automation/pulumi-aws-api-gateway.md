@@ -14,7 +14,7 @@ I have had an API gateway that is backed by a lambda function in terraform for q
 ## TLDR
 If you just want the code - it's here: 
 
-![API Gateway git repository](https://github.com/codecowboydotio/pulumi/tree/main/aws-serverless)
+[API Gateway git repository](https://github.com/codecowboydotio/pulumi/tree/main/aws-serverless)
 
 
 ## What am I building?
