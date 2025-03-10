@@ -140,9 +140,9 @@ rest_api = aws.apigateway.RestApi(
 
 Next we need to create some resources. These are three things:
 
-- Resource: This represents 
-- Method: 
-- Integration:
+- Resource: This represents the path component and host it is handled. In my case I use the PROXY resource. 
+- Method: This represents the HTTP method that the API gateway allows. In my case, I al allowing ANY method, or all methods with no authentication.
+- Integration: The integration ties these together with my lambda function. While the API gateway allows all methods, at the front, the integration to my lambda function allows a POST.
 
 ![API Gateway logical view](/images/pulumi-api-gateway-logical.jpg)
 
@@ -171,6 +171,16 @@ rest_api_integration = aws.apigateway.Integration(
     uri=lambda_func.invoke_arn
     )
 ```
+
+This section is vital to understand how things work.
+
+I am using the proy method so that anything under my API path (in this case /) will be sent through without being changed. For example, /foo, /bar and /foo/bar would all be sent through to my lambda function. 
+
+While it is possible to configure routes and methods in the API gateway, I prefer to do this in my code. 
+
+It's a simple way of saying "my API gateway accepts everything, and my codebase is where the real work is done".
+
+I'm sure that depending on your perspective, this may be an anti pattern for you.
 
 ### API deployment
 
