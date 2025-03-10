@@ -137,7 +137,6 @@ rest_api = aws.apigateway.RestApi(
 ```
 
 ### API resources
-
 Next we need to create some resources. These are three things:
 
 - Resource: This represents the path component and host it is handled. In my case I use the PROXY resource. 
@@ -183,7 +182,6 @@ It's a simple way of saying "my API gateway accepts everything, and my codebase 
 I'm sure that depending on your perspective, this may be an anti pattern for you.
 
 ### Stage and Deployment
-
 In order to get your API gateway up and running you need two things - a stage and a deployment. They are linked, but are not the same thing.
 
 A deployment in AWS terms is a way of managing API lifecycle. A eployment allows you to make changes to your API and then apply them to a stage. Nothing happens until the changes are applied to a stage.
@@ -193,7 +191,6 @@ A stage is a **named referance to a deployment**. In this way, configuration and
 No matter what you think of this, and the internet has plenty of opinions, you need to create both a stage and a deployment to get your API gateway to work.
 
 #### API deployment
-
 In order to create a deployment, the following code is needed. This sets up a single deployment that can be used to manage the API gateway.
 
 ```Python
@@ -205,9 +202,7 @@ deployment = aws.apigateway.Deployment(
 )
 ```
 
-
 #### API stage
-
 To create a stage that references your deployment, the code block below will achieve this. Note that I am using a **depends_on** option on my resource in order to ensure that the deployment is created first.
 
 ```Python
@@ -221,13 +216,56 @@ stage = aws.apigateway.Stage(
 ```
 
 ### IAM
+The very last piece of the puzzle here is to give the correct AWS permissions to the gateway and the lambda in order for anything to be executed.
+
+The code below attaches a role to the lambda function that allows the API gateway to invoke the lambda function. In addition to this I am also attaching the execution ARN of my API gateway object **here seen as **rest_api** as the source object that is given the permissions to invoke my lambda function. 
+
+In other words, it's not everything that can invoke my lambda function, just my API gateway.
+
+```Python
+rest_invoke_permission = aws.lambda_.Permission(
+  name_prefix + "-" + project + "-" + var_lambda_name + "-permission",
+  statement_id  = "AllowAPIGatewayInvoke",
+  action="lambda:invokeFunction",
+  function=lambda_func.name,
+  principal="apigateway.amazonaws.com",
+  source_arn=rest_api.execution_arn.apply(lambda arn: arn + "/*/*"),
+)
+```
 
 #### Role
+When I first create the lambda runction I pass a role to the resource that creates the function. The role and execution attachment are below. The code creates a role that allows assume role for my lambda function, while also allowing the basic **AWSLambdaBasicExecutionRole** for my function.
+
+```Python
+lambda_role = iam.Role(
+    name_prefix + "-" + project + "-lambda-role",
+    name=name_prefix + "-" + project + "-lambda-role",
+    assume_role_policy="""{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": "sts:AssumeRole",
+                "Principal": {
+                    "Service": "lambda.amazonaws.com"
+                },
+                "Effect": "Allow",
+                "Sid": ""
+            }
+        ]
+    }""",
+)
+```
 
 #### Execution Attachment
 
-#### Invoke permissions
-
+```Python
+execution_attachment = iam.PolicyAttachment(
+    name_prefix + "-" + project + "-execution-attachment",
+    name=name_prefix + "-" + project + "-execution-attachment",
+    roles=[lambda_role.name],
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+)
+```
 
 ### Cleanup
 
