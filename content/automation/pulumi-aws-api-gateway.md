@@ -11,6 +11,12 @@ author = "codecowboy.io"
 I've been fooling around with **pulumi** for a bit now, and thought I would write about it here. 
 I have had an API gateway that is backed by a lambda function in terraform for quite some time. I use it quite frequently to spin up infrastructure when I need to perform testing on integrations. I eventually decided to re-write this in pulumi. 
 
+## TLDR
+If you just want the code - it's here: 
+
+![API Gateway git repository](https://github.com/codecowboydotio/pulumi/tree/main/aws-serverless)
+
+
 ## What am I building?
 I am building out a few things today. 
 - An API gateway
@@ -267,7 +273,113 @@ execution_attachment = iam.PolicyAttachment(
 )
 ```
 
-### Cleanup
+### Lambda code
+The core of all of this work is my lambda code.
+The code takes the entire data portion or body and simply sends it as a request to **httpbin.org/post**. The code then presents the response from httpbin back to the user. 
 
+This is essentially a **scaffold** that can be extended to other use cases. I personally have done this into key value databases in cloudflare, into servicenow and a bunch of other downstream systems. 
+
+```Python
+import json
+#from botocore.vendored import requests
+import urllib3
+import logging
+import requests
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+def lambda_handler(event, context):
+    raw_event = event['body']
+    uri_path = event['path'].strip("/")
+    logger.info(event)
+    json_event = json.loads(raw_event)
+    logger.info(json_event)
+
+
+    # In the event that you want to POST the data to either an authenticated or unauthenticated API
+    # You would invoke something like below
+
+    # Let's do a POST to an external API endpoint with data
+    # defining the api-endpoint
+    API_ENDPOINT = "https://httpbin.org/post"
+
+    # your API key here
+    #API_KEY = "XXXXXXXXXXXXXXXXX"
+
+    # sending post request and saving response as response object
+    # inside lambda we need to encode the data object as json before sending
+    data = json.dumps(json_event).encode('utf8')
+
+
+    headers = {
+      'Content-Type':'application/json',
+      'Accept':'application/json'
+    }
+    response = requests.post(
+      API_ENDPOINT,
+      json = data,
+      headers = headers
+    )
+
+    # extracting response text
+    logger.info('data : %s', data)
+    logger.info('Response from external API resp : %s', response.text)
+    logger.info('Response from external API resp : %s', response.status_code)
+
+    return {
+        'statusCode' : '200',
+        'body': response.text
+    }
+```
+
+### Running the code
+When I run the code, I get the following output, this creates all of my resources and makes an API gateway for me. The API gateway points to my lambda function, which in turn sends all requests to HTTPBIN.
+
+
+```Shell
+     Type                           Name                                        Status            Info
+ +   pulumi:pulumi:Stack            aws-serverless-dev                          created (43s)
+ +   ├─ aws:iam:Role                svk-test-webhook-lambda-role                created (4s)
+ +   ├─ aws:apigateway:RestApi      svk-test-webhook-api-gw                     created (3s)
+ +   ├─ aws:apigateway:Resource     svk-test-webhook-proxy-resource             created (1s)
+ +   ├─ aws:apigateway:Method       svk-test-webhook-proxy-root                 created (1s)
+ +   ├─ aws:iam:PolicyAttachment    svk-test-webhook-execution-attachment       created (1s)
+ +   ├─ aws:lambda:Function         svk-test-webhook-webhook-lambda             created (12s)
+ +   ├─ aws:apigateway:Method       svk-test-webhook-method                     created (2s)
+ +   ├─ aws:apigateway:Integration  svk-test-webhook-integration                created (1s)
+ +   ├─ aws:lambda:Permission       svk-test-webhook-webhook-lambda-permission  created (2s)
+ +   ├─ aws:apigateway:Integration  svk-test-webhook-integration-root           created (2s)
+ +   ├─ aws:apigateway:Deployment   svk-test-webhook-deployment                 created (1s)      1 warning
+ +   └─ aws:apigateway:Stage        svk-test-webhook-stage                      created (1s)
+```
+
+I can test this in the following way:
+
+```Shell
+ curl -X POST https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/test -d '{"foo":"bar"}'
+{
+  "args": {},
+  "data": "\"{\\\"foo\\\": \\\"bar\\\"}\"",
+  "files": {},
+  "form": {},
+  "headers": {
+    "Accept": "application/json",
+    "Accept-Encoding": "gzip, deflate",
+    "Content-Length": "20",
+    "Content-Type": "application/json",
+    "Host": "httpbin.org",
+    "User-Agent": "python-requests/2.32.3",
+    "X-Amzn-Trace-Id": "Root=1-XXXXXXXX-XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  },
+  "json": "{\"foo\": \"bar\"}",
+  "origin": "54.89.157.98",
+  "url": "https://httpbin.org/post"
+}
+```
+
+Things to note are that I need to append the stage to my web request. This allows me to hit my configured API endpoint. 
 
 ## Conclusion
+
+All in all this is a neat way to deploy an API gateway to AWS, and makes my life easier the next time that I want to write an integration for another downstream provider. It's a nice and easy way to get up and running without too much effort and means that you can make your entire project about the integration itself and not the infrastructure.
