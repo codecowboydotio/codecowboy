@@ -182,9 +182,43 @@ It's a simple way of saying "my API gateway accepts everything, and my codebase 
 
 I'm sure that depending on your perspective, this may be an anti pattern for you.
 
-### API deployment
+### Stage and Deployment
 
-### API stage
+In order to get your API gateway up and running you need two things - a stage and a deployment. They are linked, but are not the same thing.
+
+A deployment in AWS terms is a way of managing API lifecycle. A eployment allows you to make changes to your API and then apply them to a stage. Nothing happens until the changes are applied to a stage.
+
+A stage is a **named referance to a deployment**. In this way, configuration and rollout can be separated and managed and lifecycled separately.
+
+No matter what you think of this, and the internet has plenty of opinions, you need to create both a stage and a deployment to get your API gateway to work.
+
+#### API deployment
+
+In order to create a deployment, the following code is needed. This sets up a single deployment that can be used to manage the API gateway.
+
+```Python
+deployment = aws.apigateway.Deployment(
+  name_prefix + "-" + project + "-deployment",
+  opts=pulumi.ResourceOptions(depends_on=[rest_api_integration, rest_api_integration_root]),
+  rest_api=rest_api.id,
+  stage_name="",
+)
+```
+
+
+#### API stage
+
+To create a stage that references your deployment, the code block below will achieve this. Note that I am using a **depends_on** option on my resource in order to ensure that the deployment is created first.
+
+```Python
+stage = aws.apigateway.Stage(
+  name_prefix + "-" + project + "-stage",
+  opts=pulumi.ResourceOptions(depends_on=[deployment]),
+  rest_api=rest_api.id,
+  deployment = deployment.id,
+  stage_name = "test",
+)
+```
 
 ### IAM
 
