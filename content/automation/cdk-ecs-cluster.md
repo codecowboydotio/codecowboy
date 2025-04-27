@@ -160,11 +160,95 @@ new MinimalEcsStack(app, 'MinimalEcsStack', {
 ```
 
 ### Tags
+As this is a CDK cluster, I have added some code to tag individual tasks. This is an interesting quirk of ECS. By default, tasks are **not** tagged with the tags that are applied to the cluster. I have this piece of code that adds taks to the CDK app. In my case this is the cluster. 
+
 
 ```Typescript
 cdk.Tags.of(app).add('customer-app', 'prod-app', {
   //applyToLaunchedInstances: false,
 });
 ```
+
+I have another piece of code in my service definition that propagates tags from the service object down to the individual tasks.
+
+```Typescript
+      propagateTags: ecs.PropagatedTagSource.SERVICE,
+```
+
+This piece of code is part of the **ApplicationLoadBalancedFargateService** object. 
+I will show the behaviour of this once we start to look at the cluster itself.
+
+## Libraries
+The library code is similar in that it's reasonably easy to understand.
+This code exposes interfaces back to the main CDK app in the bin directory.
+
+
+### Imports
+My imports for this piece of code are similar. I import some default CDK libraries, but in addition, also import the ApplicationLoadBalancedFargateService from the default aws-ecs-patterns library. This library has a lot of the basic constructs for ECS already pre-canned.
+
+You can read more about it here:
+[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs_patterns-readme.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs_patterns-readme.html)
+
+
+```Typescript
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import { ApplicationLoadBalancedFargateService } from "aws-cdk-lib/aws-ecs-patterns";
+import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+
+export const PREFIX = "my-app";
+
+export class MinimalEcsStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    const vpc = new ec2.Vpc(this, "Vpc", {
+      ipAddresses: ec2.IpAddresses.cidr("10.0.0.0/16"),
+      maxAzs: 2, // each will have 1 public + 1 private subnets
+      vpcName: `${PREFIX}-vpc`
+    });
+
+    const cluster: ecs.Cluster = new ecs.Cluster(this, "Cluster", {
+      vpc,
+      clusterName: `${PREFIX}-cluster`
+    })
+
+    const service = new ApplicationLoadBalancedFargateService(this, "Service", {
+      serviceName: `${PREFIX}-service`,
+      enableExecuteCommand: true,
+      //enableECSManagedTags: true,
+      propagateTags: ecs.PropagatedTagSource.SERVICE,
+      loadBalancerName: `${PREFIX}-alb`,
+      cluster,
+      memoryLimitMiB: 512,
+      cpu: 256, // 0.25 vCPU
+      taskImageOptions: {
+        image: ecs.ContainerImage.fromRegistry("docker.io/nginx:latest"),
+        environment: {
+          ENV_VAR_1: "value1",
+          ENV_VAR_2: "value2",
+        },
+        containerPort: 80
+      },
+      desiredCount: 1,
+     }
+    )
+
+    service.targetGroup.configureHealthCheck({
+      path: "/"
+    })
+
+   // Add the permissions for the Sysdig CW Logs to the Task Execution Role
+   const policyStatement = new cdk.aws_iam.PolicyStatement({
+     actions: ['logs:CreateLogStream', 'logs:PutLogEvents'],
+     resources: ['*'],
+   })
+   service.taskDefinition.addToExecutionRolePolicy(policyStatement)
+  }
+}
+```
+
+
 
 ## Conclusion
