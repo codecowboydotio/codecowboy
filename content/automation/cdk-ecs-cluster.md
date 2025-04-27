@@ -189,6 +189,7 @@ My imports for this piece of code are similar. I import some default CDK librari
 You can read more about it here:
 [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs_patterns-readme.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs_patterns-readme.html)
 
+In addition, I also import ecs and ec2 libraries.
 
 ```Typescript
 import * as cdk from 'aws-cdk-lib';
@@ -196,24 +197,49 @@ import { Construct } from 'constructs';
 import { ApplicationLoadBalancedFargateService } from "aws-cdk-lib/aws-ecs-patterns";
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
+```
 
+### The ECS stack
+The ECS code is below. First I set up a variable as a constant, with the name of the cluster. This is used for the VPC name, service name and cluster name.
+
+
+```Typescript
 export const PREFIX = "my-app";
+```
 
+The first thing we do is export a class (this is so that it can be imported by the main app in the **/bin** directory).
+
+```Typescript
 export class MinimalEcsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+```
 
+We also create a VPC using the following code
+
+```Typescript
     const vpc = new ec2.Vpc(this, "Vpc", {
       ipAddresses: ec2.IpAddresses.cidr("10.0.0.0/16"),
       maxAzs: 2, // each will have 1 public + 1 private subnets
       vpcName: `${PREFIX}-vpc`
     });
+```
 
+Next We create the actual ECS cluster. This object uses the VPC that was created. This effectively creates the cluster inside the VPC.
+
+```Typescript
     const cluster: ecs.Cluster = new ecs.Cluster(this, "Cluster", {
       vpc,
       clusterName: `${PREFIX}-cluster`
     })
+```
 
+Next we create an ALB service that is of the fargate type.
+Note that this object also encompasses size of the task, the tags, the environment variables that are passed to the container, and the image that the container is created from.
+
+Additionally, I have turned on execute command. This allows me to create a shell into the running container. When creating a shell into a running container, 
+
+```Typescript
     const service = new ApplicationLoadBalancedFargateService(this, "Service", {
       serviceName: `${PREFIX}-service`,
       enableExecuteCommand: true,
@@ -234,7 +260,9 @@ export class MinimalEcsStack extends cdk.Stack {
       desiredCount: 1,
      }
     )
+```
 
+```Typescript
     service.targetGroup.configureHealthCheck({
       path: "/"
     })
