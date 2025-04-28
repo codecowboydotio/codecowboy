@@ -262,6 +262,14 @@ Additionally, I have turned on execute command. This allows me to create a shell
     )
 ```
 
+This should create a service with all of the correct tags, and have passed all of the environment variables down to the task level.
+
+
+### Logging
+Lastly, there is logging. 
+
+I create a log group, and push this to be the log group for the service. This is invaluable for debugging purposes.
+
 ```Typescript
     service.targetGroup.configureHealthCheck({
       path: "/"
@@ -277,6 +285,12 @@ Additionally, I have turned on execute command. This allows me to create a shell
 }
 ```
 
+## Full code
+The full code is below, because I know it's difficult to read when it's chopped up.
+
+```Typescript
+
+```
 
 
 ## Conclusion
