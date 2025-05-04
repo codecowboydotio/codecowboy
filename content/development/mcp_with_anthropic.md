@@ -99,6 +99,9 @@ You will note that each of the routes has two possible requests:
 ## All records
 All records looks like this:
 
+```Shell
+curl -s 10.1.1.150:3000/people/ | more
+```
 ```Json
 [
   {
@@ -165,6 +168,8 @@ A single record looks like this
 
 ```Shell
 curl -s 10.1.1.150:3000/people/1 | more
+```
+```Json
 {
   "edited": "2014-12-20T21:17:56.891Z",
   "name": "Luke Skywalker",
