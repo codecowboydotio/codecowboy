@@ -32,6 +32,7 @@ The following diagram represents a high level overview of what has been built an
 
 ![MCP high level overview](/images/MCP-highlevel-1.jpg)
 
+...and don't worry there are more diagrams that show more detail further on :)
 
 # Where to start
 I started at the following address:
