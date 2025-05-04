@@ -244,6 +244,11 @@ I wrote an MCP server (based on the example server) that pulls back a **single**
 ## The code
 I used the code from the example server, and **charged ahead** with typical REST based "query for the smallest thing" logic.
 
+A diagram of the MCP tool flow is below:
+
+![MCP tool flow](/images/MCP-tool-flow.jpg)
+
+
 ```Python
 from typing import Any
 import httpx
