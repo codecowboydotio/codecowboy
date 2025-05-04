@@ -248,6 +248,15 @@ A diagram of the MCP tool flow is below:
 
 ![MCP tool flow](/images/MCP-tool-flow.jpg)
 
+1. Client is asked "get swapi character id 1"
+2. MCP tool calls **make_request**
+3. make_request queries the external API
+4. external API returns a JSON value for a single person with the ID of 1
+5. The **make_request** function returns RAW JSON data to the MCP tool
+6. The MCP tool called the **format_msg** function.
+7. The **format_msg** function parses the JSON response and formats it
+8. The formatted response is sent back to the client
+
 
 ```Python
 from typing import Any
