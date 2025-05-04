@@ -84,6 +84,16 @@ new-item swapi.py
 From here we are ready to start writing some code.
 
 # Star Wars API
+I am running a **local** version of the star wars API as a container.
+I also **inserted myself** into the API as an easy way to validate that my MCP server is asking my API and not deriving data from other sources or it's trained dataset.
+
+The API that I use is quite specific and has a number of routes:
+
+![SWAPI swagger](/images/swapi-swagger.jpg)
+
+
+/people/{id}
+/
 
 
 # Basic MCP server
