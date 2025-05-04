@@ -96,7 +96,8 @@ You will note that each of the routes has two possible requests:
 /route/ - Return **ALL** records
 /route/{id} - Return a specific record
 
-All reorcds looks like this:
+## All records
+All records looks like this:
 
 ```Json
 [
@@ -158,6 +159,9 @@ All reorcds looks like this:
 
 It is returned as a JSON array.
 Note the **id** element. The API is keyed on **id**. So when I get an individual people instance, I will see the following:
+
+## Single record
+A single record looks like this
 
 ```Shell
 curl -s 10.1.1.150:3000/people/1 | more
