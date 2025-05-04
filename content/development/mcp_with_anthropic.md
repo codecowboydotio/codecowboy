@@ -257,6 +257,9 @@ A diagram of the MCP tool flow is below:
 7. The **format_msg** function parses the JSON response and formats it
 8. The formatted response is sent back to the client
 
+In the desktop application it looks like this:
+
+![MCP swapi Luke](/images/MCP-swapi-character-1.jpg)
 
 ```Python
 from typing import Any
@@ -328,9 +331,6 @@ if __name__ == "__main__":
 
 Note that the MCP tool is making a specific request for an ID.
 
-In the desktop application it looks like this:
-
-![MCP swapi Luke](/images/MCP-swapi-character-1.jpg)
 
 # The results
 
