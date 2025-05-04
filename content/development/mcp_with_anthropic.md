@@ -27,6 +27,12 @@ If you just want the code - it's here:
 # Why
 The reason I decided to initially play around with MCP was because I had a **high level of scepticism** regarding it. I've seen a **LOT** of posts on the internet that talk about it, how it's transformational and so on. I thought to myself "I'm going to look into this, but I'm going to do it bottom up and by writing a server". 
 
+# High level overview
+The following diagram represents a high level overview of what has been built and how it works.
+
+![MCP high level overview](/images/MCP-hgihlevel-1.jpg)
+
+
 # Where to start
 I started at the following address:
 
