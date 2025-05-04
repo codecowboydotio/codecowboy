@@ -208,6 +208,7 @@ curl -s 10.1.1.150:3000/people/1 | more
 
 ## My own record
 I inserted myself as record **id** 84.
+The idea here is that this is the ultimate test of not only the MCP server, but is also a test of generalised reasoning.
 
 ```Shell
  curl -s http://10.1.1.150:3000/people/84
