@@ -1,6 +1,6 @@
 +++
 title = "Creating and MCP server with Anthropic"
-date = "2025-04-04"
+date = "2025-05-04"
 aliases = ["dev"]
 tags = ["dev"]
 categories = ["software", "dev"]
@@ -25,7 +25,7 @@ If you just want the code - it's here:
 
 
 # Why
-The reason I decided to initially play around with MCP was because I had a **high level of skepticism** regarding it. I've seen a **LOT** of posts on the internet that talk about it, how it's transformational and so on. I thought to myself "I'm going to look into this, but I'm going to do it bottom up and by writing a server". 
+The reason I decided to initially play around with MCP was because I had a **high level of scepticism** regarding it. I've seen a **LOT** of posts on the internet that talk about it, how it's transformational and so on. I thought to myself "I'm going to look into this, but I'm going to do it bottom up and by writing a server". 
 
 # Where to start
 
