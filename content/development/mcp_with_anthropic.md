@@ -206,6 +206,33 @@ curl -s 10.1.1.150:3000/people/1 | more
 }
 ```
 
+## My own record
+I inserted myself as record **id** 84.
+
+```Shell
+ curl -s http://10.1.1.150:3000/people/84
+```
+```Json
+{
+  "edited": "2014-12-20T21:17:56.891Z",
+  "name": "Scott",
+  "created": "2014-12-09T13:50:51.644Z",
+  "gender": "male",
+  "skin_color": "fair",
+  "hair_color": "blonde",
+  "height": "184",
+  "eye_color": "blue",
+  "mass": "01",
+  "homeworld": 1,
+  "birth_year": "19BBY",
+  "image": "luke_skywalker.jpg",
+  "id": 84,
+  "vehicles": [],
+  "starships": [],
+  "films": []
+}
+```
+
 # Basic MCP server
 Initially I thought like a REST API dev, and built the diagram below:
 
