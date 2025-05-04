@@ -30,7 +30,7 @@ The reason I decided to initially play around with MCP was because I had a **hig
 # High level overview
 The following diagram represents a high level overview of what has been built and how it works.
 
-![MCP high level overview](/images/MCP-hgihlevel-1.jpg)
+![MCP high level overview](/images/MCP-highlevel-1.jpg)
 
 
 # Where to start
