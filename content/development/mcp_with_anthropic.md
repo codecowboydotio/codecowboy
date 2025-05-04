@@ -241,7 +241,7 @@ Initially I thought like a REST API dev, and built the diagram below:
 
 I wrote an MCP server (based on the example server) that pulls back a **single** person from the star wars database. 
 
-## The code
+## The flow
 I used the code from the example server, and **charged ahead** with typical REST based "query for the smallest thing" logic.
 
 A diagram of the MCP tool flow is below:
@@ -254,12 +254,20 @@ A diagram of the MCP tool flow is below:
 4. external API returns a JSON value for a single person with the ID of 1
 5. The **make_request** function returns RAW JSON data to the MCP tool
 6. The MCP tool called the **format_msg** function.
-7. The **format_msg** function parses the JSON response and formats it
-8. The formatted response is sent back to the client
+7. The **format_msg** function makes a secondary call to the API to resolve the planet name 
+8. The SWAPI API returns the planet information for a single planet
+9. The **format_msg** function parses the JSON responses and formats a message
+10. The formatted response is sent back to the client
 
 In the desktop application it looks like this:
 
 ![MCP swapi Luke](/images/MCP-swapi-character-1.jpg)
+
+## The code
+The code is below.
+The code is relatively straightforward.
+
+
 
 ```Python
 from typing import Any
@@ -333,11 +341,19 @@ Note that the MCP tool is making a specific request for an ID.
 
 
 # The results
-
-# SWAPI 
+The results are very interesting. There are differences between specific searching and just dumping large datasets into the LLM and getting the LLM to do the heavy lifting via more generalised searching.
 
 ## Specific searching
 
+
+![MCP swapi Luke](/images/MCP-swapi-character-1.jpg)
+
+
+![MCP swapi Luke](/images/MCP-swapi-homeworld-2.jpg)
+
+![MCP swapi Luke](/images/MCP-swapi-homeworld-3.jpg)
+
+![MCP swapi Luke](/images/MCP-swapi-4.jpg)
 ## Generalised searching
 
 ## Datasets
