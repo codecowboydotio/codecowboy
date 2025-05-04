@@ -83,7 +83,17 @@ new-item swapi.py
 
 From here we are ready to start writing some code.
 
+# Star Wars API
+
+
 # Basic MCP server
+Initially I thought like a REST API dev, and built the diagram below:
+
+![MCP swapi single person](/images/MCP-swapi-single-person.jpg)
+
+I wrote an MCP server (based on the example server) that pulls back a **single** person from the star wars database. 
+
+
 
 # The results
 
