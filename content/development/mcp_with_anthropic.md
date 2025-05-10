@@ -415,7 +415,12 @@ The response section of my search still sends a blank search request because I d
 This is an important concept. The larger the data source you send to the model, the more you are able to search through it and combine answers. 
 {{< /notice >}}
 
+## Combined answers
+Now that I have a larger data set, I can combine answers, and splice the data however I need to.
 
-# Things I learned
+![MCP all swapi characters in reverse](/images/mcp-all-in-reverse.jpg)
+
+This answer does not require running the MCP server again, as the original result set is still within the same conversation.
 
 # Conclusion
+Writing my own MCP server was very instructive and helped me a lot with being able to understand the MCP protocol a lot. I learned that having a larger data set will give you better answers. I also learned that this pattern is almost like an anti pattern of the current API design and through process. 
