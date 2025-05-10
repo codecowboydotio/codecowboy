@@ -21,7 +21,7 @@ I will walk through:
 # TLDR
 If you just want the code - it's here:
 
-[https://github.com/codecowboydotio/mcp-examples](https://github.com/codecowboydotio/mcp-examples)
+[https://github.com/codecowboydotio/mcp-server-examples](https://github.com/codecowboydotio/mcp-server-examples)
 
 
 # Why
