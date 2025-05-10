@@ -81,6 +81,29 @@ uv add mcp[cli] httpx json requests
 new-item swapi.py
 ```
 
+## Configure the desktop client
+In order for your MCP server to be registered, you'll need to configure the desktop client.
+
+Claude has a file called **claude_desktop_config.json**.
+
+This is where you will define your MCP server. Essentially it's a way for the local desktop application to run your server. You simply point it at your code. 
+
+```Json
+{
+    "mcpServers": {
+        "swapi": {
+            "command": "C:\\Users\\scott\\.local\\bin\\uv",
+            "args": [
+                "--directory",
+                "C:\\users\\scott\\Desktop\\swapi",
+                "run",
+                "swapi.py"
+            ]
+        }
+    }
+}
+```
+
 From here we are ready to start writing some code.
 
 # Star Wars API
@@ -423,4 +446,8 @@ Now that I have a larger data set, I can combine answers, and splice the data ho
 This answer does not require running the MCP server again, as the original result set is still within the same conversation.
 
 # Conclusion
-Writing my own MCP server was very instructive and helped me a lot with being able to understand the MCP protocol a lot. I learned that having a larger data set will give you better answers. I also learned that this pattern is almost like an anti pattern of the current API design and through process. 
+Writing my own MCP server was very instructive and helped me a lot with being able to understand the MCP protocol a lot. I learned that having a larger data set will give you better answers. I also learned that this pattern is almost like an anti pattern of the current API design and thought process. Rather than querying an API for the smallest possible unit of data (like **/people/1**) it's better from an LLM perspective to import a larger and more complete set of data. This allows thorough searching and splicing of the datasets by the LLM.
+
+Other than this, it was a lot of fun to do, and has helped me to be able to discern more useful AI / LLM / MCP content that I see in other places.
+
+I encourage everyone to have a go and give this a try.
