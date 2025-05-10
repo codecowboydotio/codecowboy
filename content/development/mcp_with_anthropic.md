@@ -401,10 +401,7 @@ if __name__ == "__main__":
     mcp.run(transport='stdio')
 ```
 
-This returns the following when I ask a question.
-
-![MCP greedo](/images/mcp-greedo.jpg)
-
+![MCP swapi greedo](/images/mcp-greedo.jpg)
 
 # Things I learned
 
