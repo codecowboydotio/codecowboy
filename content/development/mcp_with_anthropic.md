@@ -401,7 +401,20 @@ if __name__ == "__main__":
     mcp.run(transport='stdio')
 ```
 
+This allows me to perform a much less specific search. I automatically pull back ALL star wars characters, and then claude searches the result set to find a specific things that I am searching for.
+
 ![MCP swapi greedo](/images/mcp-greedo.jpg)
+
+Note that above the search uses a more generalised search through the entire dataset to find exactly what I want. The search **still uses my MCP server** even though it is more generalised in nature.
+
+The response section of my search still sends a blank search request because I don't need anything to be sent, but **ALL** possible star wars characters are returned. 
+
+![MCP multi character response](mcp-multi-character-response)
+
+{{< notice info >}}
+This is an important concept. The larger the data source you send to the model, the more you are able to search through it and combine answers. 
+{{< /notice >}}
+
 
 # Things I learned
 
