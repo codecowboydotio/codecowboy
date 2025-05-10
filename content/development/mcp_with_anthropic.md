@@ -1,6 +1,6 @@
 +++
 title = "Creating and MCP server with Anthropic"
-date = "2025-05-04"
+date = "2025-05-10"
 aliases = ["dev"]
 tags = ["dev"]
 categories = ["software", "dev"]
