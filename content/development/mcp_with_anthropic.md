@@ -344,19 +344,34 @@ Note that the MCP tool is making a specific request for an ID.
 The results are very interesting. There are differences between specific searching and just dumping large datasets into the LLM and getting the LLM to do the heavy lifting via more generalised searching.
 
 ## Specific searching
-
+When searching for a specific character, I get a single set of results. This is a great start and it matches my single record above. Note that the response is formatted in the same way that my function returns it.
 
 ![MCP swapi Luke](/images/MCP-swapi-character-1.jpg)
 
+Next I retrieve another character with an ID of 84. This corresponds to the character that I added to the database of the API. It's me!
 
 ![MCP swapi Luke](/images/MCP-swapi-homeworld-2.jpg)
 
+The interesting part here, is that while my MCP server has been used to get the result, additional context and reasoning has been applied to this answer. The additional reasoning says that this character is also from planet 1 (Tatooine) and is not fetured as part of the official star wars canon of characters. 
+
+
+When I ask a second time, the answer becomes more refined, and specific.
+
 ![MCP swapi Luke](/images/MCP-swapi-homeworld-3.jpg)
 
-![MCP swapi Luke](/images/MCP-swapi-4.jpg)
-## Generalised searching
+Finally, I ask claude to give me characters that appear in my search but do not appear in other sources. Note that this answer **does not** use my MCP server. 
 
-## Datasets
+![MCP swapi Luke](/images/MCP-swapi-4.jpg)
+
+
+## Generalised searching
+I can also perform more generalised searching using the results that I have so far.
+
+![MCP swapi Luke](/images/mcp-swapi-compare.jpg)
+
+I cam compare the characters that I have.
+This made me wonder what would happen if I had a much larger dataset.
+
 
 # Things I learned
 
