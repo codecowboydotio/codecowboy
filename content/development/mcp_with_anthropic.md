@@ -372,6 +372,39 @@ I can also perform more generalised searching using the results that I have so f
 I cam compare the characters that I have.
 This made me wonder what would happen if I had a much larger dataset.
 
+I altered the code to pull in **ALL** people. 
+
+I changed the url on my mcp server to be */people* rather than requiring a specific ID.
+
+```Python
+@mcp.tool()
+#async def get_swapi_character(id: str) -> str:
+async def get_swapi_character():
+    """Get name from swapi api.
+
+    Args:
+        id: exact name match
+    """
+    url = f"{API_BASE}/people/"
+    data = await make_request(url)
+
+    if not data:
+        return "Unable to fetch data from API."
+
+    #alerts = [format_alert(feature) for feature in data["features"]]
+    #msg = format_msg(data)
+    #return "\n---\n".join(msg)
+    return data
+
+if __name__ == "__main__":
+    # Initialize and run the server
+    mcp.run(transport='stdio')
+```
+
+This returns the following when I ask a question.
+
+![MCP greedo](/images/mcp-greedo.jpg)
+
 
 # Things I learned
 
