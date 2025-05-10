@@ -369,7 +369,7 @@ I can also perform more generalised searching using the results that I have so f
 
 ![MCP swapi compare](/images/mcp-swapi-compare.jpg)
 
-I cam compare the characters that I have.
+I can compare the characters that I have.
 This made me wonder what would happen if I had a much larger dataset.
 
 I altered the code to pull in **ALL** people. 
@@ -409,7 +409,7 @@ Note that above the search uses a more generalised search through the entire dat
 
 The response section of my search still sends a blank search request because I don't need anything to be sent, but **ALL** possible star wars characters are returned. 
 
-![MCP multi character response](mcp-multi-character-response)
+![MCP multi character response](/images/mcp-multi-character-response.jpg)
 
 {{< notice info >}}
 This is an important concept. The larger the data source you send to the model, the more you are able to search through it and combine answers. 
