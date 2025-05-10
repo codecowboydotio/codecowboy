@@ -367,7 +367,7 @@ Finally, I ask claude to give me characters that appear in my search but do not 
 ## Generalised searching
 I can also perform more generalised searching using the results that I have so far.
 
-![MCP swapi Luke](/images/mcp-swapi-compare.jpg)
+![MCP swapi compare](/images/mcp-swapi-compare.jpg)
 
 I cam compare the characters that I have.
 This made me wonder what would happen if I had a much larger dataset.
