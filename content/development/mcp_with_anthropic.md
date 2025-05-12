@@ -1,5 +1,5 @@
 +++
-title = "Creating and MCP server with Anthropic"
+title = "Creating an MCP server with Anthropic"
 date = "2025-05-10"
 aliases = ["dev"]
 tags = ["dev"]
