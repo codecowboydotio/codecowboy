@@ -239,7 +239,188 @@ As svelte is a templating language, the script above does the work, but within t
 Svelte is sort of cool in the way that it handles this. It's a reactive framework 
 
 
-```Html
+### Form Design
+The goal of designing the form was to make it easy to use. The form changes based on the selected HTTP method. The URL input is always visible, but the JSON body textarea only appears for POST requests:
+
+```svelte
+{#if method === 'POST'}
+  <div class="form-group">
+    <label for="data">
+      Request Body (JSON)
+      <button type="button" class="format-btn" on:click={formatJson}>Format</button>
+    </label>
+    <textarea
+      id="data"
+      bind:value={requestData}
+      placeholder='"key": "value"'
+      rows="10"
+      required
+    ></textarea>
+  </div>
+{/if}
+```
+
+The "Format" button will automatically prettify JSON input – a small touch that makes the tool easier to use.
+
+### The Popup Response Window
+
+Instead of a traditional sidebar or inline display, the response appears in a modal popup. This makes the response easy to read, and also means that you need to take action before hitting the request button again.
+
+The popup structure is straightforward:
+
+```svelte
+{#if showResult}
+  <div class="popup-overlay" on:click={closeResult}>
+    <div class="popup-window" on:click|stopPropagation>
+      <div class="popup-header">
+        <h2>API Response</h2>
+        <button class="close-btn" on:click={closeResult}>×</button>
+      </div>
+      <!-- Response content here -->
+    </div>
+  </div>
+{/if}
+```
+
+I used `on:click|stopPropagation` on the popup window to prevent it from closing when users click inside it, but clicking the overlay dismisses the popup – a UX pattern most users expect.
+
+## Loading States and Error Handling
+
+There are three distinct states for the response area:
+
+1. **Loading**: Shows a spinning animation while the request is in progress
+2. **Error**: Displays error messages in a red-bordered container
+3. **Success**: Shows the formatted response in a code block
+
+```svelte
+{#if loading}
+  <div class="loading">
+    <div class="spinner"></div>
+    <p>Sending request...</p>
+  </div>
+{:else if error}
+  <div class="error">
+    <p>{error}</p>
+  </div>
+{:else}
+  <pre>{response}</pre>
+{/if}
+```
+
+The loading spinner uses a simple CSS animation. This animation just spins. :)
+
+```css
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+```
+
+## How to Use It
+
+Using my API client is straightforward:
+
+1. **Enter the API endpoint URL** in the first field
+2. **Select GET or POST** from the dropdown
+3. **For POST requests**, add your JSON payload in the textarea (use the Format button to prettify it)
+4. **Click "Send Request"** and watch the response appear in the popup
+
+The tool handles the rest – parsing responses, formatting JSON, showing loading states, and displaying errors clearly.
+
+## Getting Started
+
+To use this code:
+
+1. Create a new SvelteKit project: `npm create svelte@latest my-api-client`
+2. Replace `src/routes/+page.svelte` with the code above
+3. Run `npm run dev` and start testing APIs!
+
+The beauty of this approach is its simplicity – one file, zero dependencies beyond SvelteKit itself, and a tool that just works.
+
+## Complete Source Code
+
+Here's the full SvelteKit component that powers the API client:
+
+```svelte
+<!-- src/routes/+page.svelte -->
+<script>
+  import { browser } from '$app/environment';
+  import { onMount } from 'svelte';
+
+  let url = '';
+  let requestData = '{\n  "key": "value"\n}';
+  let response = '';
+  let loading = false;
+  let error = null;
+  let showResult = false;
+  let method = 'POST';
+
+  async function handleSubmit() {
+    if (!browser) return;
+    
+    loading = true;
+    error = null;
+    showResult = true;
+
+    try {
+      if (!url) throw new Error('URL is required');
+
+      let parsedData;
+      if (method === 'POST') {
+        try {
+          parsedData = JSON.parse(requestData);
+        } catch (e) {
+          throw new Error(`Invalid JSON: ${e.message}`);
+        }
+      }
+
+      const fetchOptions = {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+
+      if (method === 'POST') {
+        fetchOptions.body = requestData;
+      }
+
+      const fetchResponse = await fetch(url, fetchOptions);
+
+      const contentType = fetchResponse.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const jsonResponse = await fetchResponse.json();
+        return JSON.stringify(jsonResponse, null, 2);
+      } else {
+        const textResponse = await fetchResponse.text();
+        return textResponse;
+      }
+    } catch (err) {
+      error = err.message;
+      return `Error: ${err.message}`;
+    } finally {
+      loading = false;
+    }
+  }
+
+  async function makeRequest() {
+    response = await handleSubmit();
+  }
+
+  function formatJson() {
+    try {
+      const parsed = JSON.parse(requestData);
+      requestData = JSON.stringify(parsed, null, 2);
+    } catch (e) {
+      // Ignore formatting if JSON is invalid
+    }
+  }
+
+  function closeResult() {
+    showResult = false;
+  }
+</script>
+
 <svelte:head>
   <title>API Client - SvelteKit</title>
   <meta name="description" content="Simple API client for testing REST endpoints" />
@@ -292,38 +473,36 @@ Svelte is sort of cool in the way that it handles this. It's a reactive framewor
       </form>
     </div>
 
-  {#if showResult}
-    <div class="popup-overlay" on:click={closeResult}>
-      <div class="popup-window" on:click|stopPropagation>
-        <div class="popup-header">
-          <h2>API Response</h2>
-          <button class="close-btn" on:click={closeResult}>×</button>
-        </div>
+    {#if showResult}
+      <div class="popup-overlay" on:click={closeResult}>
+        <div class="popup-window" on:click|stopPropagation>
+          <div class="popup-header">
+            <h2>API Response</h2>
+            <button class="close-btn" on:click={closeResult}>×</button>
+          </div>
 
-        <div class="popup-content">
-          {#if loading}
-            <div class="loading">
-              <div class="spinner"></div>
-              <p>Sending request...</p>
-            </div>
-          {:else if error}
-            <div class="error">
-              <p>{error}</p>
-            </div>
-          {:else}
-            <pre>{response}</pre>
-          {/if}
+          <div class="popup-content">
+            {#if loading}
+              <div class="loading">
+                <div class="spinner"></div>
+                <p>Sending request...</p>
+              </div>
+            {:else if error}
+              <div class="error">
+                <p>{error}</p>
+              </div>
+            {:else}
+              <pre>{response}</pre>
+            {/if}
+          </div>
         </div>
       </div>
-    </div>
-  {/if}
+    {/if}
   </div>
 </main>
-```
-
-```Html
 
 <style>
+  /* Global styles and component styling */
   :global(body) {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -372,11 +551,6 @@ Svelte is sort of cool in the way that it handles this. It's a reactive framewor
     box-sizing: border-box;
   }
 
-  select {
-    background-color: white;
-    cursor: pointer;
-  }
-
   textarea {
     font-family: monospace;
     resize: vertical;
@@ -391,10 +565,6 @@ Svelte is sort of cool in the way that it handles this. It's a reactive framewor
     padding: 0.25rem 0.5rem;
   }
 
-  .format-btn:hover {
-    text-decoration: underline;
-  }
-
   .submit-btn {
     background-color: #4299e1;
     color: white;
@@ -405,15 +575,6 @@ Svelte is sort of cool in the way that it handles this. It's a reactive framewor
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s;
-  }
-
-  .submit-btn:hover {
-    background-color: #3182ce;
-  }
-
-  .submit-btn:disabled {
-    background-color: #a0aec0;
-    cursor: not-allowed;
   }
 
   .popup-overlay {
@@ -427,79 +588,17 @@ Svelte is sort of cool in the way that it handles this. It's a reactive framewor
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    animation: fadeIn 0.2s ease-out;
   }
 
   .popup-window {
     background-color: white;
     border-radius: 0.5rem;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     max-width: 90vw;
     max-height: 80vh;
     width: 700px;
     display: flex;
     flex-direction: column;
-    animation: slideIn 0.3s ease-out;
-  }
-
-  .popup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid #e2e8f0;
-    border-radius: 0.5rem 0.5rem 0 0;
-  }
-
-  .popup-header h2 {
-    margin: 0;
-    color: #2d3748;
-  }
-
-  .popup-content {
-    padding: 2rem;
-    overflow-y: auto;
-    flex: 1;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: scale(0.9) translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-  }
-
-  pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    background-color: #f9fafb;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.25rem;
-    padding: 1rem;
-    overflow-x: auto;
-    margin: 0;
-    font-family: monospace;
-  }
-
-  .loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
   }
 
   .spinner {
@@ -509,40 +608,14 @@ Svelte is sort of cool in the way that it handles this. It's a reactive framewor
     width: 30px;
     height: 30px;
     animation: spin 1s linear infinite;
-    margin-bottom: 1rem;
   }
 
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-
-  .error {
-    color: #e53e3e;
-    border-left: 4px solid #e53e3e;
-    padding-left: 1rem;
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-    }
-
-    .popup-window {
-      width: 95vw;
-      max-height: 90vh;
-      margin: 1rem;
-    }
-
-    .popup-header {
-      padding: 1rem 1.5rem;
-    }
-
-    .popup-content {
-      padding: 1.5rem;
-    }
-  }
 </style>
 ```
+
 
 # Conclusion
