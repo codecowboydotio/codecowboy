@@ -75,7 +75,7 @@ Ok to proceed? (y) y
 # Project Structure
 The project structure looks something like this:
 
-
+```Shell
 api-client/
 ├── src/
 │   ├── app.css                 # Global CSS styles
@@ -113,6 +113,7 @@ api-client/
 ├── tailwind.config.js         # Tailwind config (optional)
 ├── tsconfig.json              # TypeScript config (if using TS)
 └── vite.config.js             # Vite configuration
+```
 
 
 # Install dependencies
