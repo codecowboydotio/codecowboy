@@ -73,6 +73,46 @@ Ok to proceed? (y) y
 ```
 
 # Project Structure
+The project structure looks something like this:
+
+
+api-client/
+├── src/
+│   ├── app.css                 # Global CSS styles
+│   ├── app.html                # Main HTML template
+│   ├── lib/
+│   │   ├── components/         # Reusable components
+│   │   │   ├── ApiForm.svelte
+│   │   │   ├── ResponsePopup.svelte
+│   │   │   └── LoadingSpinner.svelte
+│   │   ├── stores/             # Svelte stores
+│   │   │   └── api.js
+│   │   └── utils/              # Utility functions
+│   │       ├── validators.js
+│   │       └── formatters.js
+│   └── routes/
+│       ├── +layout.svelte      # Root layout
+│       ├── +layout.js          # Layout load function (optional)
+│       ├── +page.svelte        # Main API client page
+│       ├── +page.js            # Page load function (optional)
+│       └── api/                # API routes (optional)
+│           └── proxy/
+│               └── +server.js  # CORS proxy endpoint
+├── static/
+│   ├── favicon.png
+│   ├── robots.txt
+│   └── manifest.json
+├── tests/
+│   ├── unit/
+│   │   └── components/
+│   └── integration/
+├── .gitignore
+├── package.json
+├── README.md
+├── svelte.config.js           # SvelteKit configuration
+├── tailwind.config.js         # Tailwind config (optional)
+├── tsconfig.json              # TypeScript config (if using TS)
+└── vite.config.js             # Vite configuration
 
 
 # Install dependencies
@@ -80,7 +120,9 @@ Ok to proceed? (y) y
 # The code
 
 ```Javascript
+<!-- src/routes/+page.svelte -->
 <script>
+  import { browser } from '$app/environment';
   import { onMount } from 'svelte';
 
   let url = '';
@@ -92,6 +134,8 @@ Ok to proceed? (y) y
   let method = 'POST'; // Default method selection
 
   async function handleSubmit() {
+    if (!browser) return;
+    
     loading = true;
     error = null;
     showResult = true;
@@ -123,16 +167,14 @@ Ok to proceed? (y) y
         fetchOptions.body = requestData;
       }
 
-      const response = await fetch(url, fetchOptions);
+      const fetchResponse = await fetch(url, fetchOptions);
 
-      const contentType = response.headers.get('content-type');
+      const contentType = fetchResponse.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
-        const jsonResponse = await response.json();
-        window.response = jsonResponse;
+        const jsonResponse = await fetchResponse.json();
         return JSON.stringify(jsonResponse, null, 2);
       } else {
-        const textResponse = await response.text();
-        window.response = textResponse;
+        const textResponse = await fetchResponse.text();
         return textResponse;
       }
     } catch (err) {
@@ -160,6 +202,11 @@ Ok to proceed? (y) y
     showResult = false;
   }
 </script>
+
+<svelte:head>
+  <title>API Client - SvelteKit</title>
+  <meta name="description" content="Simple API client for testing REST endpoints" />
+</svelte:head>
 
 <main>
   <div class="container">
@@ -208,14 +255,15 @@ Ok to proceed? (y) y
       </form>
     </div>
 
-    {#if showResult}
-      <div class="result-section" class:show={showResult}>
-        <div class="result-header">
-          <h2>Response</h2>
+  {#if showResult}
+    <div class="popup-overlay" on:click={closeResult}>
+      <div class="popup-window" on:click|stopPropagation>
+        <div class="popup-header">
+          <h2>API Response</h2>
           <button class="close-btn" on:click={closeResult}>×</button>
         </div>
 
-        <div class="result-content">
+        <div class="popup-content">
           {#if loading}
             <div class="loading">
               <div class="spinner"></div>
@@ -230,7 +278,8 @@ Ok to proceed? (y) y
           {/if}
         </div>
       </div>
-    {/if}
+    </div>
+  {/if}
   </div>
 </main>
 
@@ -245,16 +294,14 @@ Ok to proceed? (y) y
   }
 
   .container {
-    display: flex;
-    height: 100vh;
-    max-width: 1200px;
+    min-height: 100vh;
+    max-width: 800px;
     margin: 0 auto;
+    padding: 2rem;
   }
 
   .input-section {
-    flex: 1;
-    padding: 2rem;
-    overflow-y: auto;
+    width: 100%;
   }
 
   h1 {
@@ -329,51 +376,70 @@ Ok to proceed? (y) y
     cursor: not-allowed;
   }
 
-  .result-section {
-    flex: 1;
-    background-color: white;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    position: absolute;
-    right: 0;
+  .popup-overlay {
+    position: fixed;
     top: 0;
-    width: 40%;
+    left: 0;
+    width: 100%;
     height: 100%;
-    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
   }
 
-  .result-section.show {
-    transform: translateX(0);
+  .popup-window {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    max-width: 90vw;
+    max-height: 80vh;
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.3s ease-out;
   }
 
-  .result-header {
+  .popup-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 2rem;
     border-bottom: 1px solid #e2e8f0;
+    border-radius: 0.5rem 0.5rem 0 0;
   }
 
-  .result-header h2 {
+  .popup-header h2 {
     margin: 0;
     color: #2d3748;
   }
 
-  .close-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #a0aec0;
-  }
-
-  .close-btn:hover {
-    color: #718096;
-  }
-
-  .result-content {
+  .popup-content {
     padding: 2rem;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
   }
 
   pre {
@@ -419,24 +485,24 @@ Ok to proceed? (y) y
 
   @media (max-width: 768px) {
     .container {
-      flex-direction: column;
+      padding: 1rem;
     }
 
-    .result-section {
-      position: fixed;
-      width: 100%;
-      height: 50%;
-      top: auto;
-      bottom: 0;
-      transform: translateY(100%);
+    .popup-window {
+      width: 95vw;
+      max-height: 90vh;
+      margin: 1rem;
     }
 
-    .result-section.show {
-      transform: translateY(0);
+    .popup-header {
+      padding: 1rem 1.5rem;
+    }
+
+    .popup-content {
+      padding: 1.5rem;
     }
   }
 </style>
-
 ```
 
 # Conclusion
