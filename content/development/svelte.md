@@ -20,7 +20,7 @@ I also admit that I like the fact it has easy templating. :)
 # TLDR
 If you just want the code - it's here:
 
-[https://github.com/codecowboydotio/mcp-server-examples](https://github.com/codecowboydotio/mcp-server-examples)
+[https://github.com/codecowboydotio/svelte/tree/main/api-tester](https://github.com/codecowboydotio/svelte/tree/main/api-tester)
 
 
 # High level overview
