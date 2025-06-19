@@ -327,11 +327,15 @@ Using my API client is straightforward:
 
 The tool handles the rest – parsing responses, formatting JSON, showing loading states, and displaying errors clearly.
 
+Here I am using httpbin.org but any website will work.
+
 ![UI](/images/svelte-1.jpg)
 
+The spinner in action!!!
 
 ![spinner](/images/svelte-2.jpg)
 
+The response being shown inside the pop up window. This means you can easily copy the response and evaluate it.
 
 ![response](/images/svelte-3.jpg)
 
