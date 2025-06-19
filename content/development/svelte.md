@@ -1,0 +1,398 @@
++++
+title = "A Simple svelte app"
+date = "2025-06-19"
+aliases = ["dev"]
+tags = ["dev"]
+categories = ["software", "dev"]
+author = "codecowboy.io"
++++
+
+# Intro
+I recently had a need to think about API testing again. I needed to quickly come up with a small web based tester to perform the occasional get request but also a post request with data. 
+
+It's a lot simpler for me to just grab a JSON blob of data and send it to an endpoint with a click and evaluate the results. 
+
+I decided to use svelte. 
+
+I haven't used svelte before but I was surprised by its simplicity and ease of use.
+I also admit that I like the fact it has easy templating. :)
+
+# TLDR
+If you just want the code - it's here:
+
+[https://github.com/codecowboydotio/mcp-server-examples](https://github.com/codecowboydotio/mcp-server-examples)
+
+
+# High level overview
+
+# Where to start
+
+# Install the environment
+
+# Create virtual environment and activate it
+
+# Install dependencies
+
+# The code
+
+```Javascript
+<script>
+  import { onMount } from 'svelte';
+
+  let url = '';
+  let requestData = '{\n  "key": "value"\n}';
+  let response = '';
+  let loading = false;
+  let error = null;
+  let showResult = false;
+  let method = 'POST'; // Default method selection
+
+  async function handleSubmit() {
+    loading = true;
+    error = null;
+    showResult = true;
+
+    try {
+      // Validate URL
+      if (!url) throw new Error('URL is required');
+
+      // For POST requests, validate JSON
+      let parsedData;
+      if (method === 'POST') {
+        try {
+          parsedData = JSON.parse(requestData);
+        } catch (e) {
+          throw new Error(`Invalid JSON: ${e.message}`);
+        }
+      }
+
+      // Configure fetch options based on the selected method
+      const fetchOptions = {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+
+      // Only include body for POST requests
+      if (method === 'POST') {
+        fetchOptions.body = requestData;
+      }
+
+      const response = await fetch(url, fetchOptions);
+
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const jsonResponse = await response.json();
+        window.response = jsonResponse;
+        return JSON.stringify(jsonResponse, null, 2);
+      } else {
+        const textResponse = await response.text();
+        window.response = textResponse;
+        return textResponse;
+      }
+    } catch (err) {
+      error = err.message;
+      return `Error: ${err.message}`;
+    } finally {
+      loading = false;
+    }
+  }
+
+  async function makeRequest() {
+    response = await handleSubmit();
+  }
+
+  function formatJson() {
+    try {
+      const parsed = JSON.parse(requestData);
+      requestData = JSON.stringify(parsed, null, 2);
+    } catch (e) {
+      // Ignore formatting if JSON is invalid
+    }
+  }
+
+  function closeResult() {
+    showResult = false;
+  }
+</script>
+
+<main>
+  <div class="container">
+    <div class="input-section">
+      <h1>API Client</h1>
+
+      <form on:submit|preventDefault={makeRequest}>
+        <div class="form-group">
+          <label for="url">API Endpoint URL</label>
+          <input
+            type="text"
+            id="url"
+            bind:value={url}
+            placeholder="https://api.example.com/endpoint"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="method">Request Method</label>
+          <select id="method" bind:value={method}>
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+          </select>
+        </div>
+
+        {#if method === 'POST'}
+          <div class="form-group">
+            <label for="data">
+              Request Body (JSON)
+              <button type="button" class="format-btn" on:click={formatJson}>Format</button>
+            </label>
+            <textarea
+              id="data"
+              bind:value={requestData}
+              placeholder='"key": "value"'
+              rows="10"
+              required
+            ></textarea>
+          </div>
+        {/if}
+
+        <button type="submit" class="submit-btn" disabled={loading}>
+          {loading ? 'Sending Request...' : `Send ${method} Request`}
+        </button>
+      </form>
+    </div>
+
+    {#if showResult}
+      <div class="result-section" class:show={showResult}>
+        <div class="result-header">
+          <h2>Response</h2>
+          <button class="close-btn" on:click={closeResult}>×</button>
+        </div>
+
+        <div class="result-content">
+          {#if loading}
+            <div class="loading">
+              <div class="spinner"></div>
+              <p>Sending request...</p>
+            </div>
+          {:else if error}
+            <div class="error">
+              <p>{error}</p>
+            </div>
+          {:else}
+            <pre>{response}</pre>
+          {/if}
+        </div>
+      </div>
+    {/if}
+  </div>
+</main>
+
+<style>
+  :global(body) {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f9fc;
+    color: #333;
+  }
+
+  .container {
+    display: flex;
+    height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .input-section {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+
+  h1 {
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+
+  select {
+    background-color: white;
+    cursor: pointer;
+  }
+
+  textarea {
+    font-family: monospace;
+    resize: vertical;
+  }
+
+  .format-btn {
+    background: none;
+    border: none;
+    color: #4299e1;
+    cursor: pointer;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .format-btn:hover {
+    text-decoration: underline;
+  }
+
+  .submit-btn {
+    background-color: #4299e1;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .submit-btn:hover {
+    background-color: #3182ce;
+  }
+
+  .submit-btn:disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+  }
+
+  .result-section {
+    flex: 1;
+    background-color: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40%;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .result-section.show {
+    transform: translateX(0);
+  }
+
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .result-header h2 {
+    margin: 0;
+    color: #2d3748;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #a0aec0;
+  }
+
+  .close-btn:hover {
+    color: #718096;
+  }
+
+  .result-content {
+    padding: 2rem;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background-color: #f9fafb;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 0;
+    font-family: monospace;
+  }
+
+  .loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .spinner {
+    border: 3px solid #e2e8f0;
+    border-top: 3px solid #4299e1;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .error {
+    color: #e53e3e;
+    border-left: 4px solid #e53e3e;
+    padding-left: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+
+    .result-section {
+      position: fixed;
+      width: 100%;
+      height: 50%;
+      top: auto;
+      bottom: 0;
+      transform: translateY(100%);
+    }
+
+    .result-section.show {
+      transform: translateY(0);
+    }
+  }
+</style>
+
+```
+
+# Conclusion
