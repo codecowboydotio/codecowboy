@@ -25,11 +25,55 @@ If you just want the code - it's here:
 
 # High level overview
 
-# Where to start
-
 # Install the environment
+First I need to create a project directory and then run through some generic project starter questions.
 
-# Create virtual environment and activate it
+I use **npx** to create the initial project structure and scaffold code.
+
+```Shell
+npx sv create my-svelte-app
+Need to install the following packages:
+sv@0.8.11
+Ok to proceed? (y) y
+
+┌  Welcome to the Svelte CLI! (v0.8.11)
+│
+◇  Which template would you like?
+│  SvelteKit minimal
+│
+◇  Add type checking with TypeScript?
+│  Yes, using TypeScript syntax
+│
+◆  Project created
+│
+◇  What would you like to add to your project? (use arrow keys / space bar)
+│  devtools-json
+│
+◆  Successfully setup add-ons
+│
+◇  Which package manager do you want to install dependencies with?
+│  npm
+│
+◆  Successfully installed dependencies
+│
+◇  Project next steps ─────────────────────────────────────────────────────╮
+│                                                                          │
+│  1: cd my-svelte-app                                                     │
+│  2: git init && git add -A && git commit -m "Initial commit" (optional)  │
+│  3: npm run dev -- --open                                                │
+│                                                                          │
+│  To close the dev server, hit Ctrl-C                                     │
+│                                                                          │
+│  Stuck? Visit us at https://svelte.dev/chat                              │
+│                                                                          │
+├──────────────────────────────────────────────────────────────────────────╯
+│
+└  You're all set!
+
+```
+
+# Project Structure
+
 
 # Install dependencies
 
