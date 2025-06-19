@@ -1,6 +1,6 @@
 +++
 title = "A Simple svelte app"
-date = "2025-06-20"
+date = "2025-06-19"
 aliases = ["dev"]
 tags = ["dev"]
 categories = ["software", "dev"]
@@ -107,6 +107,13 @@ api-client/
 # The code
 As I am using a single file, I will walk through the different components.
 
+## Imports
+The two imports at the top essentially check if the app is running in a browser or not.
+
+This is described in the svelte docs here:
+[https://svelte.dev/docs/kit/$app-environment](https://svelte.dev/docs/kit/$app-environment)
+
+After the imports, I set some defaults that are used within the app. 
 
 ```Javascript
 <!-- src/routes/+page.svelte -->
@@ -121,7 +128,14 @@ As I am using a single file, I will walk through the different components.
   let error = null;
   let showResult = false;
   let method = 'POST'; // Default method selection
+```
 
+## Handle form submission
+The handle form submission function does most of the heavy lifting within the app.
+
+As the app can handle both GET and POST requests, the first try / catch block checks the method to see if it is a POST. If the method that is received is a POST then the incoming JSON data is parsed for correctness.
+
+```Javascript
   async function handleSubmit() {
     if (!browser) return;
     
@@ -142,7 +156,11 @@ As I am using a single file, I will walk through the different components.
           throw new Error(`Invalid JSON: ${e.message}`);
         }
       }
+```
 
+The next statements set the content type, and also include the data portion of the request - only if this is a POST request.
+
+```Javascript
       // Configure fetch options based on the selected method
       const fetchOptions = {
         method: method,
@@ -155,7 +173,17 @@ As I am using a single file, I will walk through the different components.
       if (method === 'POST') {
         fetchOptions.body = requestData;
       }
+```
 
+Then make the request:
+
+```Javascript
+const fetchResponse = await fetch(url, fetchOptions);
+```
+
+Finally, once the request has returned, be it a GET or a POST, check the headers, and return the response as JSON. If the response is returned not as JSON explcitly, then perform an explicit fetch as json.
+
+```Javascript
       const fetchResponse = await fetch(url, fetchOptions);
 
       const contentType = fetchResponse.headers.get('content-type');
@@ -174,10 +202,22 @@ As I am using a single file, I will walk through the different components.
     }
   }
 
+```
+
+## Make the request
+The make request function just calls the handle submit function.
+The heavy lifting is all done by the other function.
+
+```Javascript
   async function makeRequest() {
     response = await handleSubmit();
   }
+```
 
+## Format the json and close the popup box
+The next two functions just format the JSON data, and close the object that shows the result by setting it to false.
+
+```Javascript
   function formatJson() {
     try {
       const parsed = JSON.parse(requestData);
@@ -193,8 +233,13 @@ As I am using a single file, I will walk through the different components.
 </script>
 ```
 
-```Javascript
+# The HTML
+As svelte is a templating language, the script above does the work, but within the HTML and CSS there are sections that both make the request but also handle the result.
 
+Svelte is sort of cool in the way that it handles this. It's a reactive framework 
+
+
+```Html
 <svelte:head>
   <title>API Client - SvelteKit</title>
   <meta name="description" content="Simple API client for testing REST endpoints" />
@@ -274,6 +319,9 @@ As I am using a single file, I will walk through the different components.
   {/if}
   </div>
 </main>
+```
+
+```Html
 
 <style>
   :global(body) {
