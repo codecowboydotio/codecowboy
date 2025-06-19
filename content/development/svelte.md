@@ -327,15 +327,14 @@ Using my API client is straightforward:
 
 The tool handles the rest – parsing responses, formatting JSON, showing loading states, and displaying errors clearly.
 
-## Getting Started
+![UI](/images/svelte-1.jpg)
 
-To use this code:
 
-1. Create a new SvelteKit project: `npm create svelte@latest my-api-client`
-2. Replace `src/routes/+page.svelte` with the code above
-3. Run `npm run dev` and start testing APIs!
+![spinner](/images/svelte-2.jpg)
 
-The beauty of this approach is its simplicity – one file, zero dependencies beyond SvelteKit itself, and a tool that just works.
+
+![response](/images/svelte-3.jpg)
+
 
 ## Complete Source Code
 
