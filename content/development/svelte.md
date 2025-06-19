@@ -1,6 +1,6 @@
 +++
 title = "A Simple svelte app"
-date = "2025-06-19"
+date = "2025-06-20"
 aliases = ["dev"]
 tags = ["dev"]
 categories = ["software", "dev"]
