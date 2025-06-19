@@ -24,6 +24,12 @@ If you just want the code - it's here:
 
 
 # High level overview
+My app does two things:
+
+1. It can perform a GET request and display the result
+2. It can perform a POST request and display the result
+
+I find this very useful when I am developing services that are abstracted away in AWS, or some other remote framework and I want to check to see if something is working end to end during the development process.
 
 # Install the environment
 First I need to create a project directory and then run through some generic project starter questions.
@@ -98,9 +104,9 @@ api-client/
 ```
 
 
-# Install dependencies
-
 # The code
+As I am using a single file, I will walk through the different components.
+
 
 ```Javascript
 <!-- src/routes/+page.svelte -->
@@ -185,6 +191,9 @@ api-client/
     showResult = false;
   }
 </script>
+```
+
+```Javascript
 
 <svelte:head>
   <title>API Client - SvelteKit</title>
