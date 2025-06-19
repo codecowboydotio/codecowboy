@@ -75,42 +75,24 @@ Ok to proceed? (y) y
 # Project Structure
 The project structure looks something like this:
 
+I am using a single file layout for my svelte app. This is because I personally find it simpler to do this, and because it's a small app.
+
+You will note though that there is provision in the project structure to break out components such as CSS and so on.
+
 ```Shell
 api-client/
 ├── src/
 │   ├── app.css                 # Global CSS styles
 │   ├── app.html                # Main HTML template
 │   ├── lib/
-│   │   ├── components/         # Reusable components
-│   │   │   ├── ApiForm.svelte
-│   │   │   ├── ResponsePopup.svelte
-│   │   │   └── LoadingSpinner.svelte
-│   │   ├── stores/             # Svelte stores
-│   │   │   └── api.js
-│   │   └── utils/              # Utility functions
-│   │       ├── validators.js
-│   │       └── formatters.js
 │   └── routes/
-│       ├── +layout.svelte      # Root layout
-│       ├── +layout.js          # Layout load function (optional)
 │       ├── +page.svelte        # Main API client page
-│       ├── +page.js            # Page load function (optional)
-│       └── api/                # API routes (optional)
-│           └── proxy/
-│               └── +server.js  # CORS proxy endpoint
 ├── static/
-│   ├── favicon.png
-│   ├── robots.txt
-│   └── manifest.json
 ├── tests/
-│   ├── unit/
-│   │   └── components/
-│   └── integration/
 ├── .gitignore
 ├── package.json
 ├── README.md
 ├── svelte.config.js           # SvelteKit configuration
-├── tailwind.config.js         # Tailwind config (optional)
 ├── tsconfig.json              # TypeScript config (if using TS)
 └── vite.config.js             # Vite configuration
 ```
