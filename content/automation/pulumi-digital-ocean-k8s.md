@@ -2,7 +2,7 @@
 title = "Pulumi - creating a kubernetes cluster in digital ocean"
 date = "2024-11-08"
 aliases = ["pulumi_k8s_digital_ocean"]
-tags = ["pulumi", "iac"]
+tags = ["pulumi", "iac", "kubernetes"]
 categories = ["automation", "software", "dev", "k8s"]
 author = "codecowboy.io"
 +++
