@@ -14,7 +14,7 @@ One of the things that I've always wanted to do, but never have is understand cl
 ## TLDR
 If you just want the code - it's here: 
 
-[API Gateway git repository](https://github.com/codecowboydotio/pulumi/tree/main/aws-serverless)
+[Cloudfront git repository](https://github.com/codecowboydotio/pulumi/tree/main/aws-cloudfront)
 
 ## What
 I will build a single bucket that is used to host a website, and upload a simple index.html file to the bucket. The bucket will have appropriate security controls applied to allow public access. 
