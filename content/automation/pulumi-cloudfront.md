@@ -23,11 +23,11 @@ The second part will involve placing the bucket behind a cloudfront distribution
 
 I will be building two architectures today, to demonstrate cloudfront with and without geo restrictions.
 
-![Cloudfront no geo restrictions](images/all-cloudfront.jpg)
+![Cloudfront no geo restrictions](/images/all-cloudfront.jpg)
 
 Finally, I will demonstrate cloudfront using geo restrictions.
 
-![Cloudfront with geo restrictions](images/no-au-architecture.jpg)
+![Cloudfront with geo restrictions](/images/no-au-architecture.jpg)
 
 ## Configuration
 The configuration of the template is simple and standard. Import the relevant modules, and set the config imports to get the variables from the stack config.
@@ -77,7 +77,7 @@ website_bucket = aws.s3.Bucket("websiteBucket",
 
 Once created, the bucket looks like this: 
 
-![Bucket](images/bucket.jpg)
+![Bucket](/images/bucket.jpg)
 
 
 ## Bucket config 
@@ -237,15 +237,15 @@ distribution_resource = aws.cloudfront.Distribution("distributionResource",
 
 The origins portion of the code is where the bucket is selected as the source for the cloudfront distribution.
 
-![cloudfront distribution](images/cloudfront-distribution.jpg)
+![cloudfront distribution](/images/cloudfront-distribution.jpg)
 
-![cloudfront origin](images/cloudfront-origin.jpg)
+![cloudfront origin](/images/cloudfront-origin.jpg)
 
 The restrictions portion of the code is where I set the geographies that are allowed to access the bucket.
 
 The georgaphies list two - Canada and Australia as part of an allow list. This allows both Canada and Australia to access the cloudfront endpoint.
 
-![cloudfront geographies](images/cloudfront-geographic-2.jpg)
+![cloudfront geographies](/images/cloudfront-geographic-2.jpg)
 
 ```Python
     origins=[{
@@ -303,11 +303,11 @@ Duration: 4m5s
 ## Accessing the content
 Using the direct method of access, I am able to access the **index.html** file in the bucket. 
 
-![Bucket direct access](images/bucket-direct.jpg)
+![Bucket direct access](/images/bucket-direct.jpg)
 
 I can also access the cloudfront distribution via the couldfront distribution URL.
 
-![cloudfront distribution](images/cloudfront-working.jpg)
+![cloudfront distribution](/images/cloudfront-working.jpg)
 
 
 If I change the distribution resource to remove the AU origin from the geo restriction allow list, I can no longer access the cloudfront distribution.
@@ -332,11 +332,11 @@ Duration: 1m39s
 
 Checking the AWS console, I can see that the AU or Australian geography has been removed. 
 
-![Cloudfront geography](images/cloudfront-geographic-1.jpg)
+![Cloudfront geography](/images/cloudfront-geographic-1.jpg)
 
 When I try to access the website, I get an error. The error is based on the geographic endpoint of AU not being part of the distribution any more.
 
-![Cloudfron geo error](images/cloudfront-403.jpg)
+![Cloudfron geo error](/images/cloudfront-403.jpg)
 
 ## Summary
 Using pulumi to create a website bucket, and expose that website via a cloudfront distribution is relatively simple. There are a lot of moving parts when you do this, and each one needs to be in place for this to work. The bucket needs to have a policy as well as being publicly exposed for example. If you have all of the moving pieces then creating and exposing a bucket via cloudfront is relatively easy.
