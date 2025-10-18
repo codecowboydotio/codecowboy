@@ -1,6 +1,6 @@
 +++
 title = "Pulumi - creating a website bucket and cloudfront distribution"
-date = "2025-03-07"
+date = "2025-10-17"
 aliases = ["pulumi_javascript"]
 tags = ["pulumi", "iac"]
 categories = ["automation", "software", "dev"]
