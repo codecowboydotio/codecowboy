@@ -34,10 +34,28 @@ refactor the following code to make it more robust
 
 Then I pasted in my awful code. 
 
+![Code refactor 1](/images/code-refactor-1.jpg)
+
 What came out was generally pretty good, however, Claude initially generated another script that I had to run that was relatively static.
 
-![Code refactor 1](/images/code-refactor-1.jpg)
 ![Code refactor 1](/images/refactor-1-improvements.jpg)
+
+I realised I didn't want a static python script. I wanted a service.
+
 ![Code refactor 1](/images/refactor-1-how-to-use.jpg)
+
+I used the prompt below to get Claude to refactor my code to make it more robust, and so that it had a REST based interface that I could send requests to.
+
+```Shell
+refactor the code to accept the repo as an input via a rest interface
+```
+
 ![Code refactor 1](/images/refactor-2-outputs.jpg)
+
+I realised that I didn't know how to use this, so I also asked for example usage using the prompt
+
+```Shell
+write a curl example of how to use the api
+```
+
 ![Code refactor 1](/images/refactor-2-example-usage.jpg)
