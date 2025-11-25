@@ -9,7 +9,7 @@ pluralizelisttitles: false
 #   - "hello-friend-ng"
 #   - "hugo-notice"
 paginate: 10
-mainsections: ["posts", "automation", "development", "kubernetes", "presos"]
+mainsections: ["posts", "automation", "development", "ai", "kubernetes", "presos"]
 
 params:
   author: codecowboy
@@ -70,6 +70,8 @@ languages:
           url: "development/"
         - name: "Kubernetes"
           url: "kubernetes/"
+        - name: "AI"
+          url: "ai/"
         - name: "Tags"
           url: "tags/"
         - name: "About"
