@@ -1,6 +1,6 @@
 +++
 title = "Github dockerfile service using AI"
-date = "2025-11-25"
+date = "2025-11-24"
 aliases = ["ai"]
 tags = ["ai", "dev", "claude"]
 categories = ["ai", "software", "dev"]
