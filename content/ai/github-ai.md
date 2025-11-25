@@ -14,10 +14,6 @@ I have been fooling around a lot with ai recently, and I thought I would write s
 - Getting this average looking code refactored to be a robust service.
 - Generating API documentation - and having Claude fix this code.
 
-## TLDR
-If you just want the code - it's here: 
-
-[Cloudfront git repository](https://github.com/codecowboydotio/pulumi/tree/main/aws-cloudfront)
 
 ## A crazy idea - update my dockerfiles
 I had a crazy idea. I thought to myself, let's write something that will go through my git repos and automagially update my dockerfiles so that the dockerfile uses a fixed but more recent version of the base image.
