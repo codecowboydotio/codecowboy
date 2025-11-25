@@ -1,5 +1,5 @@
 +++
-title = "Github dockerfile service using AI"
+title = "Github dockerfile service using AI - Part 1"
 date = "2025-11-24"
 aliases = ["ai"]
 tags = ["ai", "dev", "claude"]
@@ -14,6 +14,7 @@ I have been fooling around a lot with ai recently, and I thought I would write s
 - Getting this average looking code refactored to be a robust service.
 - Generating API documentation - and having Claude fix this code.
 
+This is part one of a small series that I have created to walk through the process I went through to get decent code.
 
 ## A crazy idea - update my dockerfiles
 I had a crazy idea. I thought to myself, let's write something that will go through my git repos and automagially update my dockerfiles so that the dockerfile uses a fixed but more recent version of the base image.
