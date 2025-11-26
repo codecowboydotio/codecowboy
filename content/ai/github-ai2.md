@@ -1,6 +1,6 @@
 +++
 title = "Github dockerfile service using AI - Part 2"
-date = "2025-11-25"
+date = "2025-11-28"
 aliases = ["ai"]
 tags = ["ai", "dev", "claude"]
 categories = ["ai", "software", "dev"]
@@ -44,11 +44,6 @@ The biggest change here was that the code that was generated was robust and was 
 
 This is good practice, and is not something that I would have done myself.
 
-{{< notice info >}}
-I am being honest here about what I would and wouldn't do without the assitance of another pAIr programmer.
-{{< /notice >}}
-
-
 ```Python
 class EnvironmentManager:
     """Manages environment variables and API keys."""
@@ -71,6 +66,10 @@ class EnvironmentManager:
             os.environ["ANTHROPIC_API_KEY"] = key
         return key
 ```
+
+{{< notice info >}}
+I am being honest here about what I would and wouldn't do without the assitance of another pAIr programmer.
+{{< /notice >}}
 
 I realised I didn't want a static python script. I wanted a service.
 
@@ -155,7 +154,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 ```
 
-*****************************************************
+The logger configuration from the second iteration was kept.
 
 ```Python
 # Configure logging
@@ -168,8 +167,11 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+```
 
+What was interesting was the job manager class that has been introduced. This is not something that I had thought about, however, in terms of scaling this tiny program into a more robust and larger service, this is definitely something that would be needed. 
 
+```Python
 class JobStatus(str, Enum):
     """Job status enumeration."""
     PENDING = "pending"
