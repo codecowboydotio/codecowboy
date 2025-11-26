@@ -40,6 +40,38 @@ What came out was generally pretty good, however, Claude initially generated ano
 
 ![Code refactor 1](/images/refactor-1-improvements.jpg)
 
+The biggest change here was that the code that was generated was robust and was object oriented. An example is below - the environment manager class that manages environment variables. 
+
+This is good practice, and is not something that I would have done myself.
+
+{{< notice info >}}
+I am being honest here about what I would and wouldn't do without the assitance of another pAIr programmer.
+{{< /notice >}}
+
+
+```Python
+class EnvironmentManager:
+    """Manages environment variables and API keys."""
+    
+    @staticmethod
+    def get_github_token() -> str:
+        """Get GitHub token from environment or prompt user."""
+        token = os.environ.get("GIT_PAT_AI")
+        if not token:
+            token = getpass.getpass("Enter API key for GitHub: ")
+            os.environ["GIT_PAT_AI"] = token
+        return token
+    
+    @staticmethod
+    def get_anthropic_key() -> str:
+        """Get Anthropic API key from environment or prompt user."""
+        key = os.environ.get("ANTHROPIC_API_KEY")
+        if not key:
+            key = getpass.getpass("Enter API key for Anthropic: ")
+            os.environ["ANTHROPIC_API_KEY"] = key
+        return key
+```
+
 I realised I didn't want a static python script. I wanted a service.
 
 ![Code refactor 1](/images/refactor-1-how-to-use.jpg)
@@ -51,6 +83,11 @@ I used the prompt below to get Claude to refactor my code to make it more robust
 ```Shell
 refactor the code to accept the repo as an input via a rest interface
 ```
+
+**This was the piece that blew me away.**
+
+The code that was generated was even better. I ended up with a full service that ran, and had a job manager and logger that would take all of the incoming requests and manage them.
+
 
 ![Code refactor 1](/images/refactor-2-outputs.jpg)
 
