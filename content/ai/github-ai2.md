@@ -319,7 +319,7 @@ We can see from the commits in the repo that it has indeed been updated!
 ![commits](/images/docker-service-commits.jpg)
 
 
-## Code Walkthrough
+# Code Walkthrough
 Let's walk through the code base, and how to use it. 
 
 The codebase is documented but did not contain an easy way to run it. For my own sanity I went and pasted in one of the example REST calls so that I could cut and paste it at any time.
@@ -344,7 +344,7 @@ to their latest versions using AI analysis and commits the changes to GitHub.
 #}'
 ```
 
-### Libraries
+## Libraries
 There are a lot more imports of libraries this time. Claude chose FastAPI, and urllib3, but kept my original langhain and requests portions of code. 
 
 ```Python
@@ -370,7 +370,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 ```
 
-### Logger
+## Logger
 The logger configuration from the second iteration was kept.
 
 ```Python
@@ -386,7 +386,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 ```
 
-### Classes and data classes
+## Classes and data classes
 What was interesting was the job manager class that has been introduced. This is not something that I had thought about, however, in terms of scaling this tiny program into a more robust and larger service, this is definitely something that would be needed.  Below are both the classes that were instantiated and the dataclass objects. All of the classes and data classes that have been added are good to have, and provide a clearer definition of the "what" each type of data is.
 
 ```Python
@@ -464,7 +464,7 @@ class DockerfileUpdaterError(Exception):
     pass
 ```
 
-### HTTP Client class
+## HTTP Client class
 The HTTP client class is client that that is used by the service to update the dockerfile. This is performed via a REST API call from the client to the github API. Claude has correctly added session handling, error handling and exception code.
 
 ```Python
@@ -510,7 +510,7 @@ class HTTPClient:
             raise DockerfileUpdaterError(f"HTTP PUT failed: {e}")
 ```
 
-### GithubAPI Class
+## GithubAPI Class
 This class is specifically for dealing with the Github API. This is slightly different from the HTTP client that provides the **transport**. 
 
 There are four different methods that are to:
@@ -603,7 +603,7 @@ class GitHubAPI:
         return response.json()
 ```
 
-### AI Class
+## AI Class
 This class is the class that makes the called to the AI model. There are two methods here: 
 - Find the dockerfile url in the repo
 - Update the dockerfile base image
@@ -701,7 +701,7 @@ on'
             raise DockerfileUpdaterError(f"Failed to update Dockerfile: {e}")
 ```
 
-### Job Manager class
+## Job Manager class
 This is the one thing that I just didn't even think of. Given that I have an API calling out to another API, and this is likely to be asynchronous, job handling is required. Again, the methods here are impressive. 
 
 - Create job
@@ -849,7 +849,7 @@ class DockerfileUpdaterService:
             )
 ```
 
-### API
+## API
 This portion of the code implements the API and reverse proxy / middleware layer of my API. This uses the config class and passes that to the updater service.
 
 ```Python
@@ -883,7 +883,7 @@ async def get_api_key(credentials: HTTPAuthorizationCredentials = Depends(securi
     return credentials
 ```
 
-### Routes
+## Routes
 The code below implements a number of routes. These are:
 - /health **GET**
 - /update-dockerfile **POST**
@@ -957,7 +957,7 @@ async def delete_job(job_id: str):
     return {"message": "Job deleted successfully"}
 ```
 
-### Main function
+## Main function
 The main function is very standard. It starts a uvicorn server on port 8000 that hosts my code.
 ```Python
 if __name__ == "__main__":
