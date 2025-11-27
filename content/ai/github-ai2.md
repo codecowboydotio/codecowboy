@@ -192,6 +192,9 @@ The proof is in the pudding here. I start the server on my laptop and I can see 
 I placed the usage before the code walkthrough because I recognise not everyone will be interested in the code walkthrough - there is a conclusion at the end of the article.
 {{< /notice >}}
 
+## Run the Server
+I start up the server and the following is displayed on my terminal (stdout).
+
 ```Shell
 ./git-test2.py
 2025-11-27 17:18:04,515 - INFO - Initialized AI model: claude-opus-4-1-20250805
@@ -201,6 +204,7 @@ INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
 
+## First Request - no changes
 I send my first request to the service. I need to include a data section that includes my git **PAT TOKEN**. This is for access to the repo. I also include the repo owner, the repo name, the branch, the path of the file and a commit message.
 
 The last thing is a dry run variable. It is possible to use the service in dry run mode where no changes will actually be made.
@@ -263,6 +267,7 @@ The output shows the time, the ID of the request, and a message saying no change
 ]
 ```
 
+## Second request - perform an update
 When I reset my Dockerfile to require a change and re-run the request, I see that there is a new job ID created.
 
 ```Json
