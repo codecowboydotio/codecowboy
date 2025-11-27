@@ -5,6 +5,7 @@ aliases = ["ai"]
 tags = ["ai", "dev", "claude"]
 categories = ["ai", "software", "dev"]
 author = "codecowboy.io"
+showtoc = true
 +++
 
 # Intro
