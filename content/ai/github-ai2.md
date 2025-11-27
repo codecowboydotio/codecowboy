@@ -1,6 +1,6 @@
 +++
 title = "Github dockerfile service using AI - Part 2"
-date = "2025-11-28"
+date = "2025-11-26"
 aliases = ["ai"]
 tags = ["ai", "dev", "claude"]
 categories = ["ai", "software", "dev"]
@@ -103,6 +103,84 @@ Asking for usage examples is the fastest way to get an idea of code you never wr
 ## The REST service
 The codebase is now a **BEAST**, but it worked first go!!!
 
+{{<mermaid align="left">}}
+sequenceDiagram
+    autonumber
+    actor Client
+    participant API as FastAPI Server
+    participant JobMgr as Job Manager
+    participant BgTask as Background Task
+    participant AI as AI Analyzer<br/>(Claude)
+    participant GitHub as GitHub API
+    
+    Note over Client,GitHub: Initial Request Phase
+    Client->>+API: POST /update-dockerfile<br/>{owner, repo, github_token, ...}
+    API->>API: Validate Request<br/>(Pydantic Models)
+    API->>JobMgr: create_job(job_id)
+    JobMgr->>JobMgr: Store job with<br/>status=PENDING
+    API->>BgTask: add_task(update_dockerfile)
+    API-->>-Client: 202 Accepted<br/>{job_id, status: "pending"}
+    
+    Note over Client,GitHub: Client Polls for Status
+    Client->>+API: GET /jobs/{job_id}
+    API->>JobMgr: get_job(job_id)
+    JobMgr-->>API: Job details
+    API-->>-Client: {status: "pending", ...}
+    
+    Note over BgTask,GitHub: Background Processing
+    activate BgTask
+    BgTask->>JobMgr: update_job(status=RUNNING)
+    
+    BgTask->>+GitHub: GET /repos/{owner}/{repo}/contents/
+    GitHub-->>-BgTask: Repository contents array
+    BgTask->>JobMgr: update_job("Retrieved repo contents")
+    
+    BgTask->>+AI: find_dockerfile_url(contents, path)
+    AI->>AI: Search array for Dockerfile<br/>using structured output
+    AI-->>-BgTask: download_url
+    BgTask->>JobMgr: update_job("Found Dockerfile")
+    
+    BgTask->>+GitHub: GET {download_url}
+    GitHub-->>-BgTask: Current Dockerfile content
+    
+    BgTask->>+AI: update_dockerfile_base_image(content)
+    AI->>AI: Analyze FROM command<br/>Check for latest version<br/>Generate updated Dockerfile
+    AI-->>-BgTask: Updated Dockerfile content
+    
+    BgTask->>BgTask: Compare current vs updated<br/>(first line comparison)
+    
+    alt No Changes Needed
+        BgTask->>JobMgr: update_job(status=COMPLETED,<br/>changed=false)
+    else Changes Detected
+        alt Dry Run Mode
+            BgTask->>JobMgr: update_job(status=COMPLETED,<br/>dry_run=true, changes shown)
+        else Commit Mode
+            BgTask->>+GitHub: GET /repos/.../contents/{path}<br/>?ref={branch}
+            GitHub-->>-BgTask: File SHA (if exists)
+            
+            BgTask->>BgTask: Base64 encode<br/>updated content
+            
+            BgTask->>+GitHub: PUT /repos/.../contents/{path}<br/>{message, content, sha, branch}
+            GitHub->>GitHub: Create commit
+            GitHub-->>-BgTask: {commit: {sha}, content: {html_url}}
+            
+            BgTask->>JobMgr: update_job(status=COMPLETED,<br/>commit_sha, file_url)
+        end
+    end
+    deactivate BgTask
+    
+    Note over Client,GitHub: Client Checks Final Status
+    Client->>+API: GET /jobs/{job_id}
+    API->>JobMgr: get_job(job_id)
+    JobMgr-->>API: Job with status=COMPLETED
+    API-->>-Client: 200 OK<br/>{status: "completed",<br/>result: {changed, commit_sha, ...}}
+    
+    Note over Client,GitHub: Optional: View Updated File
+    Client->>+GitHub: GET {file_url}<br/>(from result)
+    GitHub-->>-Client: View updated Dockerfile
+{{< /mermaid >}}
+
+
 Let's walk through it and how to use it. 
 
 
@@ -128,10 +206,10 @@ to their latest versions using AI analysis and commits the changes to GitHub.
 #}'
 ```
 
+### Libraries
 There are a lot more imports of libraries this time. Claude chose FastAPI, and urllib3, but kept my original langhain and requests portions of code. 
 
 ```Python
-
 import asyncio
 import base64
 import json
@@ -154,6 +232,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 ```
 
+### Logger
 The logger configuration from the second iteration was kept.
 
 ```Python
@@ -169,7 +248,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 ```
 
-What was interesting was the job manager class that has been introduced. This is not something that I had thought about, however, in terms of scaling this tiny program into a more robust and larger service, this is definitely something that would be needed. 
+### Classes and data classes
+What was interesting was the job manager class that has been introduced. This is not something that I had thought about, however, in terms of scaling this tiny program into a more robust and larger service, this is definitely something that would be needed.  Below are both the classes that were instantiated and the dataclass objects.
 
 ```Python
 class JobStatus(str, Enum):
@@ -244,8 +324,11 @@ class JobResult:
 class DockerfileUpdaterError(Exception):
     """Custom exception for Dockerfile updater errors."""
     pass
-
-
+```
+*********************
+### HTTP Client class
+The HTTP client class is client that that is used by the service to update the dockerfile. This is 
+```Python
 class HTTPClient:
     """HTTP client with retry logic and proper error handling."""
 
@@ -286,8 +369,9 @@ class HTTPClient:
         except requests.exceptions.RequestException as e:
             logger.error(f"PUT request failed for {url}: {e}")
             raise DockerfileUpdaterError(f"HTTP PUT failed: {e}")
+```
 
-
+```Python
 class GitHubAPI:
     """GitHub API client with proper error handling."""
 
@@ -365,8 +449,9 @@ class GitHubAPI:
 
         response = self.http_client.put(url, headers=self.headers, data=json.dumps(payload))
         return response.json()
+```
 
-
+```Python
 class AIAnalyzer:
     """AI-powered Dockerfile analyzer."""
 
@@ -453,8 +538,9 @@ on'
         except Exception as e:
             logger.error(f"AI analysis failed for updating Dockerfile: {e}")
             raise DockerfileUpdaterError(f"Failed to update Dockerfile: {e}")
+```
 
-
+```Python
 class JobManager:
     """Manages background jobs."""
 
@@ -487,8 +573,9 @@ class JobManager:
     def list_jobs(self) -> List[JobResult]:
         """List all jobs."""
         return list(self.jobs.values())
+```
 
-
+```Python
 class DockerfileUpdaterService:
     """Main service class."""
 
@@ -586,8 +673,9 @@ class DockerfileUpdaterService:
                 "Job failed with error",
                 error=error_message
             )
+```
 
-
+```Python
 # Initialize FastAPI app
 app = FastAPI(
     title="Dockerfile Updater API",
@@ -616,8 +704,9 @@ async def get_api_key(credentials: HTTPAuthorizationCredentials = Depends(securi
     """Validate API key (optional)."""
     # You can implement API key validation here if needed
     return credentials
+```
 
-
+```Python
 @app.get("/health")
 async def health_check():
     """Health check endpoint."""
@@ -679,8 +768,9 @@ async def delete_job(job_id: str):
 
     del service.job_manager.jobs[job_id]
     return {"message": "Job deleted successfully"}
+```
 
-
+```Python
 if __name__ == "__main__":
     import uvicorn
 
