@@ -309,6 +309,8 @@ As I am using the **/jobs** endpoint, this lists **ALL** jobs, not an individual
 ]
 ```
 
+![commits](/images/docker-service-commits.jpg)
+
 {{< notice info >}}
 I placed the usage before the code walkthrough because I recognise not everyone will be interested in the code walkthrough - there is a conclusion at the end of the article.
 {{< /notice >}}
