@@ -184,7 +184,136 @@ sequenceDiagram
 {{< /mermaid >}}
 
 
-## Code Base
+# Let's run it
+The proof is in the pudding here. I start the server on my laptop and I can see that it's running as a service on port 8000.
+
+```Shell
+./git-test2.py
+2025-11-27 17:18:04,515 - INFO - Initialized AI model: claude-opus-4-1-20250805
+INFO:     Started server process [1966]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+```
+
+I send my first request to the service. I need to include a data section that includes my git **PAT TOKEN**. This is for access to the repo. I also include the repo owner, the repo name, the branch, the path of the file and a commit message.
+
+The last thing is a dry run variable. It is possible to use the service in dry run mode where no changes will actually be made.
+
+```Shell
+curl -X POST "http://localhost:8000/update-dockerfile"   -H "Content-Type: application/json"   -d '{
+ "owner": "codecowboydotio",
+ "repo": "swapi-json-server",
+ "branch": "main",
+ "github_token": "GIT_PAT_TOKEN",
+ "dockerfile_path": "Dockerfile",
+ "commit_message": "Updated Dockerfile FROM via AI",
+ "dry_run": false
+}'
+```
+
+The output on the console from my shell command is as follows. You can see that a job is created. The job has a unique ID, and is queued for processing.
+```Json
+[
+  {
+    "job_id":"109b7804-61c3-4f36-8b51-ea35642b41c2",
+    "status":"pending",
+    "message":"Job created and queued for processing",
+    "timestamp":"2025-11-27T17:19:02.302591"
+  }
+]
+```
+
+Once the request is made, I can see the service fetch the contents, find the file, make the call to anthropic, and finally analyse the Dockerfile.
+
+```Shell
+2025-11-27 17:19:02,305 - INFO - Fetching repository contents from https://api.github.com/repos/codecowboydotio/swapi-json-server/contents/
+2025-11-27 17:19:02,831 - INFO - Downloading file from https://raw.githubusercontent.com/codecowboydotio/swapi-json-server/main/Dockerfile
+2025-11-27 17:19:11,522 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2025-11-27 17:19:11,533 - INFO - Successfully analyzed Dockerfile for base image updates
+```
+
+When I query the list of jobs using the **/jobs** endpoint, I can see that the status of the job is now completed, and there is a message that says no changes were needed.
+
+```Shell
+curl -X GET http://localhost:8000/jobs  -H "Content-Type: application/json" | jq
+```
+
+The output shows the time, the ID of the request, and a message saying no changes were needed. Importantly, thecurrent and updated FROM lines are displayed.
+
+```Json
+[
+  {
+    "job_id": "109b7804-61c3-4f36-8b51-ea35642b41c2",
+    "status": "completed",
+    "message": "No changes needed - Dockerfile is already up to date",
+    "timestamp": "2025-11-27T17:19:11.533974",
+    "result": {
+      "changed": false,
+      "current_from": "FROM docker.io/library/ubuntu:24.04",
+      "updated_from": "FROM docker.io/library/ubuntu:24.04"
+    },
+    "error": null
+  }
+]
+```
+
+When I reset my Dockerfile to require a change and re-run the request, I see that there is a new job ID created.
+
+```Json
+
+{
+  "job_id": "6691c4ac-e232-43fd-86f9-073440d32bac",
+  "status": "pending",
+  "message": "Job created and queued for processing",
+  "timestamp": "2025-11-27T17:26:40.359356"
+}
+```
+
+I then check my new job to see what the status is. 
+```Shell
+curl -X GET http://localhost:8000/jobs  -H "Content-Type: application/json" | jq
+```
+
+As I am using the **/jobs** endpoint, this lists **ALL** jobs, not an individual job. I can see my original job that had no change, and I can see my new job, which has successfully updated the dockerfile in my repository.
+
+```Json
+[
+  {
+    "job_id": "109b7804-61c3-4f36-8b51-ea35642b41c2",
+    "status": "completed",
+    "message": "No changes needed - Dockerfile is already up to date",
+    "timestamp": "2025-11-27T17:19:11.533974",
+    "result": {
+      "changed": false,
+      "current_from": "FROM docker.io/library/ubuntu:24.04",
+      "updated_from": "FROM docker.io/library/ubuntu:24.04"
+    },
+    "error": null
+  },
+  {
+    "job_id": "6691c4ac-e232-43fd-86f9-073440d32bac",
+    "status": "completed",
+    "message": "Successfully updated and committed Dockerfile",
+    "timestamp": "2025-11-27T17:26:50.300875",
+    "result": {
+      "changed": true,
+      "current_from": "FROM docker.io/library/ubuntu:20.04",
+      "updated_from": "FROM docker.io/library/ubuntu:24.04",
+      "dry_run": false,
+      "commit_sha": "4304b404050e15293ed7d017752c252593cbc102",
+      "file_url": "https://github.com/codecowboydotio/swapi-json-server/blob/main/Dockerfile"
+    },
+    "error": null
+  }
+]
+```
+
+{{< notice info >}}
+I placed the usage before the code walkthrough because I recognise not everyone will be interested in the code walkthrough - there is a conclusion at the end of the article.
+{{< /notice >}}
+
+## Code Walkthrough
 Let's walk through the code base, and how to use it. 
 
 The codebase is documented but did not contain an easy way to run it. For my own sanity I went and pasted in one of the example REST calls so that I could cut and paste it at any time.
@@ -836,127 +965,3 @@ if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
 ```
 
-# Let's run it
-The proof is in the pudding here. I start the server on my laptop and I can see that it's running as a service on port 8000.
-
-```Shell
-./git-test2.py
-2025-11-27 17:18:04,515 - INFO - Initialized AI model: claude-opus-4-1-20250805
-INFO:     Started server process [1966]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-```
-
-I send my first request to the service. I need to include a data section that includes my git **PAT TOKEN**. This is for access to the repo. I also include the repo owner, the repo name, the branch, the path of the file and a commit message.
-
-The last thing is a dry run variable. It is possible to use the service in dry run mode where no changes will actually be made.
-
-```Shell
-curl -X POST "http://localhost:8000/update-dockerfile"   -H "Content-Type: application/json"   -d '{
- "owner": "codecowboydotio",
- "repo": "swapi-json-server",
- "branch": "main",
- "github_token": "GIT_PAT_TOKEN",
- "dockerfile_path": "Dockerfile",
- "commit_message": "Updated Dockerfile FROM via AI",
- "dry_run": false
-}'
-```
-
-The output on the console from my shell command is as follows. You can see that a job is created. The job has a unique ID, and is queued for processing.
-```Json
-[
-  {
-    "job_id":"109b7804-61c3-4f36-8b51-ea35642b41c2",
-    "status":"pending",
-    "message":"Job created and queued for processing",
-    "timestamp":"2025-11-27T17:19:02.302591"
-  }
-]
-```
-
-Once the request is made, I can see the service fetch the contents, find the file, make the call to anthropic, and finally analyse the Dockerfile.
-
-```Shell
-2025-11-27 17:19:02,305 - INFO - Fetching repository contents from https://api.github.com/repos/codecowboydotio/swapi-json-server/contents/
-2025-11-27 17:19:02,831 - INFO - Downloading file from https://raw.githubusercontent.com/codecowboydotio/swapi-json-server/main/Dockerfile
-2025-11-27 17:19:11,522 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
-2025-11-27 17:19:11,533 - INFO - Successfully analyzed Dockerfile for base image updates
-```
-
-When I query the list of jobs using the **/jobs** endpoint, I can see that the status of the job is now completed, and there is a message that says no changes were needed.
-
-```Shell
-curl -X GET http://localhost:8000/jobs  -H "Content-Type: application/json" | jq
-```
-
-The output shows the time, the ID of the request, and a message saying no changes were needed. Importantly, thecurrent and updated FROM lines are displayed.
-
-```Json
-[
-  {
-    "job_id": "109b7804-61c3-4f36-8b51-ea35642b41c2",
-    "status": "completed",
-    "message": "No changes needed - Dockerfile is already up to date",
-    "timestamp": "2025-11-27T17:19:11.533974",
-    "result": {
-      "changed": false,
-      "current_from": "FROM docker.io/library/ubuntu:24.04",
-      "updated_from": "FROM docker.io/library/ubuntu:24.04"
-    },
-    "error": null
-  }
-]
-```
-
-When I reset my Dockerfile to require a change and re-run the request, I see that there is a new job ID created.
-
-```Json
-
-{
-  "job_id": "6691c4ac-e232-43fd-86f9-073440d32bac",
-  "status": "pending",
-  "message": "Job created and queued for processing",
-  "timestamp": "2025-11-27T17:26:40.359356"
-}
-```
-
-I then check my new job to see what the status is. 
-```Shell
-curl -X GET http://localhost:8000/jobs  -H "Content-Type: application/json" | jq
-```
-
-As I am using the **/jobs** endpoint, this lists **ALL** jobs, not an individual job. I can see my original job that had no change, and I can see my new job, which has successfully updated the dockerfile in my repository.
-
-```Json
-[
-  {
-    "job_id": "109b7804-61c3-4f36-8b51-ea35642b41c2",
-    "status": "completed",
-    "message": "No changes needed - Dockerfile is already up to date",
-    "timestamp": "2025-11-27T17:19:11.533974",
-    "result": {
-      "changed": false,
-      "current_from": "FROM docker.io/library/ubuntu:24.04",
-      "updated_from": "FROM docker.io/library/ubuntu:24.04"
-    },
-    "error": null
-  },
-  {
-    "job_id": "6691c4ac-e232-43fd-86f9-073440d32bac",
-    "status": "completed",
-    "message": "Successfully updated and committed Dockerfile",
-    "timestamp": "2025-11-27T17:26:50.300875",
-    "result": {
-      "changed": true,
-      "current_from": "FROM docker.io/library/ubuntu:20.04",
-      "updated_from": "FROM docker.io/library/ubuntu:24.04",
-      "dry_run": false,
-      "commit_sha": "4304b404050e15293ed7d017752c252593cbc102",
-      "file_url": "https://github.com/codecowboydotio/swapi-json-server/blob/main/Dockerfile"
-    },
-    "error": null
-  }
-]
-```
