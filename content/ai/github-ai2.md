@@ -103,6 +103,9 @@ Asking for usage examples is the fastest way to get an idea of code you never wr
 ## The REST service
 The codebase is now a **BEAST**, but it worked first go!!!
 
+### Sequence Diagram
+I got claude to also generate a sequence diagram for me. It's large, but shows the interaction between the front end of the service, the github service and the user.
+
 {{<mermaid align="left">}}
 sequenceDiagram
     autonumber
@@ -181,10 +184,10 @@ sequenceDiagram
 {{< /mermaid >}}
 
 
-Let's walk through it and how to use it. 
+## Code Base
+Let's walk through the code base, and how to use it. 
 
-
-Initially, the code is documented. I went the additional step and pasted in one of the example REST calls so that I could cut and paste it at any time.
+The codebase is documented but did not contain an easy way to run it. For my own sanity I went and pasted in one of the example REST calls so that I could cut and paste it at any time.
 
 ```Python
 #!/usr/bin/env python3
@@ -249,7 +252,7 @@ logger = logging.getLogger(__name__)
 ```
 
 ### Classes and data classes
-What was interesting was the job manager class that has been introduced. This is not something that I had thought about, however, in terms of scaling this tiny program into a more robust and larger service, this is definitely something that would be needed.  Below are both the classes that were instantiated and the dataclass objects.
+What was interesting was the job manager class that has been introduced. This is not something that I had thought about, however, in terms of scaling this tiny program into a more robust and larger service, this is definitely something that would be needed.  Below are both the classes that were instantiated and the dataclass objects. All of the classes and data classes that have been added are good to have, and provide a clearer definition of the "what" each type of data is.
 
 ```Python
 class JobStatus(str, Enum):
@@ -325,9 +328,10 @@ class DockerfileUpdaterError(Exception):
     """Custom exception for Dockerfile updater errors."""
     pass
 ```
-*********************
+
 ### HTTP Client class
-The HTTP client class is client that that is used by the service to update the dockerfile. This is 
+The HTTP client class is client that that is used by the service to update the dockerfile. This is performed via a REST API call from the client to the github API. Claude has correctly added session handling, error handling and exception code.
+
 ```Python
 class HTTPClient:
     """HTTP client with retry logic and proper error handling."""
@@ -370,6 +374,19 @@ class HTTPClient:
             logger.error(f"PUT request failed for {url}: {e}")
             raise DockerfileUpdaterError(f"HTTP PUT failed: {e}")
 ```
+
+### GithubAPI Class
+This class is specifically for dealing with the Github API. This is slightly different from the HTTP client that provides the **transport**. 
+
+There are four different methods that are to:
+- Get the repo contents
+- Get the file contents
+- Get the file SHA
+- Commit the file (with return and error codes)
+
+All of this code is relatively robust, object oriented, and has appropriate error handling. 
+
+From where we started with a static procedural script, to get to here is quite amazing.
 
 ```Python
 class GitHubAPI:
@@ -450,6 +467,15 @@ class GitHubAPI:
         response = self.http_client.put(url, headers=self.headers, data=json.dumps(payload))
         return response.json()
 ```
+
+### AI Class
+This class is the class that makes the called to the AI model. There are two methods here: 
+- Find the dockerfile url in the repo
+- Update the dockerfile base image
+
+The two interesting things here are that clause has not altered the prompts, json schemas or changed the use the langchain.
+
+Claude has continued to provide robust error handling and has turned my code into a class.
 
 ```Python
 class AIAnalyzer:
@@ -540,6 +566,16 @@ on'
             raise DockerfileUpdaterError(f"Failed to update Dockerfile: {e}")
 ```
 
+### Job Manager class
+This is the one thing that I just didn't even think of. Given that I have an API calling out to another API, and this is likely to be asynchronous, job handling is required. Again, the methods here are impressive. 
+
+- Create job
+- Update job
+- Get job
+- List all jobs
+
+This includes having multiple status types for jobs, including **PENDING** and **COMPLETED**.
+
 ```Python
 class JobManager:
     """Manages background jobs."""
@@ -574,6 +610,9 @@ class JobManager:
         """List all jobs."""
         return list(self.jobs.values())
 ```
+
+## Dockerfile Update Service
+This is a wrapper class that pulls together using the HTTP client above, and the AI analyser class to make the changes to the dockerfile. This class also performs implementation of the job handling code.
 
 ```Python
 class DockerfileUpdaterService:
@@ -675,6 +714,9 @@ class DockerfileUpdaterService:
             )
 ```
 
+### API
+This portion of the code implements the API and reverse proxy / middleware layer of my API. This uses the config class and passes that to the updater service.
+
 ```Python
 # Initialize FastAPI app
 app = FastAPI(
@@ -705,6 +747,16 @@ async def get_api_key(credentials: HTTPAuthorizationCredentials = Depends(securi
     # You can implement API key validation here if needed
     return credentials
 ```
+
+### Routes
+The code below implements a number of routes. These are:
+- /health **GET**
+- /update-dockerfile **POST**
+- /jobs **GET**
+- /jobs/{job} **GET**
+- /jobs/{job} **DELETE**
+
+Each of these routes can be called and with the appropriate headers is the primary way to interact with the service.
 
 ```Python
 @app.get("/health")
@@ -770,6 +822,8 @@ async def delete_job(job_id: str):
     return {"message": "Job deleted successfully"}
 ```
 
+### Main function
+The main function is very standard. It starts a uvicorn server on port 8000 that hosts my code.
 ```Python
 if __name__ == "__main__":
     import uvicorn
@@ -781,3 +835,6 @@ if __name__ == "__main__":
 
     uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
 ```
+
+# Let's run it
+
