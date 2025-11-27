@@ -187,6 +187,10 @@ sequenceDiagram
 # Let's run it
 The proof is in the pudding here. I start the server on my laptop and I can see that it's running as a service on port 8000.
 
+{{< notice info >}}
+I placed the usage before the code walkthrough because I recognise not everyone will be interested in the code walkthrough - there is a conclusion at the end of the article.
+{{< /notice >}}
+
 ```Shell
 ./git-test2.py
 2025-11-27 17:18:04,515 - INFO - Initialized AI model: claude-opus-4-1-20250805
@@ -309,11 +313,10 @@ As I am using the **/jobs** endpoint, this lists **ALL** jobs, not an individual
 ]
 ```
 
+We can see from the commits in the repo that it has indeed been updated!
+
 ![commits](/images/docker-service-commits.jpg)
 
-{{< notice info >}}
-I placed the usage before the code walkthrough because I recognise not everyone will be interested in the code walkthrough - there is a conclusion at the end of the article.
-{{< /notice >}}
 
 ## Code Walkthrough
 Let's walk through the code base, and how to use it. 
@@ -966,4 +969,9 @@ if __name__ == "__main__":
 
     uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
 ```
+
+# Summary
+This has been a long journey so far for the reader, but for me as a developer it's been very quick. It took me only a few minutes to refactor the code into a service using Claude. I have a robust service now that allows me to get Dockerfiles updated without too much difficulty. I just need to feed in the right paramters and away it goes, and performs the checks on my behalf, does the analysis, and updates the repository.
+
+This is a neat way to keep your Dockerfiles updated and your repos clean!
 
