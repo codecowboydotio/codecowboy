@@ -1,6 +1,6 @@
 +++
 title = "MCP server templated reports"
-date = "2025-12-21"
+date = "2025-12-29"
 aliases = ["ai"]
 tags = ["ai", "dev", "claude"]
 categories = ["ai", "software", "dev"]
@@ -18,9 +18,14 @@ I have set up a remote MCP server that pulls data from the Star Wars API (swapi)
 
 
 ## The MCP Server
+The MCP server has two tools 
 
-```Shell
-```
+- get_swapi_character (Get character information from SWAPI by ID)
+- get_all_swapi_people (Get all people from SWAPI)
+
+![Tools](/images/mcp-report-tools.jpg)
+
+While this is a very simple implementation of tools within an MCP server, it serves the purpose of generating a report using an MCP and the available tools.
 
 ## Claude project
 
