@@ -1,6 +1,6 @@
 +++
 title = "MCP server templated reports"
-date = "2025-12-29"
+date = "2025-12-28"
 aliases = ["ai"]
 tags = ["ai", "dev", "claude"]
 categories = ["ai", "software", "dev"]
