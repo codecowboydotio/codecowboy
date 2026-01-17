@@ -71,11 +71,12 @@ As part of the thought process that is used, we can see that claude has read the
 
 ![step one](/images/mcp-report-step1.1.jpg)
 
-![step three](/images/mcp-report-step2.jpg)
 
 The next step we can see that the correct tool call is used, and that the data is returned. This is where the client (claude) makes the tool call, and gets an API response from the the backend API.
 
-![step two](mcp-api-response.jpg)
+![step three](/images/mcp-report-step2.jpg)
+
+![step two](/images/mcp-api-response.jpg)
 
 
 ![step four](/images/mcp-report-step2.2.jpg)
