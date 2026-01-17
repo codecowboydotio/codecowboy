@@ -60,14 +60,18 @@ I have used relatively simple and straight forward prompts in my template, I am 
 
 One thing that I did not try, it placement of the explicit tool calls in the template. You will note that there is an explicit tool call in the project instructions though.
 
-
 ## Report generation
-![aa](/images/mcp-report-step1.jpg)
-![aa](/images/mcp-report-step2.jpg)
-![aa](/images/mcp-report-step2.2.jpg)
-![aa](/images/mcp-report-step2.3.jpg)
-![aa](/images/mcp-report-step3.jpg)
-![aa](/images/mcp-report-step4.jpg)
+In order to generate a report, I simply open claude, navigate to the project and say **generate report**.
+
+![step one](/images/mcp-report-step1.jpg)
+
+The interesting thing here is that even though the project instruction to ask the user for a preferred output is the **last** project instruction, it is executed first. Claude knows that it cannot move forward without this data, so asks for it first. 
+
+![step two](/images/mcp-report-step2.jpg)
+![step three](/images/mcp-report-step2.2.jpg)
+![step four](/images/mcp-report-step2.3.jpg)
+![step five](/images/mcp-report-step3.jpg)
+![step six](/images/mcp-report-step4.jpg)
 
 ## MCP Logs
 
