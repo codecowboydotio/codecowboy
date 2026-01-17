@@ -52,7 +52,13 @@ The two most important ones are to read the instructions within the template fil
 ## Template file
 The template file is a standard word document. It is noteworthy because it has additional instructions embedded within it. 
 
-![aa](/images/mcp-report-template.jpg)
+The template uses a variable to set the project name, however it also has further prompts within it that will be read and executed upon invocation (as per the project instructions).
+
+![Report Template](/images/mcp-report-template.jpg)
+
+I have used relatively simple and straight forward prompts in my template, I am sure that you can use more complex prompts to get different functionality. 
+
+One thing that I did not try, it placement of the explicit tool calls in the template. You will note that there is an explicit tool call in the project instructions though.
 
 
 ## Report generation
