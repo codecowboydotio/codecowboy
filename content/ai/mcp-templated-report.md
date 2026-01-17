@@ -93,8 +93,6 @@ The outputs are simple. There is a graph of the planet data, and a table of the 
 ![step seven](/images/mcp-report-step4.jpg)
 
 ## MCP Logs
-
-## Output
 On the server side we can see that the client (claude) made a call to list the tools, and then called the get_all_swapi_people tool. I will delve more into this in another post. 
 
 ```Shell
