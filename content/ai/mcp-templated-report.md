@@ -28,10 +28,38 @@ The MCP server has two tools
 While this is a very simple implementation of tools within an MCP server, it serves the purpose of generating a report using an MCP and the available tools.
 
 ## Claude project
+I am using a claude project here to make sure that context and instructions are all self contained. This makes it easier for me to ensure that the all of the templates and history are kept together.
+
+![mcp-report-project.overview](/images/mcp-report-project-overview.jpg)
+
+You can read about claude projects here: [https://www.anthropic.com/news/projects](https://www.anthropic.com/news/projects)
 
 ## Template file
+![aa](/images/mcp-report-project-instructions.jpg)
+![aa](/images/mcp-report-step1.jpg)
+![aa](/images/mcp-report-step2.2.jpg)
+![aa](/images/mcp-report-step2.3.jpg)
+![aa](/images/mcp-report-step2.jpg)
+![aa](/images/mcp-report-step3.jpg)
+![aa](/images/mcp-report-step4.jpg)
+![aa](/images/mcp-report-template.jpg)
+![aa](/images/mcp-report-tools.jpg)
+
 
 ## Report generation
+
+## MCP Logs
+
+```Shell
+2026-01-16 03:09:20 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2026-01-16 03:10:39 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2026-01-16 03:10:39 - root - INFO - Tool called: get_all_swapi_people with arguments: {}
+2026-01-16 03:10:39 - root - INFO - Fetching all people from SWAPI
+2026-01-16 03:10:39 - root - INFO - Making request to: http://localhost:3000/people/
+2026-01-16 03:10:39 - httpx - INFO - HTTP Request: GET http://localhost:3000/people/ "HTTP/1.1 200 OK"
+2026-01-16 03:10:39 - root - INFO - Successfully fetched data from: http://localhost:3000/people/
+2026-01-16 03:10:39 - root - INFO - Successfully fetched 83 people
+```
 
 ## Output
 
