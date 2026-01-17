@@ -78,16 +78,24 @@ The next step we can see that the correct tool call is used, and that the data i
 
 ![step two](/images/mcp-api-response.jpg)
 
+The next two steps are interesting. The first step is where the planet data is pulled out of the existing dataset that claude queried. Essentially it's a way of rearranging or re-keying the existing data. This is because the planet data is included in the person data. 
 
 ![step four](/images/mcp-report-step2.2.jpg)
 
+The last piece of the puzzle, claude uses the inbuilt skill to export a pptx file for me to check.
+
 ![step five](/images/mcp-report-step2.3.jpg)
+
+The outputs are simple. There is a graph of the planet data, and a table of the people with the fields that I requested in the template. Most amazingly, the branding is NOT in traditional black and yellow.
 
 ![step six](/images/mcp-report-step3.jpg)
 
 ![step seven](/images/mcp-report-step4.jpg)
 
 ## MCP Logs
+
+## Output
+On the server side we can see that the client (claude) made a call to list the tools, and then called the get_all_swapi_people tool. I will delve more into this in another post. 
 
 ```Shell
 2026-01-16 03:09:20 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
@@ -100,11 +108,9 @@ The next step we can see that the correct tool call is used, and that the data i
 2026-01-16 03:10:39 - root - INFO - Successfully fetched 83 people
 ```
 
-## Output
-
-
 # Summary
-This has been a long journey so far for the reader, but for me as a developer it's been very quick. It took me only a few minutes to refactor the code into a service using Claude. I have a robust service now that allows me to get Dockerfiles updated without too much difficulty. I just need to feed in the right paramters and away it goes, and performs the checks on my behalf, does the analysis, and updates the repository.
+If you're not using claude and MCP for automatic report generation (and more) you're missing out. The amount of effort to set all of this up was minimal. The template took roughly 5 minutes to create. The project instructions were similar. I did iterate the project instructions however I found that this was also minimal. 
 
-This is a neat way to keep your Dockerfiles updated and your repos clean!
+I see the use cases for this being plentiful. These include, generating reports for regulators, and any other report that you need to have regularly.
 
+I highly recommend using MCP and claude projects for your report generation needs. It's easy, and amazingly flexible!
