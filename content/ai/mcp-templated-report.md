@@ -34,19 +34,34 @@ I am using a claude project here to make sure that context and instructions are 
 
 You can read about claude projects here: [https://www.anthropic.com/news/projects](https://www.anthropic.com/news/projects)
 
+Part of creating a project in claude is creating instructions. The instructions tell claude what it needs to do whenever the project is used. 
+
+![Project Instructions](/images/mcp-report-project-instructions.jpg)
+
+The project instructions specify that we should:
+- Create a document by using our template doc.
+- Give the project a default name.
+- Read the additional instructions within the template.
+- Don't use the default star wars brand style!!!
+- Ask the user if they want a document as a ppt or a doc.
+
+All of these instructions are executed when this project is used. 
+
+The two most important ones are to read the instructions within the template file, and to not use the black and yellow star wars branding (it makes the graphs undreadable).
+
 ## Template file
-![aa](/images/mcp-report-project-instructions.jpg)
-![aa](/images/mcp-report-step1.jpg)
-![aa](/images/mcp-report-step2.2.jpg)
-![aa](/images/mcp-report-step2.3.jpg)
-![aa](/images/mcp-report-step2.jpg)
-![aa](/images/mcp-report-step3.jpg)
-![aa](/images/mcp-report-step4.jpg)
+The template file is a standard word document. It is noteworthy because it has additional instructions embedded within it. 
+
 ![aa](/images/mcp-report-template.jpg)
-![aa](/images/mcp-report-tools.jpg)
 
 
 ## Report generation
+![aa](/images/mcp-report-step1.jpg)
+![aa](/images/mcp-report-step2.jpg)
+![aa](/images/mcp-report-step2.2.jpg)
+![aa](/images/mcp-report-step2.3.jpg)
+![aa](/images/mcp-report-step3.jpg)
+![aa](/images/mcp-report-step4.jpg)
 
 ## MCP Logs
 
