@@ -1,6 +1,6 @@
 +++
 title = "Chalk project"
-date = "2026-02-13"
+date = "2026-02-28"
 aliases = ["chalk"]
 tags = ["chalk", "dev", "security"]
 categories = ["ai", "security", "dev"]
@@ -9,6 +9,9 @@ showtoc = true
 +++
 
 # Intro
+I recently came across a very interesting open source project called the chalk project. 
+
+[https://chalkproject.io/](https://chalkproject.io/)
 
 ## What is this?
 
