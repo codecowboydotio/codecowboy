@@ -1,6 +1,6 @@
 +++
 title = "Chalk project"
-date = "2026-02-28"
+date = "2026-03-28"
 aliases = ["chalk"]
 tags = ["chalk", "dev", "security"]
 categories = ["ai", "security", "dev"]
@@ -48,9 +48,31 @@ chalk version
  ┊ Docker Client  ┊ 29.1.2                                      ┊
  ┊ Docker Server  ┊ 29.1.2                                      ┊
  ┊ Buildx         ┊ 0.30.1                                      ┊
- ┊ Cosign         ┊                                             ┊
+ ┊ Cosign         ┊ 2.2.3                                       ┊
  └┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┴┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┘
 
+
+```
+
+## Initial configuration
+The very first thing you will want to do is to run a **chalk setup**. 
+
+```Bash
+[root@foo content]# chalk setup
+warn:  Could not find or install cosign; cannot sign or verify.
+info:  Ensuring cosign is present to setup attestation.
+info:  Downloading cosign from https://github.com/sigstore/cosign/releases/download/v2.2.3/cosign-linux-amd64 .....
+
+------------------------------------------
+CHALK_PASSWORD=8qBR38D1Z_lZrtwmb8Rvgw==
+------------------------------------------
+Write this down. In future chalk commands, you will need
+to provide it via CHALK_PASSWORD environment variable.
+
+info:  cosign: signing file /root/bin/chalk-0.6.5-Linux-x86_64
+info:  Configuration replaced in binary: /root/bin/chalk-0.6.5-Linux-x86_64
+info:  /root/.local/chalk/chalk.log: Open (sink conf='default_out')
+info:  Full chalk report appended to: ~/.local/chalk/chalk.log
 ```
 
 ## Chalk Environment
