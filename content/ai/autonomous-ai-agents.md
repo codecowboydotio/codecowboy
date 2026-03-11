@@ -60,6 +60,12 @@ This instructs the agent to use the LLM to slice the data while also looking for
 
 ![Agent B](/images/autonomous-ai-agent-code-gen-agent.jpg)
 
+If there are fake users, then the LLM will generate a script that can be passed to agent C, and run. 
+
+![Agent B](/images/autonomous-ai-agent-code received.jpg)
+
+The code that is received is displayed using the "code received" in the UI.
+
 
 ## Agent C
 
