@@ -47,7 +47,19 @@ You can see from the agent configuration that this agent uses the prompt when it
 
 ![Agent A](/images/autonomous-ai-agent-mcp-agent.jpg)
 
+Agent A will broadcast this data as a message to the bus, and all other agents that are subscribed to the same topic will pick up the message and process it. If other agents are not subscribed to the same topic then they will simply ignore the message, but will receive it over the network.
+
 ## Agent B
+Agent B does a little more work. Agent B picks up the broadcast message, which is a list of all star wars characters. Agent B then sends this message to the LLM using the following prompt.
+
+{{< notice info >}}
+If there are any characters that look fake, list all of their attributes as json. Create a python script that will list the attributes from the json payload. Do not include a shebang at the beginning of the script. I will be using python exec() for execution. Return only the script without any other commentary. The script will be streamed as is and run, as such it should be returned as raw code only, no markdown formatting.
+{{< /notice >}}
+
+This instructs the agent to use the LLM to slice the data while also looking for anomalies. Importantly, the agent will **only** take action if there appear to be fake users. 
+
+![Agent B](/images/autonomous-ai-agent-code-gen-agent.jpg)
+
 
 ## Agent C
 
