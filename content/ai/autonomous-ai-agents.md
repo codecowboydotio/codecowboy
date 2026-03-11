@@ -19,7 +19,7 @@ I built out a multi agent architecture that allows me to start an agent, and opt
 
 ![Architecture](/images/mcp-report-architecture.jpg)
 
-
+![Agent Architecture](/images/autonomous-ai-agent-diagram.svg)
 ## The MCP Server
 The MCP server is my standard Star Wars API (SWAPI) server and MCP that I have used previously. The MCP server has two tools 
 
@@ -33,6 +33,11 @@ While this is a very simple implementation of tools within an MCP server, it ser
 {{< notice info >}}
 I have inserted myself into the API as a "fake" character.
 {{< /notice >}}
+
+The intention here is that I want my agents to get data, write code and execute the code based on the data they see. This is a very standard use case. 
+
+
+## 
 
 # Summary
 
