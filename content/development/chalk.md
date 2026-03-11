@@ -55,7 +55,7 @@ chalk version
 ```
 
 ## Initial configuration
-The very first thing you will want to do is to run a **chalk setup**. 
+The very first thing you will want to do is to run a **chalk setup**. This configures chalk and also downloads cosign. More importantly, it gives you a chalk password which you need for commands later on.
 
 ```Bash
 [root@foo content]# chalk setup
@@ -64,7 +64,7 @@ info:  Ensuring cosign is present to setup attestation.
 info:  Downloading cosign from https://github.com/sigstore/cosign/releases/download/v2.2.3/cosign-linux-amd64 .....
 
 ------------------------------------------
-CHALK_PASSWORD=8qBR38D1Z_lZrtwmb8Rvgw==
+CHALK_PASSWORD=some_password
 ------------------------------------------
 Write this down. In future chalk commands, you will need
 to provide it via CHALK_PASSWORD environment variable.
@@ -74,6 +74,9 @@ info:  Configuration replaced in binary: /root/bin/chalk-0.6.5-Linux-x86_64
 info:  /root/.local/chalk/chalk.log: Open (sink conf='default_out')
 info:  Full chalk report appended to: ~/.local/chalk/chalk.log
 ```
+
+From here you should be ready to go and start adding chalk marks.
+
 
 ## Chalk Environment
 You can check the chalk environment by using the **chalk env** command. This allows you to see key information about the current chalk environment.
@@ -104,8 +107,8 @@ info:  Full chalk report appended to: ~/.local/chalk/chalk.log
     "_OP_UNMARKED_COUNT": 0
   }
 ]
-
 ```
+
 
 
 # Summary
