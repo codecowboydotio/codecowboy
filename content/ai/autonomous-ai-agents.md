@@ -11,7 +11,7 @@ showtoc = true
 # Intro
 I've been messing around with AI and "agents" recently. I thought I'd share the architecture that I've come up with. I was working with some orchestration systenms and thought to myself "I want something that is autonomous, but also able to be completely distributed".
 
-I have used the fantastic library [libp2p](www.libp2p.org)
+I have used the fantastic library [libp2p](http://www.libp2p.io)
 
 When I use the word agent, I generally mean a process that runs continuously.
 
