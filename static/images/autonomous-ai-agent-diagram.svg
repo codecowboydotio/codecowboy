@@ -61,10 +61,10 @@
 
 
 
-  <!-- Bus → Agent C -->
-  <line x1="510" y1="338" x2="615" y2="392" stroke="#9a3412" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arr-orange)"/>
-  <rect x="554" y="356" width="62" height="14" rx="3" fill="#ffedd5"/>
-  <text x="585" y="367" text-anchor="middle" fill="#9a3412" font-size="9" font-weight="600">subscribe</text>
+  <!-- Bus → Agent C — PURPLE to reflect Agent C listens for Agent B's code -->
+  <line x1="510" y1="338" x2="615" y2="392" stroke="#6b21a8" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arr-purple)"/>
+  <rect x="554" y="356" width="62" height="14" rx="3" fill="#f3e8ff" stroke="#6b21a8" stroke-width="0.5"/>
+  <text x="585" y="367" text-anchor="middle" fill="#6b21a8" font-size="9" font-weight="600">subscribe</text>
 
   <!-- Bus → UI -->
   <line x1="340" y1="324" x2="258" y2="390" stroke="#713f12" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arr-yellow)"/>
@@ -110,10 +110,10 @@
   <rect x="544" y="280" width="72" height="15" rx="3" fill="#f3e8ff" stroke="#6b21a8" stroke-width="0.5"/>
   <text x="580" y="291" text-anchor="middle" fill="#6b21a8" font-size="9" font-weight="700">publish code</text>
 
-  <!-- Bus → Agent B (subscribe) — BOTTOM arrow: from bus bottom-right edge to lower-left of Agent B -->
-  <line x1="542" y1="334" x2="618" y2="321" stroke="#6b21a8" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-purple)"/>
-  <rect x="544" y="330" width="62" height="15" rx="3" fill="#f3e8ff" stroke="#6b21a8" stroke-width="0.5"/>
-  <text x="575" y="341" text-anchor="middle" fill="#6b21a8" font-size="9" font-weight="700">subscribe</text>
+  <!-- Bus → Agent B (subscribe) — GREEN to reflect Agent B subscribing to Agent A messages -->
+  <line x1="542" y1="334" x2="618" y2="321" stroke="#166534" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-green)"/>
+  <rect x="544" y="330" width="62" height="15" rx="3" fill="#dcfce7" stroke="#166534" stroke-width="0.5"/>
+  <text x="575" y="341" text-anchor="middle" fill="#166534" font-size="9" font-weight="700">subscribe</text>
 
   <!-- Agent C — bottom right -->
   <circle cx="660" cy="440" r="56" fill="#ffedd5" stroke="#9a3412" stroke-width="2.5" filter="url(#shadow)"/>
