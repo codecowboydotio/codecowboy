@@ -25,8 +25,3 @@ The MCP server has two tools
 While this is a very simple implementation of tools within an MCP server, it serves the purpose of generating a report using an MCP and the available tools.
 
 # Summary
-If you're not using claude and MCP for automatic report generation (and more) you're missing out. The amount of effort to set all of this up was minimal. The template took roughly 5 minutes to create. The project instructions were similar. I did iterate the project instructions however I found that this was also minimal. 
-
-I see the use cases for this being plentiful. These include, generating reports for regulators, and any other report that you need to have regularly.
-
-I highly recommend using MCP and claude projects for your report generation needs. It's easy, and amazingly flexible!
