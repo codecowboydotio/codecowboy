@@ -31,12 +31,10 @@ params:
   homeInfoParams:
     Title: "codecowboy.io"
     Content: |
-      👋 Welcome to **codecowboy.io**, a site that's devoted to technology and things that interest me. I write a lot about automation, kubernetes, cloud and developer related topics... and anything else that interest me.
+      👋 Welcome to **codecowboy.io**, a site that's devoted to technology and things that interest me. I write a lot about AI, automation, kubernetes, cloud and developer related topics... and anything else that interest me.
       - You can read more about me [here](http://codecowboy.io/about)
 
   socialIcons:
-    - name: "twitter"
-      url: "https://twitter.com/codecowboydotio"
     - name: "email"
       url: "mailto:nobody@example.com"
     - name: "github"
