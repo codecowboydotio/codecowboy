@@ -66,7 +66,6 @@ If there are fake users, then the LLM will generate a script that can be passed 
 
 The code that is received is displayed using the "code received" in the UI.
 
-
 ## Agent C
 
 # Summary
