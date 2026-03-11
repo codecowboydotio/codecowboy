@@ -16,6 +16,8 @@ I have used the fantastic library [libp2p](http://www.libp2p.io). This gives me 
 ## What is this?
 I built out a multi agent architecture that allows me to start an agent, and optionally connect it to either an LLM (either claude or openai), an MCP server (any one), give it a prompt that gets executed, and topics that the agent will either publish to or subscribe to... or both.
 
+I have used the Star Wars API (SWAPI) as the basis for this example. I've used it before for a few blogs and it makes sense and it is a relatively understandable dataset for most people.
+
 ![Agent Architecture](/images/autonomous-ai-agent-diagram.svg)
 
 ## Peer to peer topology
