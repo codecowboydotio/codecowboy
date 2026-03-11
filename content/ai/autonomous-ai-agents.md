@@ -1,14 +1,19 @@
 +++
 title = "Autonomous AI agents"
-date = "2026-03-12"
+date = "2026-03-11"
 aliases = ["ai"]
-tags = ["ai", "dev", "claude"]
+tags = ["ai", "dev"]
 categories = ["ai", "software", "dev"]
 author = "codecowboy.io"
 showtoc = true
 +++
 
 # Intro
+I've been messing around with AI and "agents" recently. I thought I'd share the architecture that I've come up with. I was working with some orchestration systenms and thought to myself "I want something that is autonomous, but also able to be completely distributed".
+
+I have used the fantastic library [libp2p](www.libp2p.org)
+
+When I use the word agent, I generally mean a process that runs continuously.
 
 ## What is this?
 ![Architecture](/images/mcp-report-architecture.jpg)
