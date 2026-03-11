@@ -16,10 +16,8 @@ I have used the fantastic library [libp2p](http://www.libp2p.io). This gives me 
 ## What is this?
 I built out a multi agent architecture that allows me to start an agent, and optionally connect it to either an LLM (either claude or openai), an MCP server (any one), give it a prompt that gets executed, and topics that the agent will either publish to or subscribe to... or both.
 
-
-![Architecture](/images/mcp-report-architecture.jpg)
-
 ![Agent Architecture](/images/autonomous-ai-agent-diagram.svg)
+
 ## The MCP Server
 The MCP server is my standard Star Wars API (SWAPI) server and MCP that I have used previously. The MCP server has two tools 
 
@@ -36,8 +34,22 @@ I have inserted myself into the API as a "fake" character.
 
 The intention here is that I want my agents to get data, write code and execute the code based on the data they see. This is a very standard use case. 
 
+## Agent A
+Agent A has one job - get the data from the MCP server and don't truncate it. In order to do this, I get the agent to make an MCP call using a prompt.
 
-## 
+{{< notice info >}}
+Use the mcp server to get all swapi people. List all of the people, do not cut the list short.
+{{< /notice >}}
+
+The agent then calls the MCP server, selects the appropriate tool, and gets a dump of data. This could easily have been a REST call, but it's a lot more flexible to simply feed the agent a prompt.
+
+You can see from the agent configuration that this agent uses the prompt when it makes an MCP call.
+
+![Agent A](/images/autonomous-ai-agent-mcp-agent.jpg)
+
+## Agent B
+
+## Agent C
 
 # Summary
 
