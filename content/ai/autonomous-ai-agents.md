@@ -73,7 +73,7 @@ This instructs the agent to use the LLM to slice the data while also looking for
 
 If there are fake users, then the LLM will generate a script that can be passed to agent C, and run. 
 
-![Agent B](/images/autonomous-ai-agent-code received.jpg)
+![Agent B](/images/autonomous-ai-agent-code-received.jpg)
 
 The code that is received is displayed using the "code received" in the UI.
 
@@ -83,7 +83,7 @@ Note that it is agent B that performs the evaluation of whether or not there are
 Agent B publishes its code to the agent C. Agent C is subscribed to the "code-exec" topic and consumes the message (which is a complete script that can be run using the python **exec()** 
 function). Agent C then runs the code. Agent C has no smarts and just runs whatever is sent to it. 
 
-![Agent C](/images/autonomous-ai-agent-code executed.jpg)
+![Agent C](/images/autonomous-ai-agent-code-executed.jpg)
 
 The executed result correctly identifies that I have been inserted into the star wars universe and should not be there.
 
