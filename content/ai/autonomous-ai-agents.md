@@ -1,6 +1,6 @@
 +++
 title = "Autonomous AI agents"
-date = "2026-03-11"
+date = "2026-03-16"
 aliases = ["ai"]
 tags = ["ai", "dev"]
 categories = ["ai", "software", "dev"]
