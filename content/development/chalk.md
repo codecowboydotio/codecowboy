@@ -59,10 +59,6 @@ The very first thing you will want to do is to run a **chalk setup**. This confi
 
 ```Bash
 [root@foo content]# chalk setup
-warn:  Could not find or install cosign; cannot sign or verify.
-info:  Ensuring cosign is present to setup attestation.
-info:  Downloading cosign from https://github.com/sigstore/cosign/releases/download/v2.2.3/cosign-linux-amd64 .....
-
 ------------------------------------------
 CHALK_PASSWORD=some_password
 ------------------------------------------
@@ -84,8 +80,6 @@ You can check the chalk environment by using the **chalk env** command. This all
 ```Bash
 # chalk env
 
-warn:  Could not find or install cosign; cannot sign or verify.
-info:  /root/.local/chalk/chalk.log: Open (sink conf='default_out')
 info:  Full chalk report appended to: ~/.local/chalk/chalk.log
 [
   {
@@ -109,11 +103,125 @@ info:  Full chalk report appended to: ~/.local/chalk/chalk.log
 ]
 ```
 
+## Chalking a binary
+The docs have a really nice way to get started, which is chalking a binary. This is interesting for a number of reasons, least of which is that when you chalk binary files, you end up placing data inside the binary.
+
+First we copy the ls command to the current diretory. Mainly so that we do not modify the system one.
+
+```Bash
+cp $(which ls) ./
+chalk insert ls
+```
+
+This inserts a chalk mark inside the ls binary.
+
+
+
+```Bash
+[root@foo chalk-test]# chalk commands
+warn:  Could not find or install cosign; cannot sign or verify.
+[root@foo chalk-test]# chalk extract ./ls
+warn:  Could not find or install cosign; cannot sign or verify.
+info:  /root/chalk-test/ls: Chalk mark extracted
+
+info:  /root/.local/chalk/chalk.log: Open (sink conf='default_out')
+info:  Full chalk report appended to: ~/.local/chalk/chalk.log
+[
+  {
+    "_OPERATION": "extract",
+    "_DATETIME": "2026-03-22T16:18:59.349+11:00",
+    "_CHALKS": [
+      {
+        "CHALK_ID": "CRR62D-K5CM-SP6E-9R6GSK",
+        "CHALK_VERSION": "0.6.8",
+        "ARTIFACT_TYPE": "ELF",
+        "METADATA_ID": "0PQNZ9-W3YE-1P9V-ZPYPXZ",
+        "_OP_ARTIFACT_PATH": "/root/chalk-test/ls",
+        "_OP_ARTIFACT_TYPE": "ELF",
+        "_CURRENT_HASH": "4fbb16e63435787b42a21907d5e72d08f219d6e2e977be5be003c760553230e8"
+      }
+    ],
+    "_ENV": {
+      "PWD": "/root/chalk-test",
+      "XDG_SESSION_TYPE": "tty",
+      "USER": "root",
+      "PATH": "/usr/local/go/bin:/root/.local/bin:/root/bin:/usr/local/bin:/usr/bin:/opt/mssql-tools/bin:/root/.pulumi/bin:/root/bin:/usr/local/go/bin:.:/opt/mssql-tools/bin",
+      "SSH_TTY": "/dev/pts/1"
+    },
+    "_OP_ARGV": [
+      "/root/bin/chalk-0.6.8-Linux-x86_64",
+      "extract",
+      "./ls"
+    ],
+    "_OP_CHALKER_VERSION": "0.6.8",
+    "_OP_CHALK_COUNT": 1,
+    "_OP_UNMARKED_COUNT": 0
+  }
+]
+```
+
+## Signing and attestation
+
+One of the very useful use cases for chalk is signing and attestation of artifacts. This allows me to absolutely know that the artifact I am using is the same artifact that I have previously signed. You can sign binaries, container images and more. 
+
+An example of signing an artifact is below.
+
+```Bash
+ CHALK_PASSWORD=XXX chalk insert ./ls
+info:  Test sign successful.
+info:  Test verify successful.
+info:  /root/chalk-test/ls: Existing chalk mark extracted
+info:  cosign: signing file /root/chalk-test/ls
+info:  /root/chalk-test/ls: chalk mark successfully added
+info:  /root/.local/chalk/chalk.log: Open (sink conf='default_out')
+info:  Full chalk report appended to: ~/.local/chalk/chalk.log
+[
+  {
+    "_OPERATION": "insert",
+    "_DATETIME": "2026-05-07T19:58:31.195+10:00",
+    "_CHALKS": [
+      {
+        "CHALK_ID": "CRR62D-K5CM-SP6E-9R6GSK",
+        "PRE_CHALK_HASH": "19504e2afd1817da6edfab46f61e4842eabb7043eee68b125aca4                               20ec4397734",
+        "PATH_WHEN_CHALKED": "/root/chalk-test/ls",
+        "ARTIFACT_TYPE": "ELF",
+        "CHALK_VERSION": "0.6.8",
+        "METADATA_ID": "QF2P96-R00C-KKSJ-E59FD3",
+        "SIGNATURE": "MEYCIQD44GDn3Mvp59RL2jA+o0bd2pj6cCKownoQ0fsR89Z8FAIhAJrf6M                               2kC4nvlb+u2sbTzW9dKzDfJFXTH2332/IaawRC",
+        "_VIRTUAL": false,
+        "_CURRENT_HASH": "19504e2afd1817da6edfab46f61e4842eabb7043eee68b125aca42                               0ec4397734"
+      }
+    ],
+    "_ENV": {
+      "PWD": "/root/chalk-test",
+      "XDG_SESSION_TYPE": "tty",
+      "USER": "root",
+      "PATH": "/usr/local/go/bin:/usr/local/go/bin:/usr/local/go/bin:/root/.loca                               l/bin:/root/bin:/usr/local/bin:/usr/bin:/opt/mssql-tools/bin:/root/.pulumi/bin:/                               root/bin:/usr/local/go/bin:.:/opt/mssql-tools/bin:/opt/mssql-tools/bin:/root/.pu                               lumi/bin:/root/bin:/usr/local/go/bin:.:/opt/mssql-tools/bin:/opt/mssql-tools/bin                               :/root/.pulumi/bin:/root/bin:/usr/local/go/bin:.:/opt/mssql-tools/bin",
+      "SSH_TTY": "/dev/pts/0"
+    },
+    "_OP_ARGV": [
+      "/root/bin/chalk-0.6.8-Linux-x86_64",
+      "insert",
+      "./ls"
+    ],
+    "_OP_CHALKER_VERSION": "0.6.8",
+    "_OP_CHALK_COUNT": 1,
+    "_OP_UNMARKED_COUNT": 0
+  }
+```
+
+If I want to validate the signature, I can run the chalk extract command.
+
+```Bash
+# chalk extract ./ls 2>/dev/null | jq -r '.[]|._CHALKS[]|._VALIDATED_SIGNATURE'
+true
+```
+Chalk will return a value of true or null depending on whether or not the siganture returns a value. This is very useful is you're wanting to validate something before running it, or before deploying it.
+
+All of these commands can of course be embedded into a pipeline.
 
 
 # Summary
-If you're not using claude and MCP for automatic report generation (and more) you're missing out. The amount of effort to set all of this up was minimal. The template took roughly 5 minutes to create. The project instructions were similar. I did iterate the project instructions however I found that this was also minimal. 
+Chalk is a good option for signing artifacts at build time, and or attesting to their identity. There are a myriad of use cases that you can do here. 
 
-I see the use cases for this being plentiful. These include, generating reports for regulators, and any other report that you need to have regularly.
-
-I highly recommend using MCP and claude projects for your report generation needs. It's easy, and amazingly flexible!
+One that I have used is signing code that is generated by an AI agent, and validating it before it is run. This answers the questions "is this the same code" and "is it the right code" before it is being run.
