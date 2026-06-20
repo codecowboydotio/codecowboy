@@ -78,4 +78,6 @@ Note that the date is not shown alongside the time.
 ## Extending beyond a simple use case
 Extending beyond simple use cases into delivering more complex skills or more complex combinations of features based on environment variables becomes even more interesting.
 
-# Summary
+Extending to complex use cases based on multi-step workflows. 
+
+This solves the simple problem of needing to redistribute a skill constantly as it changes to multiple people / endpoints.
