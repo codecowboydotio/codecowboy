@@ -63,6 +63,15 @@ The script in this case is a helper script that interfaces with my flag manageme
 The script is here: [https://github.com/codecowboydotio/ld-skill/blob/main/.claude/skills/ld-skill/scripts/list_flags.py](https://github.com/codecowboydotio/ld-skill/blob/main/.claude/skills/ld-skill/scripts/list_flags.py)
 
 ## What does it look like?
+The first image below shows the results with the flag enabled. 
+Note that the date is shown alongside the time.
+
+![With flag enabled](/images/skill-flag-enabled.jpg)
+
+
+The image below shows the results with the flag disabled. 
+Note that the date is not shown alongside the time.
+![With flag disabled](/images/skill-flag-disabled.jpg)
 
 
 
