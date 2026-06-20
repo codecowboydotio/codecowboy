@@ -34,7 +34,7 @@ The entire skill comprises of two things.
 The skill is contained within a SKILL.md file. 
 The core part of the skill, and what makes it generic is the following section.
 
-```Bash
+```md
 This table is the single source of truth for which flags this skill uses. To change behaviour, update this table only — no other section needs editing.
 
 | Flag key | Gates |
@@ -54,16 +54,19 @@ The other relevant section of the SKILL.md is the gating portion.
 | `flag_show_date` | Date display | Print `Date: <date>` line | Omit date line |
 ```
 
-The best part about this, is that additional flags can be added to the table to scale the skill and alter even the skill behaviour.
+The best part about this, is that additional flags can be added to the table to scale the skill and alter even the skill behaviour. This can all be done in runtime without needing to redeploy or redistribute the skill to end users. 
 
-## The script
+
+## The flag script
 The script in this case is a helper script that interfaces with my flag management system. In this case, I'm using LaunchDarkly. The script just uses a pull method to get the flags. While this isn't the most efficient means, it's a simple proof of concept. The objective here is to get all of the flags that are configured and defined. 
 
 The script is here: [https://github.com/codecowboydotio/ld-skill/blob/main/.claude/skills/ld-skill/scripts/list_flags.py](https://github.com/codecowboydotio/ld-skill/blob/main/.claude/skills/ld-skill/scripts/list_flags.py)
 
+## What does it look like?
 
 
 
 ## Extending beyond a simple use case
+Extending beyond simple use cases into delivering more complex skills or more complex combinations of features based on environment variables becomes even more interesting.
 
 # Summary
