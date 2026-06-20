@@ -42,12 +42,26 @@ This table is the single source of truth for which flags this skill uses. To cha
 | `flag_show_date` | Date display |
 ```
 
+The other relevant section of the SKILL.md is the gating portion.
+
+```md
+#### Behaviour per flag
+
+
+
+| Flag key | Gates | Enabled behaviour | Disabled behaviour |
+|---|---|---|---|
+| `flag_show_date` | Date display | Print `Date: <date>` line | Omit date line |
+```
+
 The best part about this, is that additional flags can be added to the table to scale the skill and alter even the skill behaviour.
 
 ## The script
 The script in this case is a helper script that interfaces with my flag management system. In this case, I'm using LaunchDarkly. The script just uses a pull method to get the flags. While this isn't the most efficient means, it's a simple proof of concept. The objective here is to get all of the flags that are configured and defined. 
 
 The script is here: [https://github.com/codecowboydotio/ld-skill/blob/main/.claude/skills/ld-skill/scripts/list_flags.py](https://github.com/codecowboydotio/ld-skill/blob/main/.claude/skills/ld-skill/scripts/list_flags.py)
+
+
 
 
 ## Extending beyond a simple use case
