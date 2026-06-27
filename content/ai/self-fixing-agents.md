@@ -8,8 +8,6 @@ author = "codecowboy.io"
 showtoc = true
 +++
 
-# Self improving code with AI agents
-
 ## Intro
 
 I've been messing around with multi-agent AI systems recently. I had a crazy idea - what if I could get one AI agent to write code, have another score it, and a third refine it based on that score? All automatically. All in a loop.
