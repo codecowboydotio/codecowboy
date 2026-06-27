@@ -55,8 +55,10 @@ agent2_code = response.content[0].text
 
 The task I gave it is simple - write a Python script that calls Claude and asks it "What is 2 + 2?". The point isn't the task, it's the pattern.
 
+{{< notice info >}}
 > **Info**
 > The generated code becomes Agent 2 - not a model, but an actual Python script that gets executed as a subprocess later. Agent 1 literally creates Agent 2.
+{{< /notice >}}
 
 ## Scoring the code
 
