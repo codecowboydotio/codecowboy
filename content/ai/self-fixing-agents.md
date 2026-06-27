@@ -193,4 +193,7 @@ Agent 2 output: 2 + 2 equals 4.
 
 This is a simple but flexible pattern for self-improving code generation. The structured diff format, full history passing, and different model tiers for different roles are the things that make it actually work.
 
-The obvious next step is feeding runtime errors from Agent 2 back into another refinement cycle rather than just logging them. That would close the loop entirely. I'm thinking about doing that next.
+The next step is more than likely going to be introducing a truly distributed message bus similar to the article here [https://codecowboy.io/ai/autonomous-ai-agents/](https://codecowboy.io/ai/autonomous-ai-agents/). This way, each of the agents could refine others within the network and work together toward a shared goal.
+
+I'm already thinking about implementing a shared goal deconstructor.
+
