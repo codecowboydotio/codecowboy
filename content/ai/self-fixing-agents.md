@@ -162,8 +162,10 @@ stdout, stderr = proc.communicate(timeout=60)
 
 The temp file gets cleaned up in a `finally` block no matter what happens. stdout and stderr are both captured - if Agent 2 blows up you'll see why.
 
+{{< notice info >}}
 > **Info**
 > This is what makes it genuinely agentic. Agent 1 isn't just generating code for a human to run - it's generating, scoring, refining, and executing the result itself.
+{{< /notice >}}
 
 ## Model choices
 
