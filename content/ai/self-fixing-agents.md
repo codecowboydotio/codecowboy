@@ -20,7 +20,7 @@ The things I wanted to explore were:
 - Using that feedback to automatically refine the code in a loop
 - Running the final accepted code as an actual subprocess
 
-TLDR - if you just want the code it's here: [https://github.com/codecowboydotio](https://github.com/codecowboydotio)
+TLDR - if you just want the code it's here: [https://github.com/codecowboydotio/ai-self-propagate-experiment](https://github.com/codecowboydotio/ai-self-propagate-experiment)
 
 ## What is this?
 
