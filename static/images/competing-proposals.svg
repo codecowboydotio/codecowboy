@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 560" font-family="Seravek, 'Segoe UI', Calibri, sans-serif">
+  <style>
+    .bg       { fill: #EEF1EE; }
+    .const    { font-family: "Cascadia Code", Consolas, monospace; font-size: 11px; fill: #7C8B89; }
+    .goalbox  { fill: #FFFFFF; stroke: #0B7285; stroke-width: 1.6; }
+    .goalt    { font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; font-weight: 700; font-size: 15px; fill: #12191A; text-anchor: middle; }
+    .goals    { font-size: 10px; font-style: italic; fill: #7C8B89; text-anchor: middle; }
+    .fan      { stroke: #0B7285; stroke-width: 1.3; opacity: 0.6; fill: none; }
+    .dot      { fill: #0B7285; }
+    .badge    { fill: #FFFFFF; stroke: #0B7285; stroke-width: 2; }
+    .badget   { font-family: "Cascadia Code", Consolas, monospace; font-weight: 700; font-size: 12px; fill: #0B7285; text-anchor: middle; dominant-baseline: central; }
+    .vArrow   { stroke: #7C8B89; stroke-width: 1.4; fill: none; }
+    .card     { stroke-width: 1.4; }
+    .card-neutral  { fill: #FFFFFF; stroke: #D7DCD9; }
+    .card-accepted { fill: #E8F3EC; stroke: #2F7D4F; }
+    .ptitle   { font-family: "Cascadia Code", Consolas, monospace; font-weight: 700; font-size: 14px; }
+    .psub     { font-size: 11px; fill: #7C8B89; }
+    .rule     { stroke: #D7DCD9; stroke-width: 1; }
+    .chip-yes { fill: #E8F3EC; stroke: #2F7D4F; }
+    .chip-no  { fill: #E2E7E2; stroke: #D7DCD9; }
+    .chip-pending { fill: #EEF1EE; stroke: #D7DCD9; stroke-dasharray: 2 2; }
+    .chipt-yes{ font-family: "Cascadia Code", Consolas, monospace; font-size: 10px; fill: #2F7D4F; text-anchor: middle; }
+    .chipt-no { font-family: "Cascadia Code", Consolas, monospace; font-size: 10px; fill: #7C8B89; text-anchor: middle; }
+    .status-pending  { font-family: "Cascadia Code", Consolas, monospace; font-size: 10.5px; fill: #7C8B89; }
+    .status-accepted { font-family: "Cascadia Code", Consolas, monospace; font-size: 10.5px; fill: #2F7D4F; font-weight: 700; }
+    .ribbon   { fill: #2F7D4F; }
+    .ribbont  { font-family: "Cascadia Code", Consolas, monospace; font-size: 9.5px; font-weight: 700; fill: #FFFFFF; text-anchor: middle; }
+    .resbox   { fill: #E8F3EC; stroke: #2F7D4F; stroke-width: 1.6; }
+    .rest1    { font-family: "Cascadia Code", Consolas, monospace; font-size: 12.5px; font-weight: 700; fill: #2F7D4F; }
+    .rest2    { font-size: 12px; fill: #12191A; }
+    .rest3    { font-family: "Cascadia Code", Consolas, monospace; font-size: 10px; font-style: italic; fill: #7C8B89; }
+    .legrule  { stroke: #D7DCD9; stroke-width: 1; }
+    .legcap   { font-family: "Cascadia Code", Consolas, monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; fill: #7C8B89; font-weight: 700; }
+    .legbadge { fill: #FFFFFF; stroke: #0B7285; stroke-width: 1.8; }
+    .leglabel { font-size: 11.5px; fill: #4B5A5A; }
+    .legcard  { fill: #E8F3EC; stroke: #2F7D4F; stroke-width: 1.6; }
+    .legdot   { fill: #0B7285; }
+    .legline  { stroke: #0B7285; stroke-width: 1.3; opacity: 0.6; }
+  </style>
+  <rect class="bg" x="0" y="0" width="820" height="560"></rect>
+
+  <text class="const" x="20" y="18">MIN_SCORE = 0.6 · N_CONFIRMATIONS = 2</text>
+
+  <!-- goal -->
+  <rect class="goalbox" x="320" y="20" width="180" height="44" rx="10"></rect>
+  <text class="goalt" x="410" y="40">Goal</text>
+  <text class="goals" x="410" y="56">one goal, several answers</text>
+
+  <!-- fan-out to decomposers -->
+  <line class="fan" x1="410" y1="64" x2="150" y2="102"></line>
+  <circle class="dot" cx="150" cy="102" r="3"></circle>
+  <line class="fan" x1="410" y1="64" x2="410" y2="102"></line>
+  <circle class="dot" cx="410" cy="102" r="3"></circle>
+  <line class="fan" x1="410" y1="64" x2="670" y2="102"></line>
+  <circle class="dot" cx="670" cy="102" r="3"></circle>
+
+  <!-- decomposer badges -->
+  <circle class="badge" cx="150" cy="120" r="17"></circle>
+  <text class="badget" x="150" y="121">D1</text>
+  <circle class="badge" cx="410" cy="120" r="17"></circle>
+  <text class="badget" x="410" y="121">D2</text>
+  <circle class="badge" cx="670" cy="120" r="17"></circle>
+  <text class="badget" x="670" y="121">D3</text>
+
+  <!-- arrows badge -> card -->
+  <path class="vArrow" d="M 150 137 L 150 168 M 145 162 L 150 168 L 155 162"></path>
+  <path class="vArrow" d="M 410 137 L 410 168 M 405 162 L 410 168 L 415 162"></path>
+  <path class="vArrow" d="M 670 137 L 670 168 M 665 162 L 670 168 L 675 162"></path>
+
+  <!-- Card P1 (partial) -->
+  <rect class="card card-neutral" x="40" y="170" width="220" height="150" rx="10"></rect>
+  <text class="ptitle" x="56" y="196" fill="#12191A">P1</text>
+  <text class="psub" x="84" y="196">· 4 subgoals</text>
+  <line class="rule" x1="56" y1="208" x2="244" y2="208"></line>
+  <rect class="chip-no" x="56" y="220" width="56" height="26" rx="6"></rect>
+  <text class="chipt-no" x="84" y="237">S1 · .45</text>
+  <rect class="chip-no" x="122" y="220" width="56" height="26" rx="6"></rect>
+  <text class="chipt-no" x="150" y="237">S2 · .58</text>
+  <rect class="chip-yes" x="188" y="220" width="56" height="26" rx="6"></rect>
+  <text class="chipt-yes" x="216" y="237">S3 · .72</text>
+  <text class="status-pending" x="56" y="262">1 / 2 confirmations</text>
+
+  <!-- Card P2 (accepted) -->
+  <rect class="card card-accepted" x="300" y="170" width="220" height="150" rx="10"></rect>
+  <text class="ptitle" x="316" y="196" fill="#2F7D4F">P2</text>
+  <text class="psub" x="344" y="196">· 5 subgoals</text>
+  <line class="rule" x1="316" y1="208" x2="504" y2="208"></line>
+  <rect class="chip-yes" x="316" y="220" width="56" height="26" rx="6"></rect>
+  <text class="chipt-yes" x="344" y="237">S1 · .81</text>
+  <rect class="chip-yes" x="382" y="220" width="56" height="26" rx="6"></rect>
+  <text class="chipt-yes" x="410" y="237">S2 · .74</text>
+  <rect class="chip-yes" x="448" y="220" width="56" height="26" rx="6"></rect>
+  <text class="chipt-yes" x="476" y="237">S3 · .69</text>
+  <text class="status-accepted" x="316" y="262">3 / 2 confirmations — accepted</text>
+  <rect class="ribbon" x="450" y="158" width="82" height="20" rx="10"></rect>
+  <text class="ribbont" x="491" y="171">✓ ACCEPTED</text>
+
+  <!-- Card P3 (still gathering votes) -->
+  <rect class="card card-neutral" x="560" y="170" width="220" height="150" rx="10"></rect>
+  <text class="ptitle" x="576" y="196" fill="#12191A">P3</text>
+  <text class="psub" x="604" y="196">· 3 subgoals</text>
+  <line class="rule" x1="576" y1="208" x2="764" y2="208"></line>
+  <rect class="chip-no" x="576" y="220" width="56" height="26" rx="6"></rect>
+  <text class="chipt-no" x="604" y="237">S1 · .39</text>
+  <rect class="chip-no" x="642" y="220" width="56" height="26" rx="6"></rect>
+  <text class="chipt-no" x="670" y="237">S2 · .51</text>
+  <rect class="chip-pending" x="708" y="220" width="56" height="26" rx="6"></rect>
+  <text class="chipt-no" x="736" y="237">S3 · …</text>
+  <text class="status-pending" x="576" y="262">0 / 2 confirmations</text>
+
+  <!-- arrow P2 -> accepted result -->
+  <path class="vArrow" d="M 410 320 L 410 358 M 405 352 L 410 358 L 415 352"></path>
+
+  <!-- accepted split result -->
+  <rect class="resbox" x="180" y="362" width="460" height="72" rx="10"></rect>
+  <text class="rest1" x="200" y="386">goal/&lt;goal_id&gt;/accepted</text>
+  <text class="rest2" x="200" y="404">AcceptedSplit from P2 · final_score 0.75</text>
+  <text class="rest3" x="200" y="420">→ each subgoal now goes through the atomicity classifier</text>
+
+  <!-- legend -->
+  <line class="legrule" x1="20" y1="452" x2="800" y2="452"></line>
+  <text class="legcap" x="20" y="474">legend</text>
+
+  <line class="legline" x1="20" y1="496" x2="44" y2="496"></line>
+  <circle class="legdot" cx="44" cy="496" r="3"></circle>
+  <text class="leglabel" x="54" y="500">gossip publish (Goal → decomposer)</text>
+
+  <circle class="legbadge" cx="300" cy="496" r="9"></circle>
+  <text class="leglabel" x="316" y="500">agent badge (Dn decomposer, Sn scorer)</text>
+
+  <rect class="chip-yes" x="558" y="488" width="20" height="16" rx="4"></rect>
+  <text class="leglabel" x="586" y="500">Sn score ≥ MIN_SCORE — confirms</text>
+
+  <rect class="chip-no" x="20" y="522" width="20" height="16" rx="4"></rect>
+  <text class="leglabel" x="48" y="534">Sn score &lt; MIN_SCORE — no confirmation</text>
+
+  <rect class="chip-pending" x="300" y="522" width="20" height="16" rx="4"></rect>
+  <text class="leglabel" x="328" y="534">Sn hasn't scored this proposal yet</text>
+
+  <rect class="legcard" x="558" y="522" width="26" height="16" rx="5"></rect>
+  <text class="leglabel" x="592" y="534">proposal reached N_CONFIRMATIONS — accepted</text>
+</svg>
