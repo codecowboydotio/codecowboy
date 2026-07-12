@@ -64,6 +64,8 @@ Each agent also needs an identity that survives a restart. On first run it gener
 
 One more gossip quirk that bit me: GossipSub doesn't replay anything to a late subscriber. If I published the top-level goal the instant the decomposer process started, and the scorer process hadn't finished subscribing yet, it would just silently never see it — no error, no retry, the whole thing stalls forever. So before publishing a submitted goal, I wait until I can see at least one other subscriber has actually mesh-joined the topic, and only then publish — with a timeout so a solo run doesn't hang forever.
 
+![Decompoer Detailed view](/images/competing-proposals.svg)
+
 ## The agents
 
 Every agent is the same CLI entrypoint (`python -m decentralized_decomposer.main --role <role> --port <port>`), just started with a different `--role`. Here's what each one is actually doing.
