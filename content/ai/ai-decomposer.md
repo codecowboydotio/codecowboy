@@ -8,9 +8,9 @@ author = "codecowboy.io"
 showtoc = true
 +++
 
-# Nobody Holds the Whole Plan
+# Distributed shared goal decomposition
 
-A goal goes in — **"plan a two-week trip to Japan"** — and a tree of executable prompts comes out, produced by four kinds of agent that never share a process, a database, or a coordinator. No peer ever holds the **whole plan.** Plan state is reconstructed locally by each peer.
+A goal goes in — **"plan a two-week trip to Japan"** — and a tree of executable prompts comes out, produced by four kinds of agent that never share a process, a database, or a coordinator. **No peer ever holds the whole plan.** Plan state is reconstructed locally by each peer.
 
 ---
 
