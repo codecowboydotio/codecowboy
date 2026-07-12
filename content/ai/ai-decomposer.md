@@ -77,6 +77,22 @@ Watches for new goals, and for each one, asks the model to split it into somewhe
 
 I run more than one decomposer on purpose. They'll come back with genuinely different splits for the same goal, and that's the point — I wanted diversity of opinion, not one canonical answer.
 
+Each proposal is a message that looks like this. This is then voted on by a scorer.
+
+```json
+{
+  "goal_id": "1fb7d8c3a29e4410",
+  "proposer_peer": "12D3KooWDecomposerPeerXyz",
+  "subgoals": [
+    "Book round-trip flights to Tokyo",
+    "Reserve accommodations for 14 nights",
+    "Draft a day-by-day itinerary"
+  ],
+  "rationale": "Splits the trip into booking, lodging, and planning tracks that can proceed independently.",
+  "proposal_id": "a92f61e0c7d3b8aa"
+}
+```
+
 ### Scorer
 
 Rates every competing split it sees, 0 to 1, against a fixed rubric: does it cover the whole goal, do the subgoals overlap, is each one actually atomic or still too coarse. Once enough scorers agree a split is good (more on exactly what "enough" means below), the scorer publishes the accepted split and moves each subgoal through a second, separate LLM call that decides whether it's atomic or still needs splitting.
@@ -88,6 +104,18 @@ Rates every competing split it sees, 0 to 1, against a fixed rubric: does it cov
 > Classify whether this subgoal is atomic (a single concrete deliverable requiring no further decomposition) or composite (still needs breaking down). Return ONLY: `{"is_atomic": bool, "reason": "string"}`
 
 Composite subgoals get republished as brand new goals, one level deeper, and go through this whole cycle again. Atomic ones get announced for executors to pick up. There's a hard depth cap too (3 by default) — once depth+1 would hit that cap, a subgoal gets forced atomic no matter what the classifier says, so recursion can't run away on me.
+
+Each scorer sends a score back with notes.
+
+```json
+{
+  "goal_id": "1fb7d8c3a29e4410",
+  "proposal_id": "a92f61e0c7d3b8aa",
+  "scorer_peer": "12D3KooWScorerPeerAbc123",
+  "score": 0.85,
+  "notes": "Covers the full goal, subgoals don't overlap, all look atomic."
+}
+```
 
 ### Executor
 
