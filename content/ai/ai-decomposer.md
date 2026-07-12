@@ -35,6 +35,8 @@ So the things I wanted to explore were:
 - A claim/lease protocol so multiple executors racing for the same piece of work don't both do that work
 - Whether a peer that joins late, or is just watching, can reconstruct the whole plan from nothing but what it's overheard
 
+![Gossip mesh topology](/images/gossip-mesh.svg)
+
 TLDR — if you just want to see it running, skip to [Running it](#running-it) below. The code lives in `decentralized_decomposer/`.
 
 ## What is this?
