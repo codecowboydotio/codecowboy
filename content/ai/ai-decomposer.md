@@ -170,10 +170,31 @@ python -m decentralized_decomposer.main --role observer --port 4004
 
 The observer doesn't need an API key or any capabilities — start it alongside the others and watch it print the plan tree as it fills in, straight from what it's overheard. Run a couple more decomposers or executors on other ports and you'll actually see competing proposals and claim races happen, instead of just reading about them.
 
+The output from the observer shows that the high level goal is broken down into multiple steps, then each step is further broken down and expanded upon. Each one has either a **decomposed** or a **pending decomposition** after it denoting the current status.
+
+
+```bash
+=== plan state for goal ec724d522767d724 ===
+Plan a two-week trip to Japan [decomposed]
+
+  * Determine trip logistics: choose travel dates, set a total budget, and book round-trip flights to Japan [decomposed]
+    * Research and select specific travel dates for the Japan trip, considering factors like season, holidays, and personal availability [pending_decomposition]
+    * Define a total trip budget by estimating costs for flights, accommodation, food, transportation, and activities [pending_decomposition]
+    * Search for and compare round-trip flights to Japan (e.g., Tokyo, Osaka) on platforms like Google Flights, Expedia, or Skyscanner for the chosen dates [done]
+      * Result: # Round-Trip Flight Search to Japan: Comparison Report > **Important Note:** I'm a text-based AI and cannot browse the internet, access live flight databases, or perform real-time searches on Google F...
+    * Book the selected round-trip flight by completing payment and saving confirmation details [pending_decomposition]
+  * Decide which cities and regions to visit and create a day-by-day itinerary covering the two weeks [pending_decomposition]
+  * Research and book accommodations (hotels, ryokans, hostels) for each location on the itinerary [pending_decomposition]
+  * Identify and list key activities, attractions, and restaurants for each destination, and pre-book any that require reservations (e.g., teamLab, specific restaurants) [pending_decomposition]
+  * Handle practical travel preparations: obtain a Japan Rail Pass, arrange airport transportation, set up a pocket Wi-Fi or SIM card, notify your bank, and check visa requirements [pending_decomposition]
+```
+
 ## Summary
 
 This ended up being a reasonably flexible way to turn a fuzzy goal into a tree of concrete, executable prompts without any one process owning the whole plan. Any single decomposer, scorer or executor can die mid-plan and the rest just keep going. Add more executors and it scales the way adding more people to a task does, not the way a bigger server does.
 
 The trade-off is real too — a scoring round is slower than one LLM call would ever be, there's no global optimum being computed anywhere, just whatever a handful of independent peers happened to agree on, and gossip arriving out of order can leave two peers looking at slightly different plans for a few seconds at a time.
+
+The use cases for this type of decentralised fuzzy logic are endless. The decentralised nature lends itself itself to being able to withstand multiple failures. Not having a centralised control plane also means that it's difficult to actually stop a goal being decomposed once it's started if there are enough executors and scorers present.
 
 I'm thinking about what a real sandbox for `can_run_code` would look like next — right now it's just an executor that's willing to write code, not run it — but that's a separate rabbit hole for another post.
