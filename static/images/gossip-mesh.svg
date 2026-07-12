@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320" role="img" aria-label="Diagram of four agent nodes connected in a mesh, with no central node.">
+  <style>
+    .bg        { fill: #FFFFFF; }
+    .node-main { fill: #FFFFFF; stroke: #0B7285; stroke-width: 2.2; }
+    .node-faint{ fill: #7C8B89; opacity: 0.35; }
+    .node-label{ font-family: "Cascadia Code", Consolas, "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+                 font-size: 13px; font-weight: 700; fill: #0B7285; text-anchor: middle; dominant-baseline: central; }
+    .edge-strong{ stroke: #0B7285; stroke-width: 1.4; opacity: 0.55; fill: none; stroke-dasharray: 5 6; }
+    .edge-faint { stroke: #7C8B89; stroke-width: 1; opacity: 0.28; fill: none; stroke-dasharray: 3 6; }
+    .void-ring  { fill: none; stroke: #7C8B89; stroke-width: 1; stroke-dasharray: 2 5; opacity: 0.55; }
+    .void-label { font-family: Seravek, "Segoe UI", "Noto Sans", Calibri, system-ui, sans-serif;
+                  font-style: italic; font-size: 11px; fill: #7C8B89; text-anchor: middle; }
+    .legend     { font-family: "Cascadia Code", Consolas, "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+                  font-size: 12px; fill: #4B5A5A; }
+    .legend b   { fill: #0B7285; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="640" height="320"></rect>
+
+  <circle class="void-ring" cx="320" cy="160" r="34"></circle>
+  <text class="void-label" x="320" y="164">nothing lives here</text>
+
+  <line class="edge-strong" x1="150" y1="70" x2="490" y2="70"></line>
+  <line class="edge-strong" x1="490" y1="70" x2="520" y2="250"></line>
+  <line class="edge-strong" x1="520" y1="250" x2="120" y2="250"></line>
+  <line class="edge-strong" x1="120" y1="250" x2="150" y2="70"></line>
+  <line class="edge-strong" x1="150" y1="70" x2="520" y2="250"></line>
+  <line class="edge-strong" x1="490" y1="70" x2="120" y2="250"></line>
+
+  <line class="edge-faint" x1="150" y1="70" x2="320" y2="40"></line>
+  <line class="edge-faint" x1="490" y1="70" x2="320" y2="40"></line>
+  <line class="edge-faint" x1="490" y1="70" x2="590" y2="150"></line>
+  <line class="edge-faint" x1="520" y1="250" x2="590" y2="150"></line>
+  <line class="edge-faint" x1="520" y1="250" x2="320" y2="290"></line>
+  <line class="edge-faint" x1="120" y1="250" x2="320" y2="290"></line>
+  <line class="edge-faint" x1="120" y1="250" x2="50" y2="150"></line>
+  <line class="edge-faint" x1="150" y1="70" x2="50" y2="150"></line>
+
+  <circle class="node-faint" cx="320" cy="40" r="5"></circle>
+  <circle class="node-faint" cx="590" cy="150" r="5"></circle>
+  <circle class="node-faint" cx="320" cy="290" r="5"></circle>
+  <circle class="node-faint" cx="50" cy="150" r="5"></circle>
+
+  <circle class="node-main" cx="150" cy="70" r="17"></circle>
+  <text class="node-label" x="150" y="71">D</text>
+  <circle class="node-main" cx="490" cy="70" r="17"></circle>
+  <text class="node-label" x="490" y="71">S</text>
+  <circle class="node-main" cx="520" cy="250" r="17"></circle>
+  <text class="node-label" x="520" y="251">E</text>
+  <circle class="node-main" cx="120" cy="250" r="17"></circle>
+  <text class="node-label" x="120" y="251">O</text>
+
+  <text class="legend" x="20" y="308"><tspan class="legend"><tspan fill="#0B7285" font-weight="700">D</tspan> decomposer   <tspan fill="#0B7285" font-weight="700">S</tspan> scorer   <tspan fill="#0B7285" font-weight="700">E</tspan> executor   <tspan fill="#0B7285" font-weight="700">O</tspan> observer   ·   faint dots — room for more peers of any role</tspan></text>
+</svg>
