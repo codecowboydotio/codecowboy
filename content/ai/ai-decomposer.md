@@ -35,8 +35,6 @@ So the things I wanted to explore were:
 - A claim/lease protocol so multiple executors racing for the same piece of work don't both do that work
 - Whether a peer that joins late, or is just watching, can reconstruct the whole plan from nothing but what it's overheard
 
-![Gossip mesh topology](/images/gossip-mesh.svg)
-
 TLDR — if you just want to see it running, skip to [Running it](#running-it) below. The code lives in `decentralized_decomposer/`.
 
 ## What is this?
@@ -58,6 +56,8 @@ Same as the multi-agent stack I built before, I'm using `libp2p` for the network
 
 Each agent also needs an identity that survives a restart. On first run it generates an Ed25519 keypair and writes it to `.identity/<role>-<port>.key`. Without that, restarting a process hands it a brand-new PeerId and it loses its place in every other peer's peerstore — as far as the network's concerned, it's just a stranger showing up.
 
+![Gossip mesh topology](/images/gossip-mesh.svg)
+
 > **Info**
 > `py-libp2p`'s own `new_host(enable_mDNS=True)` wires its built-in mDNS discovery to a *hardcoded* port 8000, no matter what port the host is actually listening on. Took me a bit to work out why agents on any other port just weren't finding each other. Ended up constructing `MDNSDiscovery` myself with the real listen port instead of relying on the built-in wiring.
 
@@ -65,8 +65,6 @@ Each agent also needs an identity that survives a restart. On first run it gener
 > `py-libp2p`'s own pubsub demo starts a background task that garbage-collects expired peer records. Turns out its sweep deletes a peer's *entire* record — both keys, not just the stale bits — once the TTL lapses, and something in the swarm/mDNS bookkeeping ends up giving your own peer id a short TTL too. About a minute in, it quietly deletes your own keypair out of your own peerstore, and the next publish crashes trying to sign with a key that's gone. I just don't start that task.
 
 One more gossip quirk that bit me: GossipSub doesn't replay anything to a late subscriber. If I published the top-level goal the instant the decomposer process started, and the scorer process hadn't finished subscribing yet, it would just silently never see it — no error, no retry, the whole thing stalls forever. So before publishing a submitted goal, I wait until I can see at least one other subscriber has actually mesh-joined the topic, and only then publish — with a timeout so a solo run doesn't hang forever.
-
-![Decompoer Detailed view](/images/competing-proposals.svg)
 
 ## The agents
 
@@ -105,6 +103,8 @@ Worth being honest about: `can_run_code` right now just means the executor is wi
 ### Observer
 
 The odd one out — no LLM calls, no capabilities, doesn't publish anything. It just subscribes to everything, keeps folding what it sees into a local copy of the plan state, and prints the reconstructed tree to stdout whenever it changes. This is genuinely the only reason I can actually see the whole plan while it's running — every other agent only ever sees its own slice.
+
+![Decompoer Detailed view](/images/competing-proposals.svg)
 
 ## The protocol
 
