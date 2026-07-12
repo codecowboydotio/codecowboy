@@ -16,23 +16,6 @@ A goal goes in — **"plan a two-week trip to Japan"** — and a tree of executa
 
 ---
 
-## Contents
-
-1. [A pipeline with no owner](#01--a-pipeline-with-no-owner)
-2. [Four roles, one gossip network](#02--four-roles-one-gossip-network)
-3. [Finding each other on the LAN](#03--finding-each-other-on-the-lan)
-4. [Topics are the only shared state](#04--topics-are-the-only-shared-state)
-5. [Propose, score, accept, recurse](#05--propose-score-accept-recurse)
-6. [Claiming and executing leaves](#06--claiming-and-executing-leaves)
-7. [A plan nobody holds, that anyone can read](#07--a-plan-nobody-holds-that-anyone-can-read)
-8. [One event loop per process](#08--one-event-loop-per-process)
-9. [Steering how far it splits](#09--steering-how-far-it-splits)
-10. [Testing something that has no single log](#10--testing-something-that-has-no-single-log)
-11. [Running it yourself](#11--running-it-yourself)
-12. [The cost of not having a boss](#closing--the-cost-of-not-having-a-boss)
-
----
-
 # Decentralized goal decomposition using AI agents
 
 *July 12, 2026 · 13 min · decentralized_decomposer*
