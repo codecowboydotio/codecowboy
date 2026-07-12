@@ -196,7 +196,6 @@ One implementation note: the original plan was `asyncio`, same as the agent stac
 
 Plan state itself is a handful of grow-only sets (goals, accepted splits, atomic nodes, results), keyed by those content hashes. Adding the same entry twice is a no-op, merging two states is just a union, so replaying the same gossip in any order or any number of times lands on the same final tree for every peer. That's what the observer leans on to reconstruct things — and it's genuinely eventually consistent, not eventually complete: a branch it hasn't heard about yet just doesn't show up, rather than erroring.
 
-Testing this one was its own thing to think about, because there's no single log to assert against. I split it into layers — pure logic (schema validation, the CRDT merge being order-independent, claim tie-breaks being deterministic) with no network or LLM involved, and agent decision logic tested against a fake in-memory pubsub with a mocked model client. Real multi-process races and live API calls are still a manual/future thing — reproducing claim races and gossip timing bugs reliably, even on one machine, is genuinely harder than the agent logic itself.
 
 ## Running it
 
