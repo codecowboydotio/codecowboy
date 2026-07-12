@@ -155,7 +155,27 @@ Every id in there — `goal_id`, `proposal_id`, `node_id` — is a content hash,
 
 When an executor sees a new atomic node it can handle, it publishes a claim stamped with the current time, then waits out a short two-second window collecting any competing claims from other executors also going for it. Whoever's claim has the earliest timestamp wins — ties broken by peer id so every executor watching agrees on the same winner without needing to ask anyone.
 
+```json
+{
+  "node_id": "7c2a9f10b4e8d301",
+  "goal_id": "1fb7d8c3a29e4410",
+  "text": "Book round-trip flights to Tokyo",
+  "is_atomic": true,
+  "depends_on": [],
+  "required_capability": "can_query_api"
+}
+```
+
 One thing I had to guard against: GossipSub doesn't guarantee exactly-once delivery, so the same "new node" message can legitimately show up twice over different mesh paths. Without deduplicating by node id, two handlers for the same node both end up subscribing to the same claim topic, and whichever finishes first tears that subscription down out from under the other one — which crashes the process instead of just skipping cleanly.
+
+```json
+{
+  "node_id": "7c2a9f10b4e8d301",
+  "claimer_peer": "12D3KooWExecutorPeerAbc",
+  "claimed_at": "2026-07-12T18:42:03.117000Z",
+  "capability": "can_query_api"
+}
+```
 
 If a node just sits there unclaimed for a minute, it gets re-announced once. If it's still stuck after a second minute, that's treated as a real capability gap — nobody present can do it — and a failure notice gets published instead of looping on it forever.
 
