@@ -16,22 +16,6 @@ A goal goes in — **"plan a two-week trip to Japan"** — and a tree of executa
 
 ---
 
-# Decentralized goal decomposition using AI agents
-
-*July 12, 2026 · 13 min · decentralized_decomposer*
-
-**Table of Contents**
-- [Intro](#intro)
-- [What is this?](#what-is-this)
-- [Peer to peer topology](#peer-to-peer-topology)
-- [The agents](#the-agents)
-- [The protocol](#the-protocol)
-- [Claiming work](#claiming-work)
-- [How proposals get accepted](#how-proposals-get-accepted)
-- [The code](#the-code)
-- [Running it](#running-it)
-- [Summary](#summary)
-
 ## Intro
 
 I've been messing around with AI agents a lot recently, and two things I've built have been sitting in the back of my mind together for a while.
