@@ -45,10 +45,20 @@ As part of my new routine, I give it a name. In my case, I am going to ensure th
 In my case, the prompt gives instructions on what to do with the README. I select one of my repositories, which in my case, is my space invaders game. Lastly, I select a trigger. In my case, I am selecting a github pull request. 
 
 ### Triggers
-There are three types of triggers. 
+There are three types of triggers. Each one has different use cases.
+
+Schedule: This trigger type is a more simple type, where you want to run an agentic workflow on a schedule. For example "Search my google calendar and send me an email summarising my day". You could schedule this for 7am each morning.
+
+Github event: This is where you can choose a github event type and automatically have the workflow kick off. In my case I chose a pull request as the trigger. Other out of the box event types are PR merged, Release published and Issue opened.
+
+API: This is probably the most flexible. It gives you a URL and a token that means the routine can be called via a POST request. This is incredibly flexible because it can be embedded in other code, or an external orchestrator. 
+
+## Workflow created
+Once the workflow has been successfully created, you can see both the workflow details on the right hand side panel, but also any runs that have occurred.
 
 ![](/images/git-agentic-after-create.png)
-dadsadd
+
+
 ![](/images/git-agentic-github-app-not-installed.png)
 dadssadsad
 ![](/images/git-agentic-install-and-authorise.png)
