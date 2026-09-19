@@ -31,6 +31,8 @@ In order to get started you simply log into the web interface of claude code and
 
 [https://claude.ai/code/routines](https://claude.ai/code/routines)
 
+![](/images/git-agentic-new-routine.png)
+asdasdd
 ![](/images/git-agentic-create-routine.png)
 asdasdd
 ![](/images/git-agentic-after-create.png)
