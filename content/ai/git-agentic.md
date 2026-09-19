@@ -32,12 +32,17 @@ In order to get started you simply log into the web interface of claude code and
 [https://claude.ai/code/routines](https://claude.ai/code/routines)
 
 ![](/images/git-agentic-install-and-authorise.png)
+asdsads
 ![](/images/git-agentic-claude-authorised.png)
+sadasdad
 ![](/images/git-agentic-github-app-not-installed.png)
-
+dadssadsad
 ![](/images/git-agentic-create-routine.png)
+asdasdd
 ![](/images/git-agentic-after-create.png)
+dadsadd
 ![](/images/git-agentic-installed-connectors.png)
+last
 
 
 ## Summary
