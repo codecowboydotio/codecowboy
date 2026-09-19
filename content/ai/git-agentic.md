@@ -109,5 +109,12 @@ After a short amount of time, the pull request is updated with the information f
 When I look at the actual content of the pull request, I can see that a new file called README.md has been added and the content shows that a comprehensive readme describing the code has been added.
 ![readme content](/images/git-agentic-github-repo-6.png)
 
+## Routine
+What does the routine look like after it's been fired by the pull request? The image below shows that the routine has fired, a commit has been added to the PR and all of the normal claude reasoning and tool use is available.
+
+![claude routine](/images/git-agentic-github-repo-7.png)
+
 ## Summary
+Claude code routines are a neat way of interacting with your github repo. I am still not sure whether or not this kills off actions or not. I think ultimately, actions will become a lot more simple. The ability to fire a routine from a PR, or even a generic API request adds a level of flexibility that allows for integration into the modern developer lifecycle. 
+
 
