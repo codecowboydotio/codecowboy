@@ -32,9 +32,21 @@ In order to get started you simply log into the web interface of claude code and
 [https://claude.ai/code/routines](https://claude.ai/code/routines)
 
 ![](/images/git-agentic-new-routine.png)
-asdasdd
+
+From here I create a new routine. 
+
 ![](/images/git-agentic-create-routine.png)
-asdasdd
+
+As part of my new routine, I give it a name. In my case, I am going to ensure that all of my pull requests update the README.md in my repo. There are three actions that I need to take at this point:
+- Add a prompt
+- Select a repository
+- Select a trigger
+
+In my case, the prompt gives instructions on what to do with the README. I select one of my repositories, which in my case, is my space invaders game. Lastly, I select a trigger. In my case, I am selecting a github pull request. 
+
+### Triggers
+There are three types of triggers. 
+
 ![](/images/git-agentic-after-create.png)
 dadsadd
 ![](/images/git-agentic-github-app-not-installed.png)
