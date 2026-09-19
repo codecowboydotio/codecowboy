@@ -53,6 +53,15 @@ Github event: This is where you can choose a github event type and automatically
 
 API: This is probably the most flexible. It gives you a URL and a token that means the routine can be called via a POST request. This is incredibly flexible because it can be embedded in other code, or an external orchestrator. 
 
+### Notifications
+There is also an option to include notifications as part of the routine. The default options for notifications are: 
+
+Push Notifications: Send notifications to the claude app. This works for both the mobile and desktop apps.
+
+Email: Send an email notification to the email in your account.
+
+Slack: Send a slcak message (requires slack to be connected)
+
 ## Workflow created
 Once the workflow has been successfully created, you can see both the workflow details on the right hand side panel, but also any runs that have occurred.
 
