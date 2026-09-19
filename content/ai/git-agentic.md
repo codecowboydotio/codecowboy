@@ -67,6 +67,10 @@ Once the workflow has been successfully created, you can see both the workflow d
 
 ![](/images/git-agentic-after-create.png)
 
+## Creating a PR
+Now that my routine is created inside claude, and will run inside Anthropic, not on my laptop, it's time to create a pull request on my repo. I'm going to use the web based interface from github just to prove that nothing is running on my laptop.
+
+
 
 ![](/images/git-agentic-github-app-not-installed.png)
 dadssadsad
