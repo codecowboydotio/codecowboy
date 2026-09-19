@@ -89,11 +89,25 @@ Now that my routine is created inside claude, and will run inside Anthropic, not
 The first thing to note is that there is no README present in the repository at all.
 
 ![repo files](/images/git-agentic-github-repo-1.png)
-![](/images/git-agentic-github-repo-2.png)
-![](/images/git-agentic-github-repo-3.png)
-![](/images/git-agentic-github-repo-4.png)
-![](/images/git-agentic-github-repo-5.png)
-![](/images/git-agentic-github-repo-6.png)
+
+I add a single comment to the shell script that I use to kick off the web server and serve the html space invaders game. This is kicked off using python's inbuilt **http.server**. This is not really very efficient or robust, but does work for local testing. I simply add a comment to this effect to the file.
+
+![comment in file](/images/git-agentic-github-repo-2.png)
+
+I commit this to a new branch and start a new pull request. This should kick off my workflow and my routine. Remember that the trigger i defined earlier was a new PR being created. 
+
+![create PR](/images/git-agentic-github-repo-3.png)
+
+I them create the pull request.
+
+![create PR](/images/git-agentic-github-repo-4.png)
+
+After a short amount of time, the pull request is updated with the information from my routine. I can see that there is a new section within the PR that says "Add comprehensive Readme". This is exactly what my routine has done. 
+
+![routine in pull request](/images/git-agentic-github-repo-5.png)
+
+When I look at the actual content of the pull request, I can see that a new file called README.md has been added and the content shows that a comprehensive readme describing the code has been added.
+![readme content](/images/git-agentic-github-repo-6.png)
 
 ## Summary
 
