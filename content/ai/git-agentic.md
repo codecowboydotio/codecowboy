@@ -83,7 +83,12 @@ Once everything is installed, you should be redirected back to the installed con
 ## Creating a PR
 Now that my routine is created inside claude, and will run inside Anthropic, not on my laptop, it's time to create a pull request on my repo. I'm going to use the web based interface from github just to prove that nothing is running on my laptop.
 
-
+![](/images/git-agentic-github-repo-1.png)
+![](/images/git-agentic-github-repo-2.png)
+![](/images/git-agentic-github-repo-3.png)
+![](/images/git-agentic-github-repo-4.png)
+![](/images/git-agentic-github-repo-5.png)
+![](/images/git-agentic-github-repo-6.png)
 
 ## Summary
 
