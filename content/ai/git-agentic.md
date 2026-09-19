@@ -39,8 +39,6 @@ dadsadd
 dadssadsad
 ![](/images/git-agentic-install-and-authorise.png)
 asdsads
-![](/images/git-agentic-claude-authorised.png)
-sadasdad
 ![](/images/git-agentic-installed-connectors.png)
 last
 
