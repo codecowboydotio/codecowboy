@@ -68,11 +68,9 @@ Once the workflow has been successfully created, you can see both the workflow d
 ![](/images/git-agentic-after-create.png)
 
 
-
 The very first time that you run you may see a note that the github app is not installed. Click on the link to install the github app and grant the appropriate permissions.
 
 ![](/images/git-agentic-github-app-not-installed.png)
-
 
 
 Once the app is authorised and you have selected a repository, then click install.
@@ -80,8 +78,7 @@ Once the app is authorised and you have selected a repository, then click instal
 ![](/images/git-agentic-install-and-authorise.png)
 
 
-
-Once everything is installed, you should be redirected back to the installed connectors page in your claude web browser. This should now show that the github app is installed.
+After everything is installed, you should be redirected back to the installed connectors page in your claude web browser. This should now show that the github integration is installed.
 
 ![](/images/git-agentic-installed-connectors.png)
 
@@ -89,7 +86,9 @@ Once everything is installed, you should be redirected back to the installed con
 ## Creating a PR
 Now that my routine is created inside claude, and will run inside Anthropic, not on my laptop, it's time to create a pull request on my repo. I'm going to use the web based interface from github just to prove that nothing is running on my laptop.
 
-![](/images/git-agentic-github-repo-1.png)
+The first thing to note is that there is no README present in the repository at all.
+
+![repo files](/images/git-agentic-github-repo-1.png)
 ![](/images/git-agentic-github-repo-2.png)
 ![](/images/git-agentic-github-repo-3.png)
 ![](/images/git-agentic-github-repo-4.png)
