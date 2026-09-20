@@ -137,7 +137,9 @@ If you noticed, the example curl request presented had a rather interesting part
 I thought to myself "I wonder if I could just add another turn to this", so I tried it.
 
 ```Shell
--H "Content-Type: application/json"   -d '{"text": "if no pull request exists, then validate the code against the readme anyway. If no readme exists, create it. Make a new PR if needed."}'
+-H "Content-Type: application/json"   -d '{"text": "if no pull request exists, then 
+validate the code against the readme anyway. If no readme exists, create it. 
+Make a new PR if needed."}'
 ```
 
 This is a new turn to stop the previous behaviour where no PR exists so the routine simply burns tokens and doesn't do anything. What should happen this time when I fire the routine with the API is a new PR should be created even if there is no existing PR.
