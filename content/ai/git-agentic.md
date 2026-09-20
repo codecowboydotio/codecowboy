@@ -131,6 +131,14 @@ Once I have called the trigger, I get output in the claude code routines panel t
 
 ![claude routine](/images/git-agentic-github-repo-10.png)
 
+## Additional data
+If you noticed, the example curl request presented had a rather interesting part to it. The request has a data section that says **"optional extra turn turn appended to the session"**. 
+
+I thought to myself "I wonder if I could just add another turn to this", so I tried it.
+
+{{<notice info>}}
+-H "Content-Type: application/json"   -d '{"text": "if no pull request exists, then validate the code against the readme anyway. If no readme exists, create it. Make a new PR is needed."}'
+{{</notice>}}
 
 ## Summary
 Claude code routines are a neat way of interacting with your github repo. I am still not sure whether or not this kills off actions or not. I think ultimately, actions will become a lot more simple. The ability to fire a routine from a PR, or even a generic API request adds a level of flexibility that allows for integration into the modern developer lifecycle. 
