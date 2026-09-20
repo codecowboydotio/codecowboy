@@ -136,8 +136,22 @@ If you noticed, the example curl request presented had a rather interesting part
 
 I thought to myself "I wonder if I could just add another turn to this", so I tried it.
 
+```Shell
+-H "Content-Type: application/json"   -d '{"text": "if no pull request exists, then validate the code against the readme anyway. If no readme exists, create it. Make a new PR if needed."}'
+```
+
+This is a new turn to stop the previous behaviour where no PR exists so the routine simply burns tokens and doesn't do anything. What should happen this time when I fire the routine with the API is a new PR should be created even if there is no existing PR.
+
+The routine run correctly identifies that there is no existing PR in place. It also correctly opens a new one and assesses the code against the README (which doesn't exist).
+
+![claude routine](/images/git-agentic-github-repo-13.png)
+
+When I go and check the repository, I can see that a new PR has been raised and it has much the same content as the routine output. The cool part is that it is nicely formatted and is readable within the github interface. No further formatting is required on my part.
+
+![claude routine](/images/git-agentic-github-repo-12.png)
+
 {{<notice info>}}
--H "Content-Type: application/json"   -d '{"text": "if no pull request exists, then validate the code against the readme anyway. If no readme exists, create it. Make a new PR is needed."}'
+There is probably a complete other blog post here about defensive AI programming / prompting where a routine like this cannot simply burn tokens with no meaningful output.
 {{</notice>}}
 
 ## Summary
