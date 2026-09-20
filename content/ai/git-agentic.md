@@ -114,6 +114,14 @@ What does the routine look like after it's been fired by the pull request? The i
 
 ![claude routine](/images/git-agentic-github-repo-7.png)
 
+## Using an API trigger
+What if I want something to run via an API trigger instead? Adding an API trigger is very easy. 
+
+![claude routine](/images/git-agentic-github-repo-8.png)
+![claude routine](/images/git-agentic-github-repo-9.png)
+![claude routine](/images/git-agentic-github-repo-10.png)
+
+
 ## Summary
 Claude code routines are a neat way of interacting with your github repo. I am still not sure whether or not this kills off actions or not. I think ultimately, actions will become a lot more simple. The ability to fire a routine from a PR, or even a generic API request adds a level of flexibility that allows for integration into the modern developer lifecycle. 
 
