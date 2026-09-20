@@ -115,14 +115,27 @@ What does the routine look like after it's been fired by the pull request? The i
 ![claude routine](/images/git-agentic-github-repo-7.png)
 
 ## Using an API trigger
-What if I want something to run via an API trigger instead? Adding an API trigger is very easy. 
+What if I want something to run via an API trigger instead? Adding an API trigger is very easy. I can simply edit the existing routine. When I edit the routine, I have the option to add an additional trigger.
 
 ![claude routine](/images/git-agentic-github-repo-8.png)
+
+Adding the new trigger gives me a URL that's specific to that trigger. I also get a token that I can use to call the trigger. Helpfully, I can also expand the option for an example curl request. This is really helpful when I want to test, and has all of the appropriate headers set for me.
+
 ![claude routine](/images/git-agentic-github-repo-9.png)
+
+I call the routine and pipe the output through jq so that it is formatted nicely. This gives me a session id, a url and a type field, which in this case is "routine_fire". I can use this method to fire the routine from anywhere, be it an external orchestrator, or a a terminal session using curl. The idea here is obvious, I not have the ability to fire agentic routines from anywhere.
+
+![claude routine](/images/git-agentic-github-repo-11.png)
+
+Once I have called the trigger, I get output in the claude code routines panel that shows the routine has run an in this case, it has done nothing. As my routine is tied to an existing pull request, nothing will occur if there is no pull request outstanding.
+
 ![claude routine](/images/git-agentic-github-repo-10.png)
 
 
 ## Summary
 Claude code routines are a neat way of interacting with your github repo. I am still not sure whether or not this kills off actions or not. I think ultimately, actions will become a lot more simple. The ability to fire a routine from a PR, or even a generic API request adds a level of flexibility that allows for integration into the modern developer lifecycle. 
 
+I can fire a routine associated with my codebase on a schedule, from a github event or via an API call. I can do this from github, an external orchestrator or anything else. Imagine a use case where I perform a regular security scan across my codebase and send the results to slack or use the results to fire off a code review and further actions on my codebase. 
+
+Routines let me get creative with the actions and activities that can occur on my codebase.
 
